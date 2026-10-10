@@ -8,22 +8,38 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    /* المتغيرات العامة - الوضع الليلي الافتراضي */
     :root {
-      --itqan-purple-dark: #07010e;
-      --itqan-purple-deep: #160424;
-      --itqan-purple: #5c1688;
-      --itqan-purple-bright: #9d27cd;
+      --bg-gradient: radial-gradient(circle at 50% 15%, #2d0b45 0%, #120320 60%, #05000a 100%);
+      --header-bg: rgba(14, 3, 26, 0.95);
+      --card-bg: rgba(29, 8, 48, 0.85);
+      --card-border: rgba(245, 179, 1, 0.35);
+      --itqan-purple: #732583;
+      --itqan-purple-light: #9d3dae;
       --itqan-gold: #f5b301;
       --itqan-gold-light: #fed766;
-      --itqan-gold-glow: rgba(245, 179, 1, 0.45);
+      --itqan-gold-glow: rgba(245, 179, 1, 0.4);
       --cyan: #00d2d3;
+      --text: #ffffff;
+      --text-muted: #cbd5e1;
+      --opt-bg: linear-gradient(90deg, rgba(46, 12, 77, 0.85) 0%, rgba(26, 6, 46, 0.95) 100%);
+      --opt-border: rgba(245, 179, 1, 0.3);
       --correct: #10b981;
       --wrong: #ef4444;
       --selected: #ea580c;
-      --card-bg: rgba(22, 6, 38, 0.88);
-      --card-border: rgba(245, 179, 1, 0.35);
-      --text: #ffffff;
-      --text-muted: #cbd5e1;
+    }
+
+    /* ألوان الوضع الفاتح (Light Mode) */
+    body.light-theme {
+      --bg-gradient: radial-gradient(circle at 50% 15%, #fbf8fc 0%, #f3e8f7 60%, #e8d5ef 100%);
+      --header-bg: rgba(255, 255, 255, 0.95);
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --card-border: rgba(115, 37, 131, 0.25);
+      --text: #260538;
+      --text-muted: #64748b;
+      --opt-bg: #ffffff;
+      --opt-border: rgba(115, 37, 131, 0.25);
+      --itqan-gold-glow: rgba(115, 37, 131, 0.2);
     }
 
     * {
@@ -43,16 +59,17 @@
     }
 
     body {
-      background: radial-gradient(circle at 50% 15%, #2a0445 0%, var(--itqan-purple-dark) 70%, #030006 100%);
+      background: var(--bg-gradient);
       color: var(--text);
       min-height: 100vh;
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
       position: relative;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* أضواء المسرح السينمائية */
+    /* أضواء المسرح */
     .studio-stage {
       position: fixed;
       inset: 0;
@@ -62,22 +79,25 @@
     }
     .spotlight {
       position: absolute;
-      top: -30%;
-      width: 380px;
+      top: -25%;
+      width: 360px;
       height: 150%;
-      background: radial-gradient(ellipse at center, rgba(157, 39, 205, 0.2) 0%, transparent 65%);
+      background: radial-gradient(ellipse at center, rgba(115, 37, 131, 0.25) 0%, transparent 65%);
       transform-origin: top center;
       animation: sweepLights 14s ease-in-out infinite alternate;
     }
     .spotlight-left { left: -10%; animation-delay: -3s; }
     .spotlight-right { right: -10%; animation-duration: 16s; }
 
+    body.light-theme .spotlight {
+      background: radial-gradient(ellipse at center, rgba(115, 37, 131, 0.08) 0%, transparent 65%);
+    }
+
     @keyframes sweepLights {
       0% { transform: rotate(-25deg); }
       100% { transform: rotate(25deg); }
     }
 
-    /* وميض المسرح العام */
     #flash-overlay {
       position: fixed;
       inset: 0;
@@ -87,39 +107,39 @@
       transition: opacity 0.3s ease;
     }
     #flash-overlay.flash-correct {
-      background: radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, transparent 75%);
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.35) 0%, transparent 80%);
       opacity: 1;
     }
     #flash-overlay.flash-wrong {
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.45) 0%, transparent 75%);
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.4) 0%, transparent 80%);
       opacity: 1;
     }
 
     /* -------------------------------------------------------------
-       1. الشاشة الافتتاحية
+       1. الشاشة الافتتاحية السينمائية
        ------------------------------------------------------------- */
     #intro-screen {
       position: fixed;
       inset: 0;
       z-index: 100;
-      background: radial-gradient(circle at center, #260542 0%, #07000e 85%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1rem;
+      padding: 1.2rem;
       text-align: center;
       transition: opacity 0.4s ease, transform 0.4s ease;
+      background: inherit;
     }
 
     .intro-card {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
-      border-radius: 22px;
-      padding: 1.8rem 1.4rem;
+      border-radius: 24px;
+      padding: 2.2rem 1.6rem;
       width: 100%;
       max-width: 440px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(92, 22, 136, 0.35);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 30px var(--itqan-gold-glow);
       backdrop-filter: blur(16px);
       position: relative;
     }
@@ -129,16 +149,16 @@
       align-items: center;
       justify-content: center;
       background: #ffffff;
-      padding: 8px 22px;
-      border-radius: 16px;
+      padding: 10px 22px;
+      border-radius: 18px;
       border: 2px solid var(--itqan-gold);
-      box-shadow: 0 0 20px var(--itqan-gold-glow);
-      margin-bottom: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      margin-bottom: 1.2rem;
       cursor: pointer;
     }
 
     .logo-badge img {
-      max-height: 56px;
+      max-height: 60px;
       width: auto;
       object-fit: contain;
     }
@@ -151,11 +171,20 @@
       margin-bottom: 0.2rem;
     }
 
+    body.light-theme .intro-title {
+      color: var(--itqan-purple);
+      text-shadow: none;
+    }
+
     .intro-motto {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--cyan);
       font-weight: 700;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.8rem;
+    }
+
+    body.light-theme .intro-motto {
+      color: var(--itqan-purple-light);
     }
 
     .form-group {
@@ -171,16 +200,27 @@
       color: var(--itqan-gold-light);
     }
 
+    body.light-theme .form-group label {
+      color: var(--itqan-purple);
+    }
+
     .input-box, .select-box {
       width: 100%;
-      padding: 11px 14px;
-      border-radius: 10px;
-      border: 1.2px solid rgba(245, 179, 1, 0.3);
-      background: rgba(8, 2, 16, 0.95);
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1.2px solid var(--card-border);
+      background: rgba(8, 2, 16, 0.9);
       color: #fff;
-      font-size: 0.95rem;
+      font-size: 1rem;
       outline: none;
       transition: all 0.2s;
+    }
+
+    body.light-theme .input-box,
+    body.light-theme .select-box {
+      background: #ffffff;
+      color: #1e0538;
+      border-color: #cbd5e1;
     }
 
     .input-box:focus, .select-box:focus {
@@ -188,24 +228,19 @@
       box-shadow: 0 0 10px var(--itqan-gold-glow);
     }
 
-    .select-box option {
-      background: var(--itqan-purple-deep);
-      color: #fff;
-    }
-
     .btn-launch {
       width: 100%;
       background: linear-gradient(135deg, var(--itqan-gold) 0%, #d97706 100%);
-      color: #0b0217;
-      font-size: 1.15rem;
+      color: #080112;
+      font-size: 1.2rem;
       font-weight: 900;
-      padding: 13px;
+      padding: 14px;
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
       cursor: pointer;
       box-shadow: 0 0 20px var(--itqan-gold-glow);
       transition: all 0.2s;
-      margin-top: 0.4rem;
+      margin-top: 0.5rem;
     }
 
     .btn-launch:active {
@@ -213,7 +248,7 @@
     }
 
     /* -------------------------------------------------------------
-       2. شاشة المسرح والتحدي المباشر (Mobile-Ready)
+       2. شاشة المسابقة المباشرة
        ------------------------------------------------------------- */
     #game-screen {
       display: none;
@@ -226,77 +261,101 @@
       max-width: 100%;
     }
 
+    /* رأس الصفحة المخصص للجوال والشاشات */
     header {
-      display: flex;
-      flex-direction: column;
-      background: rgba(8, 2, 16, 0.96);
-      border-bottom: 1.5px solid var(--itqan-gold);
+      background: var(--header-bg);
+      border-bottom: 2px solid var(--itqan-gold);
       backdrop-filter: blur(10px);
       padding: 0.5rem 1rem;
-      gap: 8px;
       flex-shrink: 0;
       width: 100%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
-    .header-top {
+    .header-row-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 100%;
+      margin-bottom: 0.4rem;
     }
 
-    .brand-group {
+    .brand-section {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .header-logo {
+    .header-logo-card {
       background: #ffffff;
-      padding: 3px 8px;
-      border-radius: 8px;
-      border: 1px solid var(--itqan-gold);
+      padding: 3px 10px;
+      border-radius: 10px;
+      border: 1.5px solid var(--itqan-gold);
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
 
-    .header-logo img {
-      max-height: 32px;
+    .header-logo-card img {
+      max-height: 38px;
       width: auto;
       object-fit: contain;
     }
 
-    .player-status h3 {
+    .player-details h3 {
       font-size: 0.95rem;
       font-weight: 800;
       color: var(--itqan-gold);
       line-height: 1.2;
     }
 
-    .player-status span {
-      font-size: 0.75rem;
+    body.light-theme .player-details h3 {
+      color: var(--itqan-purple);
+    }
+
+    .player-details span {
+      font-size: 0.72rem;
       color: var(--cyan);
       font-weight: 600;
     }
 
-    .header-system-btns {
+    body.light-theme .player-details span {
+      color: var(--itqan-purple-light);
+    }
+
+    .header-actions {
       display: flex;
       gap: 6px;
     }
 
-    .btn-mini {
+    /* أزرار النظام (أيقونات فقط) */
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--card-border);
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(245, 179, 1, 0.4);
-      color: #fff;
-      padding: 4px 8px;
-      border-radius: 8px;
-      font-size: 0.75rem;
-      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
       cursor: pointer;
+      transition: all 0.2s;
     }
 
-    /* شريط المساعدات متكيف تماماً */
+    body.light-theme .icon-btn {
+      background: #f1f5f9;
+      color: #1e0538;
+      border-color: #cbd5e1;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--itqan-gold);
+      transform: scale(1.05);
+    }
+
+    /* سطر وسائل المساعدة */
     .lifeline-bar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -304,27 +363,33 @@
       width: 100%;
     }
 
-    .btn-tool {
+    .btn-lifeline {
       background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--itqan-gold);
+      border: 1.2px solid var(--itqan-gold);
       color: var(--itqan-gold-light);
       padding: 6px 4px;
       border-radius: 12px;
       font-size: 0.8rem;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       text-align: center;
       transition: all 0.2s;
       white-space: nowrap;
     }
 
-    .btn-tool:hover:not(:disabled) {
+    body.light-theme .btn-lifeline {
+      background: #ffffff;
+      color: var(--itqan-purple);
+      border-color: var(--itqan-purple);
+    }
+
+    .btn-lifeline:hover:not(:disabled) {
       background: var(--itqan-gold);
       color: #000;
       box-shadow: 0 0 10px var(--itqan-gold-glow);
     }
 
-    .btn-tool:disabled {
+    .btn-lifeline:disabled {
       opacity: 0.25;
       cursor: not-allowed;
       border-color: #64748b;
@@ -332,11 +397,11 @@
       text-decoration: line-through;
     }
 
-    /* الساحة والوسط */
+    /* الساحة الوسطى */
     main {
       flex: 1;
       display: flex;
-      padding: 0.8rem 1rem;
+      padding: 0.8rem 1.2rem;
       gap: 1.2rem;
       max-width: 1200px;
       margin: 0 auto;
@@ -353,7 +418,7 @@
       width: 100%;
     }
 
-    .arena-header {
+    .arena-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -362,31 +427,42 @@
 
     .badge-category {
       background: rgba(92, 22, 136, 0.5);
-      border: 1px solid var(--itqan-purple-bright);
+      border: 1.5px solid var(--itqan-purple-bright);
       color: #f3e8ff;
-      padding: 4px 12px;
-      border-radius: 16px;
-      font-size: 0.82rem;
+      padding: 4px 14px;
+      border-radius: 18px;
+      font-size: 0.85rem;
       font-weight: 700;
     }
 
-    /* عداد الوقت الدائري التفاعلي */
+    body.light-theme .badge-category {
+      background: rgba(115, 37, 131, 0.1);
+      border-color: var(--itqan-purple);
+      color: var(--itqan-purple);
+    }
+
+    /* عداد الوقت الدائري */
     .timer-wrap {
       position: relative;
-      width: 52px;
-      height: 52px;
+      width: 50px;
+      height: 50px;
     }
 
     .timer-svg {
-      width: 52px;
-      height: 52px;
+      width: 50px;
+      height: 50px;
       transform: rotate(-90deg);
     }
 
     .timer-circle-bg {
       fill: #0c0216;
-      stroke: rgba(255, 255, 255, 0.1);
+      stroke: rgba(255, 255, 255, 0.12);
       stroke-width: 4;
+    }
+
+    body.light-theme .timer-circle-bg {
+      fill: #ffffff;
+      stroke: rgba(0, 0, 0, 0.08);
     }
 
     .timer-circle-bar {
@@ -399,6 +475,10 @@
       transition: stroke-dashoffset 1s linear, stroke 0.3s;
     }
 
+    body.light-theme .timer-circle-bar {
+      stroke: var(--itqan-purple);
+    }
+
     .timer-text {
       position: absolute;
       inset: 0;
@@ -408,6 +488,10 @@
       font-size: 1.15rem;
       font-weight: 900;
       color: var(--itqan-gold);
+    }
+
+    body.light-theme .timer-text {
+      color: var(--itqan-purple);
     }
 
     .timer-critical .timer-circle-bar {
@@ -425,21 +509,25 @@
     }
 
     .question-screen {
-      background: linear-gradient(180deg, rgba(38, 11, 66, 0.85) 0%, rgba(17, 3, 31, 0.95) 100%);
+      background: var(--card-bg);
       border: 1.5px solid var(--itqan-gold);
       border-radius: 16px;
       padding: 1.2rem 1rem;
-      font-size: clamp(1rem, 2.2vw, 1.35rem);
+      font-size: clamp(0.95rem, 2.2vw, 1.35rem);
       font-weight: 700;
       text-align: center;
       margin-bottom: 1rem;
-      min-height: 100px;
+      min-height: 95px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(245, 179, 1, 0.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(245, 179, 1, 0.1);
       line-height: 1.5;
-      word-break: break-word;
+    }
+
+    body.light-theme .question-screen {
+      border-color: var(--itqan-purple);
+      box-shadow: 0 4px 15px rgba(115, 37, 131, 0.1);
     }
 
     .options-grid {
@@ -449,10 +537,10 @@
     }
 
     .btn-option {
-      background: linear-gradient(90deg, rgba(37, 10, 64, 0.75) 0%, rgba(18, 3, 33, 0.88) 100%);
-      border: 1.2px solid rgba(245, 179, 1, 0.25);
+      background: var(--opt-bg);
+      border: 1.2px solid var(--opt-border);
       border-radius: 12px;
-      color: #fff;
+      color: var(--text);
       padding: 0.85rem 1rem;
       font-size: clamp(0.85rem, 1.8vw, 1.05rem);
       font-weight: 600;
@@ -461,6 +549,11 @@
       transition: all 0.2s ease;
       display: flex;
       align-items: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    body.light-theme .btn-option {
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     }
 
     .btn-option .choice-sym {
@@ -470,16 +563,25 @@
       font-size: 1.15rem;
     }
 
+    body.light-theme .btn-option .choice-sym {
+      color: var(--itqan-purple);
+    }
+
     .btn-option:hover:not(:disabled) {
       border-color: var(--itqan-gold);
-      background: rgba(92, 22, 136, 0.45);
+      background: rgba(92, 22, 136, 0.3);
+    }
+
+    body.light-theme .btn-option:hover:not(:disabled) {
+      background: rgba(115, 37, 131, 0.08);
+      border-color: var(--itqan-purple);
     }
 
     .btn-option.selected {
       background: var(--selected) !important;
       color: #fff !important;
       border-color: #ffedd5 !important;
-      box-shadow: 0 0 20px rgba(234, 88, 12, 0.85);
+      box-shadow: 0 0 18px rgba(234, 88, 12, 0.85);
       animation: pulseSelection 0.5s infinite alternate;
     }
 
@@ -492,7 +594,7 @@
       background: var(--correct) !important;
       color: #fff !important;
       border-color: #6ee7b7 !important;
-      box-shadow: 0 0 25px rgba(16, 185, 129, 0.9);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.9);
       animation: flashSuccess 0.4s ease-in-out 3;
     }
 
@@ -505,33 +607,33 @@
       background: var(--wrong) !important;
       color: #fff !important;
       border-color: #fca5a5 !important;
-      box-shadow: 0 0 25px rgba(239, 68, 68, 0.9);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.9);
     }
 
     .btn-option:disabled {
       cursor: default;
     }
 
-    /* سلم النقاط للشاشات الكبيرة */
+    /* سلم النقاط */
     .ladder-panel {
       flex: 1;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 18px;
-      padding: 1rem;
+      padding: 0.8rem;
       display: flex;
       flex-direction: column-reverse;
-      gap: 5px;
+      gap: 4px;
       backdrop-filter: blur(12px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     }
 
     .ladder-step {
       display: flex;
       justify-content: space-between;
-      padding: 6px 12px;
+      padding: 5px 12px;
       border-radius: 8px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
       color: var(--text-muted);
       border: 1px solid transparent;
@@ -543,27 +645,42 @@
       border: 1px solid var(--itqan-gold);
       color: #fff;
       transform: scale(1.02);
-      box-shadow: 0 0 12px var(--itqan-gold-glow);
+      box-shadow: 0 0 10px var(--itqan-gold-glow);
+    }
+
+    body.light-theme .ladder-step.active {
+      background: linear-gradient(90deg, var(--itqan-purple), #9c27b0);
+      color: #fff;
     }
 
     .ladder-step.milestone {
       color: var(--itqan-gold);
     }
 
-    /* زر السلم في الجوال */
+    body.light-theme .ladder-step.milestone {
+      color: var(--itqan-purple);
+      font-weight: 900;
+    }
+
     .mobile-ladder-btn {
       display: none;
       width: 100%;
       background: rgba(245, 179, 1, 0.12);
       border: 1px solid var(--itqan-gold);
       color: var(--itqan-gold);
-      padding: 10px;
+      padding: 9px;
       border-radius: 10px;
       font-weight: 700;
-      margin-top: 12px;
+      margin-top: 10px;
       cursor: pointer;
       font-size: 0.85rem;
       text-align: center;
+    }
+
+    body.light-theme .mobile-ladder-btn {
+      background: rgba(115, 37, 131, 0.08);
+      border-color: var(--itqan-purple);
+      color: var(--itqan-purple);
     }
 
     .shake-screen {
@@ -590,7 +707,7 @@
     }
 
     .modal-box {
-      background: #19052b;
+      background: var(--card-bg);
       border: 2px solid var(--itqan-gold);
       border-radius: 20px;
       padding: 1.8rem;
@@ -600,6 +717,11 @@
       box-shadow: 0 0 35px var(--itqan-gold-glow);
       max-height: 85vh;
       overflow-y: auto;
+    }
+
+    body.light-theme .modal-box {
+      background: #ffffff;
+      border-color: var(--itqan-purple);
     }
 
     .poll-bar {
@@ -613,6 +735,10 @@
       border-radius: 8px;
       overflow: hidden;
       margin-top: 4px;
+    }
+
+    body.light-theme .bar-shell {
+      background: #e2e8f0;
     }
 
     .bar-progress {
@@ -634,6 +760,11 @@
       font-size: 0.95rem;
     }
 
+    body.light-theme .btn-action {
+      background: var(--itqan-purple);
+      color: #ffffff;
+    }
+
     #confetti-canvas {
       position: fixed;
       inset: 0;
@@ -641,28 +772,33 @@
       z-index: 120;
     }
 
-    /* التجاوب الدقيق مع شاشات الجوال الضيقة */
+    /* تكيف محكم للجوال والشاشات العمودية */
     @media (max-width: 768px) {
       header {
-        padding: 0.5rem 0.8rem;
+        padding: 0.4rem 0.8rem;
       }
-      .brand-group {
-        gap: 6px;
+      .brand-section {
+        gap: 8px;
       }
-      .header-logo {
-        padding: 2px 5px;
+      .header-logo-card {
+        padding: 2px 8px;
       }
-      .header-logo img {
-        max-height: 25px;
+      .header-logo-card img {
+        max-height: 30px;
       }
-      .player-status h3 {
-        font-size: 0.82rem;
+      .player-details h3 {
+        font-size: 0.85rem;
       }
-      .player-status span {
+      .player-details span {
         font-size: 0.68rem;
       }
+      .icon-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+      }
       main {
-        padding: 0.6rem;
+        padding: 0.6rem 0.8rem;
         flex-direction: column;
       }
       .ladder-panel {
@@ -689,7 +825,7 @@
 </head>
 <body>
 
-  <!-- إضاءات المسرح -->
+  <!-- أضواء المسرح -->
   <div class="studio-stage">
     <div class="spotlight spotlight-left"></div>
     <div class="spotlight spotlight-right"></div>
@@ -728,38 +864,40 @@
     </div>
   </section>
 
-  <!-- 2. شاشة المسابقة التفاعلية -->
+  <!-- 2. شاشة المسابقة المباشرة -->
   <div id="game-screen">
     <header>
-      <div class="header-top">
-        <div class="brand-group">
-          <div class="header-logo">
+      <div class="header-row-top">
+        <div class="brand-section">
+          <div class="header-logo-card">
             <img id="header-logo-img" src="شعار_اتقان_بدون_خلفية-removebg-preview.png" alt="إتقان">
           </div>
-          <div class="player-status">
+          <div class="player-details">
             <h3 id="display-player-name">بطل إتقان</h3>
             <span id="display-stage-name">الصفوف العليا</span>
           </div>
         </div>
 
-        <div class="header-system-btns">
-          <button class="btn-mini" id="btn-sound" onclick="toggleMute()">🔊 الصوت</button>
-          <button class="btn-mini" style="border-color:var(--cyan)" onclick="toggleFullScreen()">⛶ تكبير</button>
-          <button class="btn-mini" style="border-color:var(--wrong);" onclick="returnToIntro()">خروج</button>
+        <!-- أزرار التحكم بالرموز فقط -->
+        <div class="header-actions">
+          <button class="icon-btn" id="btn-sound" onclick="toggleMute()" title="كتم/تشغيل الصوت">🔊</button>
+          <button class="icon-btn" id="btn-theme" onclick="toggleTheme()" title="تبديل المظهر">☀️</button>
+          <button class="icon-btn" onclick="toggleFullScreen()" title="شاشة كاملة">⛶</button>
+          <button class="icon-btn" style="color:var(--wrong); border-color:var(--wrong);" onclick="returnToIntro()" title="خروج">✕</button>
         </div>
       </div>
 
-      <!-- سطر وسائل المساعدة الموزع بالتساوي -->
+      <!-- سطر وسائل المساعدة الموزع -->
       <div class="lifeline-bar">
-        <button class="btn-tool" id="btn-50" onclick="useFiftyFifty()">50:50</button>
-        <button class="btn-tool" id="btn-poll" onclick="useAudiencePoll()">👥 الجمهور</button>
-        <button class="btn-tool" id="btn-time" onclick="useExtraTime()">⏱️ +30ث</button>
+        <button class="btn-lifeline" id="btn-50" onclick="useFiftyFifty()">50:50</button>
+        <button class="btn-lifeline" id="btn-poll" onclick="useAudiencePoll()">👥 الجمهور</button>
+        <button class="btn-lifeline" id="btn-time" onclick="useExtraTime()">⏱️ +30ث</button>
       </div>
     </header>
 
     <main id="main-stage">
       <div class="arena-content">
-        <div class="arena-header">
+        <div class="arena-top">
           <div class="badge-category" id="category-badge">المجال: عام</div>
           <div class="timer-wrap" id="timer-box">
             <svg class="timer-svg" viewBox="0 0 60 60">
@@ -808,13 +946,13 @@
   <div class="modal-overlay" id="modal-result">
     <div class="modal-box">
       <h2 id="result-title" style="margin-bottom: 0.6rem; color: var(--itqan-gold); font-size: 1.3rem;"></h2>
-      <p id="result-desc" style="font-size: 0.95rem; color: #cbd5e1;"></p>
+      <p id="result-desc" style="font-size: 0.95rem; color: var(--text-muted);"></p>
       <button class="btn-action" onclick="returnToIntro()">العودة للرئيسية</button>
     </div>
   </div>
 
   <script>
-    // بنك الأسئلة المعتمد المستخرج من دليل المسابقة
+    // بنك الأسئلة المعتمد المستخرج من الدليل الرسمي
     const questionBank = {
       primary_lower: [
         { category: "وطن", question: "ما هي عاصمة المملكة العربية السعودية؟", options: ["جدة", "الرياض", "الدمام", "مكة المكرمة"], correct: 1 },
@@ -955,7 +1093,13 @@
 
     function toggleMute() {
       isMuted = !isMuted;
-      document.getElementById("btn-sound").textContent = isMuted ? "🔇 صامت" : "🔊 الصوت";
+      document.getElementById("btn-sound").textContent = isMuted ? "🔇" : "🔊";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("light-theme");
+      const isLight = document.body.classList.contains("light-theme");
+      document.getElementById("btn-theme").textContent = isLight ? "🌙" : "☀️";
     }
 
     const SoundEngine = {
@@ -1054,7 +1198,7 @@
       setTimeout(() => {
         intro.style.opacity = "1";
         intro.style.transform = "scale(1)";
-      }, 30);
+      }, 20);
       closeModal("modal-result");
     }
 
@@ -1062,7 +1206,7 @@
       initAudio();
       usedQuestions.clear();
       currentIdx = 0;
-      document.querySelectorAll(".btn-tool").forEach(b => b.disabled = false);
+      document.querySelectorAll(".btn-lifeline").forEach(b => b.disabled = false);
       closeModal("modal-result");
       buildLadders();
       loadNextQuestion();
@@ -1273,7 +1417,7 @@
       if (isWin) launchConfetti(350);
     }
 
-    /* محرك القصاصات والاحتفال السينمائي */
+    /* محرك القصاصات والاحتفال */
     const canvas = document.getElementById("confetti-canvas");
     const ctx = canvas.getContext("2d");
     let confetti = [];
@@ -1287,7 +1431,7 @@
     resizeCanvas();
 
     function launchConfetti(count = 70) {
-      const colors = ["#f5b301", "#ba68c8", "#00e5ff", "#10b981", "#ffffff"];
+      const colors = ["#f5b301", "#732583", "#00d2d3", "#10b981", "#ffffff"];
       for (let i = 0; i < count; i++) {
         confetti.push({
           x: canvas.width / 2,
