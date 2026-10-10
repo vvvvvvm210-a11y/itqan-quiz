@@ -8,38 +8,42 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    /* المتغيرات العامة - الوضع الليلي الافتراضي */
+    /* المتغيرات العامة - الوضع الفاتح كهوية رئيسية */
     :root {
-      --bg-gradient: radial-gradient(circle at 50% 15%, #2d0b45 0%, #120320 60%, #05000a 100%);
-      --header-bg: rgba(14, 3, 26, 0.95);
-      --card-bg: rgba(29, 8, 48, 0.85);
-      --card-border: rgba(245, 179, 1, 0.35);
-      --itqan-purple: #732583;
-      --itqan-purple-light: #9d3dae;
-      --itqan-gold: #f5b301;
-      --itqan-gold-light: #fed766;
-      --itqan-gold-glow: rgba(245, 179, 1, 0.4);
-      --cyan: #00d2d3;
-      --text: #ffffff;
-      --text-muted: #cbd5e1;
-      --opt-bg: linear-gradient(90deg, rgba(46, 12, 77, 0.85) 0%, rgba(26, 6, 46, 0.95) 100%);
-      --opt-border: rgba(245, 179, 1, 0.3);
+      --bg-gradient: radial-gradient(circle at 50% 15%, #ffffff 0%, #f7f0fa 60%, #ede0f5 100%);
+      --header-bg: rgba(255, 255, 255, 0.96);
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --card-border: rgba(106, 27, 154, 0.18);
+      --itqan-purple: #6a1b9a;
+      --itqan-purple-deep: #4a148c;
+      --itqan-purple-light: #9c27b0;
+      --itqan-purple-soft: rgba(106, 27, 154, 0.08);
+      --accent-color: #7b1fa2;
+      --accent-glow: rgba(106, 27, 154, 0.25);
+      --cyan: #0284c7;
+      --text: #210338;
+      --text-muted: #64748b;
+      --opt-bg: #ffffff;
+      --opt-border: rgba(106, 27, 154, 0.2);
       --correct: #10b981;
       --wrong: #ef4444;
       --selected: #ea580c;
     }
 
-    /* ألوان الوضع الفاتح (Light Mode) */
-    body.light-theme {
-      --bg-gradient: radial-gradient(circle at 50% 15%, #fbf8fc 0%, #f3e8f7 60%, #e8d5ef 100%);
-      --header-bg: rgba(255, 255, 255, 0.95);
-      --card-bg: rgba(255, 255, 255, 0.9);
-      --card-border: rgba(115, 37, 131, 0.25);
-      --text: #260538;
-      --text-muted: #64748b;
-      --opt-bg: #ffffff;
-      --opt-border: rgba(115, 37, 131, 0.25);
-      --itqan-gold-glow: rgba(115, 37, 131, 0.2);
+    /* الوضع الداكن */
+    body.dark-theme {
+      --bg-gradient: radial-gradient(circle at 50% 15%, #25053b 0%, #10021c 65%, #050009 100%);
+      --header-bg: rgba(16, 2, 28, 0.95);
+      --card-bg: rgba(28, 8, 48, 0.88);
+      --card-border: rgba(156, 39, 176, 0.35);
+      --itqan-purple-soft: rgba(156, 39, 176, 0.2);
+      --accent-color: #ba68c8;
+      --accent-glow: rgba(186, 104, 200, 0.4);
+      --cyan: #38bdf8;
+      --text: #ffffff;
+      --text-muted: #cbd5e1;
+      --opt-bg: linear-gradient(90deg, rgba(38, 10, 66, 0.8) 0%, rgba(20, 4, 36, 0.9) 100%);
+      --opt-border: rgba(156, 39, 176, 0.3);
     }
 
     * {
@@ -69,7 +73,7 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* أضواء المسرح */
+    /* أضواء المسرح الهادئة */
     .studio-stage {
       position: fixed;
       inset: 0;
@@ -82,16 +86,15 @@
       top: -25%;
       width: 360px;
       height: 150%;
-      background: radial-gradient(ellipse at center, rgba(115, 37, 131, 0.25) 0%, transparent 65%);
+      background: radial-gradient(ellipse at center, rgba(106, 27, 154, 0.08) 0%, transparent 65%);
       transform-origin: top center;
       animation: sweepLights 14s ease-in-out infinite alternate;
     }
+    body.dark-theme .spotlight {
+      background: radial-gradient(ellipse at center, rgba(156, 39, 176, 0.2) 0%, transparent 65%);
+    }
     .spotlight-left { left: -10%; animation-delay: -3s; }
     .spotlight-right { right: -10%; animation-duration: 16s; }
-
-    body.light-theme .spotlight {
-      background: radial-gradient(ellipse at center, rgba(115, 37, 131, 0.08) 0%, transparent 65%);
-    }
 
     @keyframes sweepLights {
       0% { transform: rotate(-25deg); }
@@ -107,16 +110,16 @@
       transition: opacity 0.3s ease;
     }
     #flash-overlay.flash-correct {
-      background: radial-gradient(circle, rgba(16, 185, 129, 0.35) 0%, transparent 80%);
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 75%);
       opacity: 1;
     }
     #flash-overlay.flash-wrong {
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.4) 0%, transparent 80%);
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.35) 0%, transparent 75%);
       opacity: 1;
     }
 
     /* -------------------------------------------------------------
-       1. الشاشة الافتتاحية السينمائية
+       1. الشاشة الافتتاحية
        ------------------------------------------------------------- */
     #intro-screen {
       position: fixed;
@@ -128,8 +131,8 @@
       justify-content: center;
       padding: 1.2rem;
       text-align: center;
-      transition: opacity 0.4s ease, transform 0.4s ease;
       background: inherit;
+      transition: opacity 0.4s ease, transform 0.4s ease;
     }
 
     .intro-card {
@@ -139,9 +142,12 @@
       padding: 2.2rem 1.6rem;
       width: 100%;
       max-width: 440px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 30px var(--itqan-gold-glow);
+      box-shadow: 0 15px 40px rgba(106, 27, 154, 0.12);
       backdrop-filter: blur(16px);
       position: relative;
+    }
+    body.dark-theme .intro-card {
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(106, 27, 154, 0.35);
     }
 
     .logo-badge {
@@ -149,31 +155,34 @@
       align-items: center;
       justify-content: center;
       background: #ffffff;
-      padding: 10px 22px;
-      border-radius: 18px;
-      border: 2px solid var(--itqan-gold);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      padding: 8px 18px;
+      border-radius: 16px;
+      border: 1.5px solid rgba(106, 27, 154, 0.2);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
       margin-bottom: 1.2rem;
       cursor: pointer;
+      transition: transform 0.25s ease;
+    }
+
+    .logo-badge:hover {
+      transform: scale(1.03);
     }
 
     .logo-badge img {
-      max-height: 60px;
+      max-height: 65px;
       width: auto;
       object-fit: contain;
     }
 
     .intro-title {
-      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      font-size: clamp(1.6rem, 5vw, 2.1rem);
       font-weight: 900;
-      color: var(--itqan-gold);
-      text-shadow: 0 0 15px var(--itqan-gold-glow);
+      color: var(--itqan-purple);
       margin-bottom: 0.2rem;
     }
-
-    body.light-theme .intro-title {
-      color: var(--itqan-purple);
-      text-shadow: none;
+    body.dark-theme .intro-title {
+      color: #f3e8ff;
+      text-shadow: 0 0 15px rgba(186, 104, 200, 0.5);
     }
 
     .intro-motto {
@@ -181,10 +190,6 @@
       color: var(--cyan);
       font-weight: 700;
       margin-bottom: 1.8rem;
-    }
-
-    body.light-theme .intro-motto {
-      color: var(--itqan-purple-light);
     }
 
     .form-group {
@@ -197,49 +202,45 @@
       margin-bottom: 5px;
       font-size: 0.85rem;
       font-weight: 700;
-      color: var(--itqan-gold-light);
+      color: var(--itqan-purple-deep);
     }
-
-    body.light-theme .form-group label {
-      color: var(--itqan-purple);
+    body.dark-theme .form-group label {
+      color: var(--itqan-purple-bright);
     }
 
     .input-box, .select-box {
       width: 100%;
-      padding: 12px 14px;
+      padding: 11px 14px;
       border-radius: 12px;
       border: 1.2px solid var(--card-border);
-      background: rgba(8, 2, 16, 0.9);
-      color: #fff;
-      font-size: 1rem;
+      background: #ffffff;
+      color: #1e0538;
+      font-size: 0.95rem;
       outline: none;
       transition: all 0.2s;
     }
-
-    body.light-theme .input-box,
-    body.light-theme .select-box {
-      background: #ffffff;
-      color: #1e0538;
-      border-color: #cbd5e1;
+    body.dark-theme .input-box, body.dark-theme .select-box {
+      background: rgba(10, 2, 20, 0.9);
+      color: #fff;
     }
 
     .input-box:focus, .select-box:focus {
-      border-color: var(--itqan-gold);
-      box-shadow: 0 0 10px var(--itqan-gold-glow);
+      border-color: var(--itqan-purple);
+      box-shadow: 0 0 10px var(--accent-glow);
     }
 
     .btn-launch {
       width: 100%;
-      background: linear-gradient(135deg, var(--itqan-gold) 0%, #d97706 100%);
-      color: #080112;
-      font-size: 1.2rem;
+      background: linear-gradient(135deg, var(--itqan-purple) 0%, var(--itqan-purple-deep) 100%);
+      color: #ffffff;
+      font-size: 1.15rem;
       font-weight: 900;
-      padding: 14px;
+      padding: 13px;
       border: none;
-      border-radius: 14px;
+      border-radius: 12px;
       cursor: pointer;
-      box-shadow: 0 0 20px var(--itqan-gold-glow);
-      transition: all 0.2s;
+      box-shadow: 0 6px 20px rgba(106, 27, 154, 0.35);
+      transition: all 0.25s ease;
       margin-top: 0.5rem;
     }
 
@@ -261,15 +262,14 @@
       max-width: 100%;
     }
 
-    /* رأس الصفحة المخصص للجوال والشاشات */
     header {
       background: var(--header-bg);
-      border-bottom: 2px solid var(--itqan-gold);
+      border-bottom: 2px solid var(--itqan-purple);
       backdrop-filter: blur(10px);
       padding: 0.5rem 1rem;
       flex-shrink: 0;
       width: 100%;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
     }
 
     .header-row-top {
@@ -287,13 +287,13 @@
 
     .header-logo-card {
       background: #ffffff;
-      padding: 3px 10px;
+      padding: 3px 8px;
       border-radius: 10px;
-      border: 1.5px solid var(--itqan-gold);
+      border: 1px solid rgba(106, 27, 154, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
     .header-logo-card img {
@@ -305,12 +305,11 @@
     .player-details h3 {
       font-size: 0.95rem;
       font-weight: 800;
-      color: var(--itqan-gold);
+      color: var(--itqan-purple);
       line-height: 1.2;
     }
-
-    body.light-theme .player-details h3 {
-      color: var(--itqan-purple);
+    body.dark-theme .player-details h3 {
+      color: #f3e8ff;
     }
 
     .player-details span {
@@ -319,43 +318,31 @@
       font-weight: 600;
     }
 
-    body.light-theme .player-details span {
-      color: var(--itqan-purple-light);
-    }
-
     .header-actions {
       display: flex;
       gap: 6px;
     }
 
-    /* أزرار النظام (أيقونات فقط) */
     .icon-btn {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       border: 1px solid var(--card-border);
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--itqan-purple-soft);
       color: var(--text);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
       transition: all 0.2s;
     }
 
-    body.light-theme .icon-btn {
-      background: #f1f5f9;
-      color: #1e0538;
-      border-color: #cbd5e1;
-    }
-
     .icon-btn:hover {
-      border-color: var(--itqan-gold);
+      border-color: var(--itqan-purple);
       transform: scale(1.05);
     }
 
-    /* سطر وسائل المساعدة */
     .lifeline-bar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -364,9 +351,9 @@
     }
 
     .btn-lifeline {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1.2px solid var(--itqan-gold);
-      color: var(--itqan-gold-light);
+      background: var(--itqan-purple-soft);
+      border: 1.2px solid var(--itqan-purple);
+      color: var(--itqan-purple-deep);
       padding: 6px 4px;
       border-radius: 12px;
       font-size: 0.8rem;
@@ -376,28 +363,25 @@
       transition: all 0.2s;
       white-space: nowrap;
     }
-
-    body.light-theme .btn-lifeline {
-      background: #ffffff;
-      color: var(--itqan-purple);
-      border-color: var(--itqan-purple);
+    body.dark-theme .btn-lifeline {
+      color: #f3e8ff;
+      border-color: var(--itqan-purple-bright);
     }
 
     .btn-lifeline:hover:not(:disabled) {
-      background: var(--itqan-gold);
-      color: #000;
-      box-shadow: 0 0 10px var(--itqan-gold-glow);
+      background: var(--itqan-purple);
+      color: #fff;
+      box-shadow: 0 0 10px var(--accent-glow);
     }
 
     .btn-lifeline:disabled {
       opacity: 0.25;
       cursor: not-allowed;
-      border-color: #64748b;
-      color: #64748b;
+      border-color: #94a3b8;
+      color: #94a3b8;
       text-decoration: line-through;
     }
 
-    /* الساحة الوسطى */
     main {
       flex: 1;
       display: flex;
@@ -426,22 +410,19 @@
     }
 
     .badge-category {
-      background: rgba(92, 22, 136, 0.5);
-      border: 1.5px solid var(--itqan-purple-bright);
-      color: #f3e8ff;
+      background: var(--itqan-purple-soft);
+      border: 1px solid var(--itqan-purple);
+      color: var(--itqan-purple);
       padding: 4px 14px;
       border-radius: 18px;
       font-size: 0.85rem;
       font-weight: 700;
     }
-
-    body.light-theme .badge-category {
-      background: rgba(115, 37, 131, 0.1);
-      border-color: var(--itqan-purple);
-      color: var(--itqan-purple);
+    body.dark-theme .badge-category {
+      color: #e9d5ff;
+      border-color: var(--itqan-purple-bright);
     }
 
-    /* عداد الوقت الدائري */
     .timer-wrap {
       position: relative;
       width: 50px;
@@ -455,28 +436,25 @@
     }
 
     .timer-circle-bg {
-      fill: #0c0216;
-      stroke: rgba(255, 255, 255, 0.12);
+      fill: none;
+      stroke: rgba(0, 0, 0, 0.08);
       stroke-width: 4;
     }
-
-    body.light-theme .timer-circle-bg {
-      fill: #ffffff;
-      stroke: rgba(0, 0, 0, 0.08);
+    body.dark-theme .timer-circle-bg {
+      stroke: rgba(255, 255, 255, 0.1);
     }
 
     .timer-circle-bar {
       fill: none;
-      stroke: var(--itqan-gold);
+      stroke: var(--itqan-purple);
       stroke-width: 4;
       stroke-linecap: round;
       stroke-dasharray: 144;
       stroke-dashoffset: 0;
       transition: stroke-dashoffset 1s linear, stroke 0.3s;
     }
-
-    body.light-theme .timer-circle-bar {
-      stroke: var(--itqan-purple);
+    body.dark-theme .timer-circle-bar {
+      stroke: var(--itqan-purple-bright);
     }
 
     .timer-text {
@@ -487,11 +465,10 @@
       justify-content: center;
       font-size: 1.15rem;
       font-weight: 900;
-      color: var(--itqan-gold);
-    }
-
-    body.light-theme .timer-text {
       color: var(--itqan-purple);
+    }
+    body.dark-theme .timer-text {
+      color: #fff;
     }
 
     .timer-critical .timer-circle-bar {
@@ -505,14 +482,14 @@
 
     @keyframes heartPulse {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.12); }
+      50% { transform: scale(1.1); }
     }
 
     .question-screen {
       background: var(--card-bg);
-      border: 1.5px solid var(--itqan-gold);
-      border-radius: 16px;
-      padding: 1.2rem 1rem;
+      border: 1.5px solid var(--card-border);
+      border-radius: 18px;
+      padding: 1.3rem 1.1rem;
       font-size: clamp(0.95rem, 2.2vw, 1.35rem);
       font-weight: 700;
       text-align: center;
@@ -521,13 +498,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(245, 179, 1, 0.1);
+      box-shadow: 0 6px 20px rgba(106, 27, 154, 0.08);
       line-height: 1.5;
-    }
-
-    body.light-theme .question-screen {
-      border-color: var(--itqan-purple);
-      box-shadow: 0 4px 15px rgba(115, 37, 131, 0.1);
     }
 
     .options-grid {
@@ -549,32 +521,22 @@
       transition: all 0.2s ease;
       display: flex;
       align-items: center;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-    }
-
-    body.light-theme .btn-option {
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
 
     .btn-option .choice-sym {
-      color: var(--itqan-gold);
+      color: var(--itqan-purple);
       margin-left: 10px;
       font-weight: 900;
       font-size: 1.15rem;
     }
-
-    body.light-theme .btn-option .choice-sym {
-      color: var(--itqan-purple);
+    body.dark-theme .btn-option .choice-sym {
+      color: var(--itqan-purple-bright);
     }
 
     .btn-option:hover:not(:disabled) {
-      border-color: var(--itqan-gold);
-      background: rgba(92, 22, 136, 0.3);
-    }
-
-    body.light-theme .btn-option:hover:not(:disabled) {
-      background: rgba(115, 37, 131, 0.08);
       border-color: var(--itqan-purple);
+      background: var(--itqan-purple-soft);
     }
 
     .btn-option.selected {
@@ -594,7 +556,7 @@
       background: var(--correct) !important;
       color: #fff !important;
       border-color: #6ee7b7 !important;
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.9);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.85);
       animation: flashSuccess 0.4s ease-in-out 3;
     }
 
@@ -607,14 +569,13 @@
       background: var(--wrong) !important;
       color: #fff !important;
       border-color: #fca5a5 !important;
-      box-shadow: 0 0 20px rgba(239, 68, 68, 0.9);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.85);
     }
 
     .btn-option:disabled {
       cursor: default;
     }
 
-    /* سلم النقاط */
     .ladder-panel {
       flex: 1;
       background: var(--card-bg);
@@ -625,7 +586,7 @@
       flex-direction: column-reverse;
       gap: 4px;
       backdrop-filter: blur(12px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
     }
 
     .ladder-step {
@@ -641,33 +602,26 @@
     }
 
     .ladder-step.active {
-      background: linear-gradient(90deg, rgba(92, 22, 136, 0.85), rgba(245, 179, 1, 0.35));
-      border: 1px solid var(--itqan-gold);
+      background: linear-gradient(90deg, var(--itqan-purple), var(--itqan-purple-light));
       color: #fff;
       transform: scale(1.02);
-      box-shadow: 0 0 10px var(--itqan-gold-glow);
-    }
-
-    body.light-theme .ladder-step.active {
-      background: linear-gradient(90deg, var(--itqan-purple), #9c27b0);
-      color: #fff;
+      box-shadow: 0 0 10px var(--accent-glow);
     }
 
     .ladder-step.milestone {
-      color: var(--itqan-gold);
-    }
-
-    body.light-theme .ladder-step.milestone {
       color: var(--itqan-purple);
       font-weight: 900;
+    }
+    body.dark-theme .ladder-step.milestone {
+      color: var(--itqan-purple-bright);
     }
 
     .mobile-ladder-btn {
       display: none;
       width: 100%;
-      background: rgba(245, 179, 1, 0.12);
-      border: 1px solid var(--itqan-gold);
-      color: var(--itqan-gold);
+      background: var(--itqan-purple-soft);
+      border: 1px solid var(--itqan-purple);
+      color: var(--itqan-purple);
       padding: 9px;
       border-radius: 10px;
       font-weight: 700;
@@ -676,11 +630,8 @@
       font-size: 0.85rem;
       text-align: center;
     }
-
-    body.light-theme .mobile-ladder-btn {
-      background: rgba(115, 37, 131, 0.08);
-      border-color: var(--itqan-purple);
-      color: var(--itqan-purple);
+    body.dark-theme .mobile-ladder-btn {
+      color: #f3e8ff;
     }
 
     .shake-screen {
@@ -694,11 +645,10 @@
       40%, 60% { transform: translate3d(5px, 0, 0); }
     }
 
-    /* النوافذ المنبثقة */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(4, 1, 10, 0.88);
+      background: rgba(4, 1, 10, 0.7);
       display: none;
       align-items: center;
       justify-content: center;
@@ -708,20 +658,15 @@
 
     .modal-box {
       background: var(--card-bg);
-      border: 2px solid var(--itqan-gold);
+      border: 1.5px solid var(--itqan-purple);
       border-radius: 20px;
       padding: 1.8rem;
       max-width: 420px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 0 35px var(--itqan-gold-glow);
+      box-shadow: 0 0 35px var(--accent-glow);
       max-height: 85vh;
       overflow-y: auto;
-    }
-
-    body.light-theme .modal-box {
-      background: #ffffff;
-      border-color: var(--itqan-purple);
     }
 
     .poll-bar {
@@ -731,26 +676,25 @@
     }
 
     .bar-shell {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.08);
       border-radius: 8px;
       overflow: hidden;
       margin-top: 4px;
     }
-
-    body.light-theme .bar-shell {
-      background: #e2e8f0;
+    body.dark-theme .bar-shell {
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .bar-progress {
       height: 15px;
-      background: linear-gradient(90deg, var(--itqan-purple-bright), var(--itqan-gold));
+      background: linear-gradient(90deg, var(--itqan-purple), var(--itqan-purple-light));
       transition: width 1s ease;
       width: 0%;
     }
 
     .btn-action {
-      background: var(--itqan-gold);
-      color: #000;
+      background: var(--itqan-purple);
+      color: #ffffff;
       border: none;
       padding: 10px 28px;
       font-weight: 800;
@@ -760,11 +704,6 @@
       font-size: 0.95rem;
     }
 
-    body.light-theme .btn-action {
-      background: var(--itqan-purple);
-      color: #ffffff;
-    }
-
     #confetti-canvas {
       position: fixed;
       inset: 0;
@@ -772,7 +711,7 @@
       z-index: 120;
     }
 
-    /* تكيف محكم للجوال والشاشات العمودية */
+    /* التجاوب مع شاشات الجوال */
     @media (max-width: 768px) {
       header {
         padding: 0.4rem 0.8rem;
@@ -825,7 +764,6 @@
 </head>
 <body>
 
-  <!-- أضواء المسرح -->
   <div class="studio-stage">
     <div class="spotlight spotlight-left"></div>
     <div class="spotlight spotlight-right"></div>
@@ -864,7 +802,7 @@
     </div>
   </section>
 
-  <!-- 2. شاشة المسابقة المباشرة -->
+  <!-- 2. شاشة المسابقة التفاعلية -->
   <div id="game-screen">
     <header>
       <div class="header-row-top">
@@ -878,16 +816,14 @@
           </div>
         </div>
 
-        <!-- أزرار التحكم بالرموز فقط -->
         <div class="header-actions">
           <button class="icon-btn" id="btn-sound" onclick="toggleMute()" title="كتم/تشغيل الصوت">🔊</button>
-          <button class="icon-btn" id="btn-theme" onclick="toggleTheme()" title="تبديل المظهر">☀️</button>
+          <button class="icon-btn" id="btn-theme" onclick="toggleTheme()" title="تبديل المظهر">🌙</button>
           <button class="icon-btn" onclick="toggleFullScreen()" title="شاشة كاملة">⛶</button>
           <button class="icon-btn" style="color:var(--wrong); border-color:var(--wrong);" onclick="returnToIntro()" title="خروج">✕</button>
         </div>
       </div>
 
-      <!-- سطر وسائل المساعدة الموزع -->
       <div class="lifeline-bar">
         <button class="btn-lifeline" id="btn-50" onclick="useFiftyFifty()">50:50</button>
         <button class="btn-lifeline" id="btn-poll" onclick="useAudiencePoll()">👥 الجمهور</button>
@@ -927,7 +863,7 @@
   <!-- نافذة سلم الجوائز للجوال -->
   <div class="modal-overlay" id="modal-mobile-ladder">
     <div class="modal-box">
-      <h3 style="color:var(--itqan-gold); margin-bottom: 0.8rem; font-size: 1.1rem;">سلم رصيد الجوائز</h3>
+      <h3 style="color:var(--itqan-purple); margin-bottom: 0.8rem; font-size: 1.1rem;">سلم رصيد الجوائز</h3>
       <div id="mobile-ladder-content" style="display: flex; flex-direction: column-reverse; gap: 4px;"></div>
       <button class="btn-action" onclick="closeModal('modal-mobile-ladder')">إغلاق</button>
     </div>
@@ -936,7 +872,7 @@
   <!-- نافذة تصويت الجمهور -->
   <div class="modal-overlay" id="modal-poll">
     <div class="modal-box">
-      <h3 style="color:var(--itqan-gold); margin-bottom: 0.8rem; font-size: 1.1rem;">نسبة تصويت الجمهور</h3>
+      <h3 style="color:var(--itqan-purple); margin-bottom: 0.8rem; font-size: 1.1rem;">نسبة تصويت الجمهور</h3>
       <div id="poll-results"></div>
       <button class="btn-action" onclick="closeModal('modal-poll')">متابعة الحل</button>
     </div>
@@ -945,39 +881,45 @@
   <!-- نافذة النتيجة النهائية -->
   <div class="modal-overlay" id="modal-result">
     <div class="modal-box">
-      <h2 id="result-title" style="margin-bottom: 0.6rem; color: var(--itqan-gold); font-size: 1.3rem;"></h2>
+      <h2 id="result-title" style="margin-bottom: 0.6rem; color: var(--itqan-purple); font-size: 1.3rem;"></h2>
       <p id="result-desc" style="font-size: 0.95rem; color: var(--text-muted);"></p>
       <button class="btn-action" onclick="returnToIntro()">العودة للرئيسية</button>
     </div>
   </div>
 
   <script>
-    // بنك الأسئلة المعتمد المستخرج من الدليل الرسمي
+    // بنك الأسئلة الموسع والشامل المستخرج من دليل المسابقة
     const questionBank = {
       primary_lower: [
         { category: "وطن", question: "ما هي عاصمة المملكة العربية السعودية؟", options: ["جدة", "الرياض", "الدمام", "مكة المكرمة"], correct: 1 },
         { category: "وطن", question: "ما هو لون علم المملكة العربية السعودية؟", options: ["الأبيض", "الأخضر", "الأزرق", "الأحمر"], correct: 1 },
         { category: "وطن", question: "ما اسم المناسبة الوطنية التي توافق 23 سبتمبر من كل عام؟", options: ["يوم التأسيس", "يوم العلم", "اليوم الوطني السعودي", "يوم المعلم"], correct: 2 },
         { category: "وطن", question: "ما اسم المناسبة الوطنية التي توافق 22 فبراير من كل عام؟", options: ["اليوم الوطني", "يوم التأسيس", "يوم الشجرة", "يوم الطفل"], correct: 1 },
+        { category: "وطن", question: "ما هو شعار المملكة العربية السعودية الرسمي؟", options: ["نخلة وسيفان", "صقر ورمح", "خيل وتاج", "شمس وسفينة"], correct: 0 },
         { category: "إسلاميات", question: "كم عدد أركان الإسلام؟", options: ["3 أركان", "4 أركان", "5 أركان", "6 أركان"], correct: 2 },
         { category: "إسلاميات", question: "ما هي قبلة المسلمين في الصلاة؟", options: ["المسجد الأقصى", "المسجد النبوي", "الكعبة المشرفة", "مسجد قباء"], correct: 2 },
         { category: "إسلاميات", question: "ما الشهر الذي يصومه المسلمون في كل عام؟", options: ["شعبان", "رمضان", "شوال", "ذو الحجة"], correct: 1 },
         { category: "إسلاميات", question: "من هو أول الخلفاء الراشدين رضي الله عنه؟", options: ["عمر بن الخطاب", "عثمان بن عفان", "أبو بكر الصديق", "علي بن أبي طالب"], correct: 2 },
+        { category: "إسلاميات", question: "كم عدد الصلوات المفروضة على المسلم في اليوم والليلة؟", options: ["3 صلوات", "4 صلوات", "5 صلوات", "6 صلوات"], correct: 2 },
         { category: "جغرافيا", question: "ما هي عاصمة جمهورية مصر العربية؟", options: ["الإسكندرية", "القاهرة", "الجيزة", "أسوان"], correct: 1 },
         { category: "جغرافيا", question: "ما هي عاصمة فرنسا؟", options: ["لندن", "مدريد", "باريس", "روما"], correct: 2 },
         { category: "جغرافيا", question: "ما هي أكبر قارات العالم من حيث المساحة؟", options: ["أفريقيا", "أوروبا", "آسيا", "أمريكا الشمالية"], correct: 2 },
         { category: "جغرافيا", question: "ما هو أكبر محيط في العالم؟", options: ["المحيط الأطلسي", "المحيط الهادئ", "المحيط الهندي", "المحيط المتجمد"], correct: 1 },
+        { category: "جغرافيا", question: "من أي اتجاه تشرق الشمس صباحاً؟", options: ["الشمال", "الجنوب", "الشرق", "الغرب"], correct: 2 },
         { category: "تاريخ", question: "أين نشأت وبدأت الحضارة المصرية القديمة؟", options: ["على ضفاف نهر الفرات", "على ضفاف نهر دجلة", "على ضفاف نهر النيل", "في وادي الأردن"], correct: 2 },
         { category: "تاريخ", question: "ما اسم المدينة التي هاجر إليها النبي محمد ﷺ؟", options: ["الطائف", "المدينة المنورة", "خيبر", "تبوك"], correct: 1 },
         { category: "تاريخ", question: "من الخليفة الذي بنى مدينة بغداد لتكون عاصمة للعباسيين؟", options: ["هارون الرشيد", "أبو جعفر المنصور", "المأمون", "المتوكل"], correct: 1 },
         { category: "علوم", question: "ما الكوكب المعروف بلقب (الكوكب الأحمر)؟", options: ["المشتري", "المريخ", "عطارد", "الزهرة"], correct: 1 },
         { category: "علوم", question: "ما الغاز الأساسي الذي يتنفسه الإنسان للحياة؟", options: ["النيتروجين", "الأكسجين", "ثاني أكسيد الكربون", "الهيدروجين"], correct: 1 },
         { category: "علوم", question: "ما هو مصدر الضوء والحرارة الرئيسي لكوكب الأرض؟", options: ["القمر", "الشمس", "النجوم", "الرياح"], correct: 1 },
+        { category: "علوم", question: "ما هو العضو الذي نستخدمه لتذوق الأطعمة؟", options: ["الأنف", "اللسان", "الأسنان", "الأذن"], correct: 1 },
         { category: "رياضيات", question: "ما حاصل جمع 8 + 7؟", options: ["14", "15", "16", "17"], correct: 1 },
         { category: "رياضيات", question: "ما ناتج ضرب 4 × 6؟", options: ["20", "28", "24", "26"], correct: 2 },
         { category: "رياضيات", question: "كم ضلعاً للمربع؟", options: ["ثلاثة", "أربعة", "خمسة", "ستة"], correct: 1 },
+        { category: "رياضيات", question: "ما هو نصف العدد 20؟", options: ["5", "8", "10", "15"], correct: 2 },
         { category: "لغة وأدب", question: "ما هو مرادف كلمة (سعيد)؟", options: ["حزين", "مسرور", "غاضب", "خائف"], correct: 1 },
         { category: "لغة وأدب", question: "ما هو مضاد كلمة (سريع)؟", options: ["قوي", "بطيء", "نشيط", "كسول"], correct: 1 },
+        { category: "لغة وأدب", question: "ما جمع كلمة (مدرسة)؟", options: ["مدارس", "مدرسون", "مدرستان", "مدارسيات"], correct: 0 },
         { category: "تقنية", question: "ما هي الآلة الذكية التي يمكن برمجتها لتنفيذ مهام محددة؟", options: ["الروبوت", "الشاشة", "الطابعة", "الماسح"], correct: 0 },
         { category: "رياضة", question: "كم لاعباً يتواجد في فريق كرة السلة داخل الملعب؟", options: ["5 لاعبين", "6 لاعبين", "7 لاعبين", "11 لاعباً"], correct: 0 },
         { category: "صحة", question: "أي من الأغذية التالية غني بعنصر الكالسيوم لبناء العظام؟", options: ["الحلوى", "الحليب ومنتجاته", "المشروبات الغازية", "البطاطس المقرمشة"], correct: 1 }
@@ -986,25 +928,33 @@
       primary_upper: [
         { category: "وطن", question: "ما هو البحر الذي يقع غرب المملكة العربية السعودية؟", options: ["الخليج العربي", "بحر العرب", "البحر الأحمر", "البحر المتوسط"], correct: 2 },
         { category: "وطن", question: "ما هي عاصمة المملكة العربية السعودية؟", options: ["الدمام", "مكة المكرمة", "الرياض", "المدينة المنورة"], correct: 2 },
+        { category: "وطن", question: "في أي عام ميلادي تأسست الدولة السعودية الأولى؟", options: ["1727 م", "1744 م", "1818 م", "1902 م"], correct: 0 },
+        { category: "وطن", question: "ما هي عاصمة الدولة السعودية الأولى التاريخية؟", options: ["الرياض", "جدة", "الدرعية", "ينبع"], correct: 2 },
         { category: "إسلاميات", question: "كم عدد أركان الإيمان؟", options: ["خمسة", "ستة", "سبعة", "أربعة"], correct: 1 },
         { category: "إسلاميات", question: "ما أول ما نزل من القرآن الكريم على النبي ﷺ؟", options: ["سورة الفاتحة", "اقرأ باسم ربك الذي خلق", "سورة القلم", "سورة النصر"], correct: 1 },
         { category: "إسلاميات", question: "من هو ثاني الخلفاء الراشدين رضي الله عنه؟", options: ["عثمان بن عفان", "عمر بن الخطاب", "علي بن أبي طالب", "أبو عبيدة الجراح"], correct: 1 },
+        { category: "إسلاميات", question: "ما السورة التي تسمى (أم الكتاب)؟", options: ["سورة البقرة", "سورة الإخلاص", "سورة الفاتحة", "سورة يس"], correct: 2 },
         { category: "جغرافيا", question: "ما هي عاصمة اليابان؟", options: ["أوساكا", "طوكيو", "سول", "بكين"], correct: 1 },
         { category: "جغرافيا", question: "ما هو البحر الذي يفصل بين المملكة العربية السعودية ومصر؟", options: ["البحر المتوسط", "البحر الميت", "البحر الأحمر", "بحر العرب"], correct: 2 },
         { category: "جغرافيا", question: "ما هي أكبر صحراء حارة في العالم؟", options: ["صحراء الربع الخالي", "الصحراء الكبرى", "صحراء أتاكاما", "صحراء ناميب"], correct: 1 },
+        { category: "جغرافيا", question: "في أي قارة تقع المملكة العربية السعودية؟", options: ["أفريقيا", "أوروبا", "آسيا", "أستراليا"], correct: 2 },
         { category: "تاريخ", question: "ما الحضارة التي اشتهرت بابتكار الكتابة المسمارية؟", options: ["حضارة الفراعنة", "حضارات بلاد الرافدين", "حضارة المايا", "الحضارة الفينيقية"], correct: 1 },
         { category: "تاريخ", question: "من هو مؤسس الدولة السعودية الأولى؟", options: ["الإمام تركي بن عبد الله", "الإمام محمد بن سعود", "الملك فيصل", "الإمام فيصل بن تركي"], correct: 1 },
-        { category: "تاريخ", question: "ما هي عاصمة الدولة السعودية الأولى التاريخية؟", options: ["الرياض", "جدة", "الدرعية", "ينبع"], correct: 2 },
+        { category: "تاريخ", question: "ما اسم الرحلة التي انتقل فيها النبي ﷺ من مكة إلى المدينة؟", options: ["الإسراء والمعراج", "الهجرة النبوية", "غزوة بدر", "حجة الوداع"], correct: 1 },
         { category: "علوم", question: "ما هو أكبر عضو في جسم الإنسان؟", options: ["الكبد", "الرئة", "الجلد", "الأمعاء"], correct: 2 },
         { category: "علوم", question: "ما اسم العملية التي تصنع بها النباتات غذاءها؟", options: ["التخمر", "التمثيل العطري", "البناء الضوئي", "الترشيح"], correct: 2 },
         { category: "علوم", question: "ما القوة الطبيعية التي تجذب الأجسام نحو مركز الأرض؟", options: ["المغناطيسية", "الجاذبية", "الاحتكاك", "قوة الدفع"], correct: 1 },
-        { category: "علوم", question: "ما الجهاز الحيوي المسؤول أساساً عن نقل الدم وتوزيعه؟", options: ["الجهاز التنفسي", "الجهاز العصبي", "الجهاز الدوري", "الجهاز الهضمي"], correct: 2 },
+        { category: "علوم", question: "ما الجهاز الحيوي المسؤول أساساً عن ضخ الدم وتوزيعه؟", options: ["الجهاز التنفسي", "الجهاز العصبي", "الجهاز الدوري", "الجهاز الهضمي"], correct: 2 },
         { category: "رياضيات", question: "كم يساوي 25% من العدد 80؟", options: ["16", "20", "24", "30"], correct: 1 },
         { category: "رياضيات", question: "ما هو محيط مربع يبلغ طول ضلعه 5 سم؟", options: ["25 سم", "15 سم", "20 سم", "10 سم"], correct: 2 },
         { category: "رياضيات", question: "ما العدد المفقود في النمط: (2، 4، 8، 16، ...)؟", options: ["24", "30", "32", "64"], correct: 2 },
+        { category: "رياضيات", question: "كم يساوي ثلاثة أرباع (3/4) العدد 20؟", options: ["10", "12", "15", "18"], correct: 2 },
         { category: "لغة وأدب", question: "ما هو ضد كلمة (الشجاعة)؟", options: ["الخوف", "الجبن", "التردد", "التراجع"], correct: 1 },
         { category: "لغة وأدب", question: "ما نوع كلمة (كتبَ) في جملة (كتبَ الطالبُ درسه)؟", options: ["فعل مضارع", "فعل ماضٍ", "اسم فاعل", "حرف"], correct: 1 },
+        { category: "لغة وأدب", question: "ما العلامة التي توضع في نهاية الجملة الخبرية التامة؟", options: ["الفاصلة", "النقطة", "علامة الاستفهام", "النقطتان"], correct: 1 },
         { category: "تقنية", question: "ما المصطلح الذي يعني (كتابة تعليمات وتوجيهات للحاسوب)؟", options: ["التصميم", "البرمجة", "المعالجة", "التصفح"], correct: 1 },
+        { category: "تقنية", question: "ما هو محاولة خداع المستخدم للحصول على بياناته الشخصية السرية؟", options: ["التشفير", "التصيد الاحتيالي", "البرمجة", "النسخ الاحتياطي"], correct: 1 },
+        { category: "بيئة", question: "اذكر مصدرين نظيفين للطاقة المتجددة:", options: ["النفط والفحم", "الشمس والرياح", "الغاز الطبيعي والديزل", "البنزين والكهرباء"], correct: 1 },
         { category: "رياضة", question: "كم لاعباً يتواجد في فريق الكرة الطائرة داخل الملعب؟", options: ["5 لاعبين", "6 لاعبين", "7 لاعبين", "11 لاعباً"], correct: 1 },
         { category: "رياضة", question: "ما الدولة التي استضافت أول بطولة لكأس العالم عام 1930م؟", options: ["البرازيل", "الأرجنتين", "الأوروغواي", "إنجلترا"], correct: 2 },
         { category: "ثقافة عامة", question: "من هو واضع قوانين الحركة والجاذبية الكلاسيكية في الفيزياء؟", options: ["ألبرت أينشتاين", "غاليلو", "إسحاق نيوتن", "نيكولا تسلا"], correct: 2 },
@@ -1014,26 +964,33 @@
       intermediate: [
         { category: "وطن", question: "ما الخليج الذي يحد المملكة العربية السعودية من جهة الشرق؟", options: ["بحر العرب", "الخليج العربي", "خليج عمان", "خليج العقبة"], correct: 1 },
         { category: "وطن", question: "ما اسم أعلى قمة جبلية في المملكة العربية السعودية؟", options: ["جبل طويق", "جبل اللوز", "جبل السودة", "جبل أحد"], correct: 2 },
+        { category: "وطن", question: "ما هي عاصمة منطقة مكة المكرمة الإدارية؟", options: ["جدة", "الطائف", "مكة المكرمة", "ينبع"], correct: 2 },
+        { category: "وطن", question: "ما هي عاصمة الدولة السعودية الثانية؟", options: ["الدرعية", "الرياض", "حائل", "الأحساء"], correct: 1 },
         { category: "إسلاميات", question: "ما هو أول مسجد بُني في عهد الإسلام؟", options: ["المسجد النبوي", "المسجد الحرام", "مسجد قباء", "مسجد القبلتين"], correct: 2 },
         { category: "إسلاميات", question: "من هو ثالث الخلفاء الراشدين رضي الله عنه؟", options: ["علي بن أبي طالب", "عمر بن الخطاب", "عثمان بن عفان", "سعد بن أبي وقاص"], correct: 2 },
         { category: "إسلاميات", question: "ما هي أطول سورة في القرآن الكريم؟", options: ["سورة النساء", "سورة آل عمران", "سورة البقرة", "سورة الأعراف"], correct: 2 },
+        { category: "إسلاميات", question: "ما العلم المعني بدراسة حياة النبي ﷺ وأحداثها وسيرته الشريفة؟", options: ["علم التفسير", "علم الحديث", "السيرة النبوية", "الفقه الإسلامي"], correct: 2 },
         { category: "جغرافيا", question: "ما المضيق الاستراتيجي الذي يربط البحر الأحمر بخليج عدن؟", options: ["مضيق هرمز", "مضيق باب المندب", "مضيق البسفور", "مضيق طارق"], correct: 1 },
         { category: "جغرافيا", question: "ما هي القمة الجبلية الأعلى على مستوى العالم؟", options: ["جبل كي 2", "قمة إيفرست", "جبل كليمنجارو", "جبل الألب"], correct: 1 },
         { category: "جغرافيا", question: "ما القارة التي تضم أكبر عدد من الدول المستقلة؟", options: ["آسيا", "أوروبا", "أفريقيا", "أمريكا الجنوبية"], correct: 2 },
         { category: "جغرافيا", question: "ما هي عاصمة أستراليا الاتحادية؟", options: ["سيدني", "ملبورن", "كانبيرا", "بيرث"], correct: 2 },
         { category: "تاريخ", question: "في أي عام ميلادي انطلقت مسيرة تأسيس الدولة السعودية الأولى؟", options: ["1744 م", "1727 م", "1818 م", "1902 م"], correct: 1 },
-        { category: "تاريخ", question: "ما هي عاصمة الدولة السعودية الثانية؟", options: ["الدرعية", "الرياض", "حائل", "الأحساء"], correct: 1 },
+        { category: "تاريخ", question: "ما هي أقدم حضارة استوطنت بلاد الرافدين واشتهرت بالكتابة؟", options: ["السومريون", "الفراعنة", "الرومان", "البيزنطيون"], correct: 0 },
         { category: "علوم", question: "ما هي وحدة قياس القوة المعتمدة في النظام الدولي (SI)؟", options: ["الجول", "الباسكال", "النيوتن", "الأمبير"], correct: 2 },
         { category: "علوم", question: "ما هي الوظيفة الأساسية لخلايا وكريات الدم الحمراء؟", options: ["مهاجمة الفيروسات", "تخثر الدم", "نقل الأكسجين", "نقل الهرمونات"], correct: 2 },
+        { category: "علوم", question: "أي التغيرات التالية يُعتبر تغيراً كيميائياً؟", options: ["انصهار الجليد", "تقطيع الخشب", "صدأ الحديد", "ذوبان السكر"], correct: 2 },
         { category: "رياضيات", question: "إذا كان 3س = 21، فما هي قيمة المتغير س؟", options: ["3", "6", "7", "9"], correct: 2 },
         { category: "رياضيات", question: "مستطيل طوله 8 سم وعرضه 5 سم، كم تبلغ مساحته؟", options: ["26 سم²", "40 سم²", "13 سم²", "35 سم²"], correct: 1 },
         { category: "رياضيات", question: "ما هو المتوسط الحسابي للقيم: 4، 6، 8؟", options: ["5", "6", "7", "8"], correct: 1 },
         { category: "لغة وأدب", question: "من هو الشاعر العربي الكبير الملقب بـ (أمير الشعراء)؟", options: ["خليل مطران", "حافظ إبراهيم", "أحمد شوقي", "معروف الرصافي"], correct: 2 },
         { category: "لغة وأدب", question: "ما هو الجمع الصحيح لكلمة (قاضٍ) في اللغة العربية؟", options: ["قضايا", "قضيان", "قضاة", "قواضٍ"], correct: 2 },
+        { category: "لغة وأدب", question: "ما هو الاسم المنصوب الذي يقع عليه فعل الفاعل؟", options: ["المبتدأ", "المفعول به", "الفاعل", "الحال"], correct: 1 },
         { category: "تقنية", question: "ما الفرق الجوهري بين البيانات والمعلومات؟", options: ["لا يوجد فرق بينهما", "البيانات حقائق خام والمعلومات بيانات تمت معالجتها", "المعلومات أرقام والبيانات نصوص", "البيانات نتائج نهائية"], correct: 1 },
         { category: "تقنية", question: "ما هو العلم المشتق من الذكاء الاصطناعي والذي تتعلم فيه الخوارزميات من الأنماط؟", options: ["التنقيب عن البيانات", "التعلم الآلي (Machine Learning)", "تطوير التطبيقات", "الشبكات الحاسوبية"], correct: 1 },
         { category: "بيئة", question: "ما هو أبرز غاز دفيء ناتج عن النشاط البشري مسبب للاحتباس الحراري؟", options: ["الأوزون", "الميثان الطبيعي", "ثاني أكسيد الكربون", "النيتروجين"], correct: 2 },
         { category: "رياضة", question: "كم دقيقة تبلغ مدة مباراة كرة القدم الرسمية دون احتساب الوقت الإضافي؟", options: ["80 دقيقة", "90 دقيقة", "100 دقيقة", "120 دقيقة"], correct: 1 },
+        { category: "رياضة", question: "كم عدد الحلقات المترابطة في الشعار الأولمبي الدولي؟", options: ["4 حلقات", "5 حلقات", "6 حلقات", "7 حلقات"], correct: 1 },
+        { category: "صحة", question: "أي العناصر الغذائية تعتبر المصدر الأساسي والسريع للطاقة في الجسم؟", options: ["البروتينات", "الكربوهيدرات", "الدهون", "الفيتامينات"], correct: 1 },
         { category: "ثقافة عامة", question: "ما هو الاسم العلمي للجهاز المتخصص في قياس ورصد الزلازل؟", options: ["البارومتر", "السيزموجراف", "الأنيمومتر", "الهيدرومتر"], correct: 1 },
         { category: "ثقافة عامة", question: "من هو العالم المكتشف لعقار البنسلين؟", options: ["لويس باستور", "روبرت هوك", "ألكسندر فليمنغ", "جوناس سالك"], correct: 2 }
       ],
@@ -1046,21 +1003,27 @@
         { category: "إسلاميات", question: "ما هو المفهوم الشرعي لمرتبة الإحسان كما بيّنها الحديث النبوي؟", options: ["كثرة الصيام والصدقة", "أن تعبد الله كأنك تراه فإن لم تكن تراه فإنه يراك", "إتقان الأعمال الدنيوية", "حسن الخلق مع الجيران"], correct: 1 },
         { category: "إسلاميات", question: "في أي عام ميلادي وقعت الهجرة النبوية المباركة؟", options: ["610 م", "622 م", "630 م", "632 م"], correct: 1 },
         { category: "إسلاميات", question: "ما هي السورة الكريمة الوحيدة التي لا تبدأ بالبسملة؟", options: ["سورة الأنفال", "سورة يونس", "سورة التوبة", "سورة الفرقان"], correct: 2 },
+        { category: "إسلاميات", question: "ما المقصود بـ (أسباب النزول) في علوم القرآن؟", options: ["ترتيب نزول السور في مكة", "الوقائع أو الأسئلة التي نزلت الآيات بشأنها", "أحكام التجويد والترتيل", "تفسير الكلمات الغريبة"], correct: 1 },
         { category: "جغرافيا", question: "ما هو الخط الوهمي الذي يقسم الكرة الأرضية إلى نصفين شمالي وجنوبي؟", options: ["خط غرينتش", "مدار السرطان", "خط الاستواء", "مدار الجدي"], correct: 2 },
         { category: "جغرافيا", question: "ما المضيق المائي الفاصل بين قارة آسيا وقارة أمريكا الشمالية؟", options: ["مضيق جبل طارق", "مضيق ملقا", "مضيق بيرينغ", "مضيق البوسفور"], correct: 2 },
         { category: "جغرافيا", question: "ما هي أطول سلسلة جبال برية ممتدة فوق سطح اليابسة؟", options: ["جبال روكي", "جبال الهيمالايا", "جبال الأنديز", "جبال الأطلس"], correct: 2 },
         { category: "تاريخ", question: "في أي تاريخ تم إعلان توحيد المملكة العربية السعودية رسمياً؟", options: ["22 فبراير 1727 م", "23 سبتمبر 1932 م", "15 يناير 1902 م", "5 شوال 1319 هـ"], correct: 1 },
         { category: "تاريخ", question: "من هو الإمام الذي أسس الدولة السعودية الثانية؟", options: ["الإمام محمد بن سعود", "الإمام فيصل بن تركي", "الإمام تركي بن عبد الله", "الإمام سعود الكبير"], correct: 2 },
         { category: "تاريخ", question: "ما الحضارة التي ازدهرت في أثينا وأسهمت في نشأة الديمقراطية والفلسفة؟", options: ["الحضارة الفارسية", "الحضارة الرومانية", "الحضارة اليونانية", "الحضارة البيزنطية"], correct: 2 },
+        { category: "تاريخ", question: "ما الحركة الفكرية والعلمية التي انطلقت بأوروبا وأعادت إحياء التراث والعلوم؟", options: ["عصر التنوير", "عصر النهضة", "الثورة الصناعية", "العصور الوسطى"], correct: 1 },
         { category: "علوم", question: "ما هو القانون الفيزيائي الذي يُصاغ رياضياً بالعلاقة: (القوة = الكتلة × التسارع)؟", options: ["قانون نيوتن الأول", "قانون نيوتن الثاني", "قانون الجاذبية الكونية", "قانون حفظ الطاقة"], correct: 1 },
         { category: "علوم", question: "عن أي إنجاز علمي استحق ألبرت أينشتاين جائزة نوبل في الفيزياء عام 1921؟", options: ["معادلة تكافؤ المادة والطاقة", "النظرية النسبية العامة", "تفسير التأثير الكهروضوئي", "تفسير الموجات الكهرومغناطيسية"], correct: 2 },
         { category: "علوم", question: "ما هو الحمض النووي (DNA) في الكائنات الحية؟", options: ["بروتين ناقل للطاقة", "شفرة وراثية تحمل معلومات بناء الكائن الحي ووظائفه", "غشاء يحمي جدار الخلية", "أنزيم محلل للدهون"], correct: 1 },
+        { category: "علوم", question: "ما نوع الانقسام الخلوي الذي ينتج خلايا تناسلية بنصف عدد الكروموسومات؟", options: ["الانقسام المتساوي", "الانقسام المنصف (الميوزي)", "الانشطار الثنائي", "التبرعم"], correct: 1 },
         { category: "رياضيات", question: "في حساب التفاضل والتكامل، ما المشتقة الأولى للدالة: f(x) = x²؟", options: ["x", "2", "2x", "x³"], correct: 2 },
         { category: "رياضيات", question: "ما قيمة 2 مرفوعة للقوة الخامسة (2⁵)؟", options: ["16", "25", "32", "64"], correct: 2 },
         { category: "رياضيات", question: "إذا كانت النسبة 2:3 ومجموع الجزأين 25، فما قيمة الجزء الأصغر؟", options: ["5", "10", "15", "12"], correct: 1 },
+        { category: "رياضيات", question: "إذا كان احتمال وقوع حدث ما هو 0.25، فما نسبته المئوية؟", options: ["2.5%", "25%", "50%", "75%"], correct: 1 },
         { category: "لغة وأدب", question: "ما هو التعريف البلاغي لـ (الطباق)؟", options: ["تشابه اللفظين واختلاف المعنى", "الجمع بين الشيء وضده في الكلام", "توافق فواصل الجمل في الحرف الأخير", "المطابقة في الوزن والقافية"], correct: 1 },
         { category: "لغة وأدب", question: "من هو الأديب الذي قام بتعريب وصياغة كتاب (كليلة ودمنة)؟", options: ["الجاحظ", "ابن المقفع", "بديع الزمان الهمذاني", "ابن قتيبة"], correct: 1 },
+        { category: "لغة وأدب", question: "ما التعبير الذي يقصد به معنى ملازم للمعنى الظاهر مع جواز إرادة المعنى الأصلي؟", options: ["الاستعارة", "الكناية", "الجناس", "التورية"], correct: 1 },
         { category: "تقنية", question: "ما هو النموذج اللغوي الكبير (LLM) في مجال الذكاء الاصطناعي؟", options: ["خوارزمية لتصميم الواجهات", "نموذج ذكاء اصطناعي مدرب على كميات ضخمة من النصوص لفهم وتوليد اللغة", "معالج رسومي فائق السرعة", "بروتوكول لنقل البيانات"], correct: 1 },
+        { category: "تقنية", question: "ما التقنية التي توفر موارد وخدمات حوسبية عبر السحابة والشبكات؟", options: ["الحوسبة السحابية", "التخزين المحلي", "المصادقة الثنائية", "الذكاء الرمزي"], correct: 0 },
         { category: "بيئة", question: "ما هو التعريف المعتمد لمفهوم (التنمية المستدامة)؟", options: ["إيقاف التوسع الصناعي بالكامل", "تلبية احتياجات الحاضر دون الإضرار بقدرة الأجيال القادمة على تلبية احتياجاتها", "الاعتماد الحصري على الزراعة", "تقليل استخدام التكنولوجيا"], correct: 1 },
         { category: "صحة", question: "لماذا لا تصلح المضادات الحيوية في علاج الأمراض الفيروسية كالرشح؟", options: ["لأنها تسبب الحساسية المفرطة", "لأنها مصممة لاستهداف البكتيريا ولا أثر لها على الفيروسات", "لأنها تخفض المناعة الطبيعية", "لأنها سريعة التحلل في المعدة"], correct: 1 }
       ]
@@ -1097,9 +1060,9 @@
     }
 
     function toggleTheme() {
-      document.body.classList.toggle("light-theme");
-      const isLight = document.body.classList.contains("light-theme");
-      document.getElementById("btn-theme").textContent = isLight ? "🌙" : "☀️";
+      document.body.classList.toggle("dark-theme");
+      const isDark = document.body.classList.contains("dark-theme");
+      document.getElementById("btn-theme").textContent = isDark ? "☀️" : "🌙";
     }
 
     const SoundEngine = {
@@ -1129,11 +1092,11 @@
         this.play([1200], 'sine', 0.04, 0.07);
       },
       intro() {
-        this.play([146.83, 220, 293.66], 'sawtooth', 1.4, 0.07);
-        setTimeout(() => this.play([220, 277.18, 329.63, 440], 'triangle', 1.8, 0.1), 300);
+        this.play([220, 329.63, 440], 'triangle', 1.2, 0.08);
+        setTimeout(() => this.play([329.63, 440, 554.37], 'sine', 1.8, 0.1), 300);
       },
       tension() {
-        this.play([65, 130], 'sawtooth', 1.3, 0.09, 80);
+        this.play([75, 150], 'sawtooth', 1.3, 0.08, 90);
       },
       correct() {
         [523.25, 659.25, 783.99, 1046.50].forEach((note, i) => {
@@ -1431,7 +1394,7 @@
     resizeCanvas();
 
     function launchConfetti(count = 70) {
-      const colors = ["#f5b301", "#732583", "#00d2d3", "#10b981", "#ffffff"];
+      const colors = ["#6a1b9a", "#9c27b0", "#0284c7", "#10b981", "#f5b301"];
       for (let i = 0; i < count; i++) {
         confetti.push({
           x: canvas.width / 2,
