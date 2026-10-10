@@ -2,23 +2,29 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بنك إتقان المعرفي - البث المباشر والتحدي التفاعلي</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>بنك إتقان المعرفي | مدارس إتقان التربية</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --itqan-purple: #5b1387;
-      --itqan-purple-deep: #1d0330;
-      --itqan-purple-light: #a855f7;
-      --itqan-gold: #fbbf24;
-      --itqan-gold-glow: rgba(251, 191, 36, 0.6);
-      --bg-dark: #07020d;
-      --cyan: #38bdf8;
+      --bg-start: #1e0538;
+      --bg-mid: #0d021a;
+      --bg-end: #040008;
+      --itqan-purple: #7b1fa2;
+      --itqan-purple-light: #ba68c8;
+      --itqan-gold: #f5b301;
+      --itqan-gold-light: #ffe082;
+      --itqan-gold-glow: rgba(245, 179, 1, 0.4);
+      --cyan: #00e5ff;
       --correct: #10b981;
       --wrong: #ef4444;
       --selected: #f97316;
+      --card-bg: rgba(26, 8, 48, 0.7);
+      --border-glow: rgba(245, 179, 1, 0.25);
+      --text: #ffffff;
+      --text-muted: #94a3b8;
     }
 
     * {
@@ -27,11 +33,12 @@
       padding: 0;
       font-family: 'Cairo', sans-serif;
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: var(--bg-dark);
-      color: #fff;
+      background: radial-gradient(circle at 50% 20%, var(--bg-start) 0%, var(--bg-mid) 60%, var(--bg-end) 100%);
+      color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -39,232 +46,236 @@
       position: relative;
     }
 
-    /* أضواء الاستوديو الخلفية */
-    .studio-lights {
+    /* إضاءة المسرح */
+    .stage-lighting {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 0;
       overflow: hidden;
     }
-
-    .light-beam {
+    .beam {
       position: absolute;
       top: -20%;
-      width: 400px;
+      width: 450px;
       height: 150%;
-      background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.22) 0%, transparent 65%);
+      background: radial-gradient(ellipse at center, rgba(142, 36, 170, 0.2) 0%, transparent 65%);
       transform-origin: top center;
-      animation: sweep 12s ease-in-out infinite alternate;
+      animation: sweep 14s ease-in-out infinite alternate;
     }
-
-    .light-beam-left { left: 10%; animation-delay: -2s; }
-    .light-beam-right { right: 10%; animation-duration: 15s; }
+    .beam-left { left: 5%; animation-delay: -2s; }
+    .beam-right { right: 5%; animation-duration: 17s; }
 
     @keyframes sweep {
-      0% { transform: rotate(-25deg); }
-      100% { transform: rotate(25deg); }
+      0% { transform: rotate(-22deg); }
+      100% { transform: rotate(22deg); }
     }
 
-    /* شاشة البداية */
-    #welcome-screen {
-      flex: 1;
+    /* -------------------------------------------------------------
+       1. الشاشة الافتتاحية
+       ------------------------------------------------------------- */
+    #intro-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: radial-gradient(circle at center, #240540 0%, #080012 85%);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1.5rem;
-      z-index: 2;
+      padding: 1.2rem;
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
-    .glass-card {
-      background: rgba(29, 3, 48, 0.7);
-      border: 2px solid var(--card-border, rgba(251, 191, 36, 0.35));
-      border-radius: 28px;
-      padding: 3rem 2.5rem;
-      max-width: 620px;
+    .intro-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border-glow);
+      border-radius: 24px;
+      padding: 2.2rem 2rem;
       width: 100%;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 40px rgba(91, 19, 135, 0.4);
+      max-width: 480px;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), 0 0 35px rgba(123, 31, 162, 0.3);
+      backdrop-filter: blur(16px);
       text-align: center;
-      animation: floatIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
     }
 
-    @keyframes floatIn {
-      from { opacity: 0; transform: translateY(30px) scale(0.96); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .main-logo {
-      width: 130px;
-      height: 130px;
-      margin: 0 auto 1.5rem;
-      border-radius: 50%;
-      border: 3px solid var(--itqan-gold);
-      background: #ffffff;
-      padding: 8px;
-      display: flex;
+    .logo-badge {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 30px var(--itqan-gold-glow);
+      background: #ffffff;
+      padding: 10px 24px;
+      border-radius: 18px;
+      border: 2px solid var(--itqan-gold);
+      box-shadow: 0 0 25px var(--itqan-gold-glow);
+      margin-bottom: 1.2rem;
       cursor: pointer;
-      transition: transform 0.3s;
+      transition: transform 0.25s ease;
     }
 
-    .main-logo:hover {
-      transform: scale(1.06);
+    .logo-badge:hover {
+      transform: scale(1.03);
     }
 
-    .main-logo img {
-      max-width: 100%;
-      max-height: 100%;
+    .logo-badge img {
+      max-height: 65px;
+      width: auto;
       object-fit: contain;
     }
 
-    .welcome-title {
-      font-size: 2.3rem;
+    .intro-title {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
       font-weight: 900;
       color: var(--itqan-gold);
-      text-shadow: 0 0 20px var(--itqan-gold-glow);
-      margin-bottom: 0.3rem;
+      text-shadow: 0 0 15px var(--itqan-gold-glow);
+      margin-bottom: 0.2rem;
     }
 
-    .welcome-subtitle {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      margin-bottom: 2rem;
+    .intro-motto {
+      font-size: 0.95rem;
+      color: var(--cyan);
+      font-weight: 700;
+      margin-bottom: 1.8rem;
     }
 
     .form-group {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       text-align: right;
     }
 
     .form-group label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 5px;
+      font-size: 0.85rem;
       font-weight: 700;
-      color: var(--itqan-gold);
+      color: var(--itqan-gold-light);
     }
 
-    .input-text, .select-stage {
+    .input-box, .select-box {
       width: 100%;
-      padding: 14px 18px;
-      border-radius: 12px;
-      border: 1.5px solid rgba(251, 191, 36, 0.3);
-      background: rgba(10, 4, 20, 0.85);
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(245, 179, 1, 0.3);
+      background: rgba(8, 2, 16, 0.9);
       color: #fff;
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       outline: none;
-      transition: border 0.3s, box-shadow 0.3s;
+      transition: all 0.2s;
     }
 
-    .input-text:focus, .select-stage:focus {
+    .input-box:focus, .select-box:focus {
       border-color: var(--itqan-gold);
-      box-shadow: 0 0 15px var(--itqan-gold-glow);
+      box-shadow: 0 0 10px var(--itqan-gold-glow);
     }
 
-    .select-stage option {
-      background: #1d0330;
+    .select-box option {
+      background: var(--bg-mid);
       color: #fff;
     }
 
-    .btn-start {
+    .btn-launch {
       width: 100%;
       background: linear-gradient(135deg, var(--itqan-gold) 0%, #d97706 100%);
-      color: #05010a;
-      font-size: 1.35rem;
+      color: #0b0217;
+      font-size: 1.15rem;
       font-weight: 900;
-      padding: 16px;
+      padding: 13px;
       border: none;
-      border-radius: 14px;
+      border-radius: 12px;
       cursor: pointer;
-      box-shadow: 0 6px 25px rgba(245, 179, 1, 0.45);
+      box-shadow: 0 0 20px var(--itqan-gold-glow);
       transition: all 0.25s ease;
-      margin-top: 1rem;
+      margin-top: 0.6rem;
     }
 
-    .btn-start:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 30px rgba(245, 179, 1, 0.7);
+    .btn-launch:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(245, 179, 1, 0.7);
     }
 
-    /* واجهة المسابقة */
+    /* -------------------------------------------------------------
+       2. شاشة المسرح والمنافسة
+       ------------------------------------------------------------- */
     #game-screen {
       display: none;
       flex-direction: column;
       flex: 1;
-      z-index: 2;
+      z-index: 10;
     }
 
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.8rem 2.5rem;
-      background: rgba(10, 4, 20, 0.85);
-      border-bottom: 2px solid var(--itqan-gold);
+      padding: 0.5rem 1.5rem;
+      background: rgba(8, 2, 16, 0.95);
+      border-bottom: 1.5px solid var(--itqan-gold);
       backdrop-filter: blur(10px);
+      gap: 10px;
     }
 
-    .brand {
+    .brand-group {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 10px;
     }
 
-    .nav-logo {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: 2px solid var(--itqan-gold);
-      background: #fff;
-      padding: 4px;
+    .header-logo {
+      background: #ffffff;
+      padding: 3px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--itqan-gold);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .nav-logo img {
-      max-width: 100%;
-      max-height: 100%;
+    .header-logo img {
+      max-height: 34px;
+      width: auto;
       object-fit: contain;
     }
 
-    .player-info h3 {
-      font-size: 1.15rem;
-      color: var(--itqan-gold);
-    }
-
-    .player-info span {
-      font-size: 0.85rem;
-      color: var(--cyan);
-    }
-
-    .lifelines {
-      display: flex;
-      gap: 12px;
-    }
-
-    .btn-help {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1.5px solid var(--itqan-gold);
-      color: var(--itqan-gold);
-      padding: 8px 16px;
-      border-radius: 25px;
+    .player-status h3 {
       font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--itqan-gold);
+      line-height: 1.2;
+    }
+
+    .player-status span {
+      font-size: 0.75rem;
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
+    .lifeline-bar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-tool {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--itqan-gold);
+      color: var(--itqan-gold-light);
+      padding: 5px 11px;
+      border-radius: 16px;
+      font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.25s;
+      transition: all 0.2s;
+      white-space: nowrap;
     }
 
-    .btn-help:hover:not(:disabled) {
+    .btn-tool:hover:not(:disabled) {
       background: var(--itqan-gold);
       color: #000;
-      box-shadow: 0 0 15px var(--itqan-gold-glow);
-      transform: translateY(-2px);
+      box-shadow: 0 0 10px var(--itqan-gold-glow);
     }
 
-    .btn-help:disabled {
+    .btn-tool:disabled {
       opacity: 0.25;
       cursor: not-allowed;
       border-color: #64748b;
@@ -272,129 +283,127 @@
       text-decoration: line-through;
     }
 
+    /* الساحة الوسطى */
     main {
       flex: 1;
       display: flex;
-      padding: 2rem;
-      gap: 2rem;
-      max-width: 1400px;
+      padding: 1.2rem;
+      gap: 1.5rem;
+      max-width: 1300px;
       margin: 0 auto;
       width: 100%;
+      align-items: center;
     }
 
-    .stage-area {
+    .arena-content {
       flex: 3;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      width: 100%;
     }
 
-    .status-bar {
+    .arena-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.8rem;
     }
 
-    .tag-category {
-      background: rgba(106, 27, 154, 0.45);
-      border: 1.5px solid var(--itqan-purple-light);
+    .badge-category {
+      background: rgba(123, 31, 162, 0.4);
+      border: 1px solid var(--itqan-purple-light);
       color: #f3e8ff;
-      padding: 8px 20px;
-      border-radius: 30px;
-      font-size: 1rem;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
       font-weight: 700;
-      box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
     }
 
-    .timer-circle {
-      width: 75px;
-      height: 75px;
+    .timer-ring {
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
-      border: 3px solid var(--itqan-gold);
+      border: 2px solid var(--itqan-gold);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
+      font-size: 1.3rem;
       font-weight: 900;
-      background: #140526;
+      background: #0f031b;
       color: var(--itqan-gold);
-      box-shadow: 0 0 20px var(--itqan-gold-glow);
+      box-shadow: 0 0 14px var(--itqan-gold-glow);
       transition: all 0.3s;
     }
 
-    .timer-warning {
+    .timer-critical {
       border-color: var(--wrong) !important;
       color: var(--wrong) !important;
-      box-shadow: 0 0 25px rgba(239, 68, 68, 0.8) !important;
-      animation: heartbeat 0.8s infinite;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.9) !important;
+      animation: heartPulse 0.8s infinite;
     }
 
-    @keyframes heartbeat {
+    @keyframes heartPulse {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.12); }
+      50% { transform: scale(1.08); }
     }
 
-    /* صناديق الأسئلة والخيارات بتصميم مضلع أنيق */
-    .question-box {
-      background: linear-gradient(180deg, rgba(35, 12, 60, 0.85) 0%, rgba(17, 4, 30, 0.95) 100%);
-      border: 2px solid var(--itqan-gold);
-      border-radius: 20px;
-      padding: 2.5rem;
-      font-size: 1.55rem;
+    .question-screen {
+      background: linear-gradient(180deg, rgba(38, 11, 66, 0.85) 0%, rgba(17, 3, 31, 0.95) 100%);
+      border: 1.5px solid var(--itqan-gold);
+      border-radius: 16px;
+      padding: 1.6rem 1.4rem;
+      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
       font-weight: 700;
       text-align: center;
-      margin-bottom: 2rem;
-      min-height: 150px;
+      margin-bottom: 1.2rem;
+      min-height: 110px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(251, 191, 36, 0.15);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(245, 179, 1, 0.1);
       line-height: 1.6;
     }
 
     .options-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 12px;
     }
 
     .btn-option {
-      background: linear-gradient(90deg, rgba(35, 12, 60, 0.75) 0%, rgba(20, 5, 36, 0.85) 100%);
-      border: 1.5px solid rgba(251, 191, 36, 0.3);
-      border-radius: 14px;
+      background: linear-gradient(90deg, rgba(37, 10, 64, 0.75) 0%, rgba(18, 3, 33, 0.88) 100%);
+      border: 1.5px solid rgba(245, 179, 1, 0.25);
+      border-radius: 12px;
       color: #fff;
-      padding: 1.2rem 1.6rem;
-      font-size: 1.25rem;
+      padding: 0.9rem 1.2rem;
+      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
       font-weight: 600;
       text-align: right;
       cursor: pointer;
       transition: all 0.2s ease;
       display: flex;
       align-items: center;
-      position: relative;
     }
 
-    .btn-option .badge {
+    .btn-option .choice-sym {
       color: var(--itqan-gold);
-      margin-left: 14px;
+      margin-left: 10px;
       font-weight: 900;
-      font-size: 1.3rem;
+      font-size: 1.1rem;
     }
 
     .btn-option:hover:not(:disabled) {
       border-color: var(--itqan-gold);
-      background: rgba(106, 27, 154, 0.5);
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+      background: rgba(123, 31, 162, 0.45);
+      transform: translateY(-2px);
     }
 
-    /* حالة تثبيت الإجابة - ترقب */
     .btn-option.selected {
       background: var(--selected) !important;
       color: #fff !important;
       border-color: #ffedd5 !important;
-      box-shadow: 0 0 25px rgba(249, 115, 22, 0.7);
+      box-shadow: 0 0 20px rgba(234, 88, 12, 0.8);
       animation: pulseSelection 0.5s infinite alternate;
     }
 
@@ -403,12 +412,11 @@
       to { transform: scale(1.02); }
     }
 
-    /* إجابة صحيحة */
     .btn-option.correct {
       background: var(--correct) !important;
       color: #fff !important;
       border-color: #6ee7b7 !important;
-      box-shadow: 0 0 30px rgba(16, 185, 129, 0.9);
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.9);
       animation: flashSuccess 0.4s ease-in-out 3;
     }
 
@@ -417,57 +425,69 @@
       50% { opacity: 0.6; }
     }
 
-    /* إجابة خاطئة */
     .btn-option.wrong {
       background: var(--wrong) !important;
       color: #fff !important;
       border-color: #fca5a5 !important;
-      box-shadow: 0 0 30px rgba(239, 68, 68, 0.9);
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.9);
     }
 
     .btn-option:disabled {
       cursor: default;
     }
 
-    /* سلم النقاط الجانبي */
-    .sidebar {
+    /* سلم النقاط */
+    .ladder-panel {
       flex: 1;
-      background: rgba(29, 3, 48, 0.8);
-      border: 1px solid rgba(251, 191, 36, 0.3);
-      border-radius: 20px;
-      padding: 1.2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border-glow);
+      border-radius: 18px;
+      padding: 1rem;
       display: flex;
       flex-direction: column-reverse;
       gap: 5px;
       backdrop-filter: blur(12px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     }
 
     .ladder-step {
       display: flex;
       justify-content: space-between;
-      padding: 7px 16px;
+      padding: 6px 12px;
       border-radius: 8px;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--text-muted);
       border: 1px solid transparent;
-      transition: all 0.3s;
+      transition: all 0.25s;
     }
 
     .ladder-step.active {
-      background: linear-gradient(90deg, rgba(106, 27, 154, 0.8), rgba(251, 191, 36, 0.4));
+      background: linear-gradient(90deg, rgba(123, 31, 162, 0.85), rgba(245, 179, 1, 0.35));
       border: 1px solid var(--itqan-gold);
       color: #fff;
-      transform: scale(1.04);
-      box-shadow: 0 0 15px var(--itqan-gold-glow);
+      transform: scale(1.02);
+      box-shadow: 0 0 12px var(--itqan-gold-glow);
     }
 
     .ladder-step.milestone {
       color: var(--itqan-gold);
     }
 
-    /* اهتزاز الشاشة عند الخطأ */
+    .mobile-ladder-btn {
+      display: none;
+      width: 100%;
+      background: rgba(245, 179, 1, 0.12);
+      border: 1px solid var(--itqan-gold);
+      color: var(--itqan-gold);
+      padding: 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      margin-top: 10px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
     .shake-screen {
       animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
@@ -475,55 +495,49 @@
     @keyframes shake {
       10%, 90% { transform: translate3d(-2px, 0, 0); }
       20%, 80% { transform: translate3d(4px, 0, 0); }
-      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
-      40%, 60% { transform: translate3d(6px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-5px, 0, 0); }
+      40%, 60% { transform: translate3d(5px, 0, 0); }
     }
 
-    /* لوحة القصاصات والاحتفالات */
-    #confetti-canvas {
+    /* النوافذ المنبثقة */
+    .modal-overlay {
       position: fixed;
       inset: 0;
-      pointer-events: none;
-      z-index: 99;
-    }
-
-    /* النوافذ التفاعلية */
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(3, 1, 8, 0.88);
+      background: rgba(4, 1, 10, 0.88);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 100;
+      z-index: 150;
       padding: 1rem;
     }
 
-    .modal-content {
-      background: #1d0330;
+    .modal-box {
+      background: #19052b;
       border: 2px solid var(--itqan-gold);
-      border-radius: 22px;
-      padding: 2.5rem;
-      max-width: 500px;
+      border-radius: 20px;
+      padding: 1.8rem;
+      max-width: 440px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 0 45px var(--itqan-gold-glow);
+      box-shadow: 0 0 35px var(--itqan-gold-glow);
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .poll-bar {
-      margin: 12px 0;
+      margin: 10px 0;
       text-align: right;
     }
 
-    .bar-bg {
+    .bar-shell {
       background: rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
+      border-radius: 8px;
       overflow: hidden;
       margin-top: 4px;
     }
 
-    .bar-fill {
-      height: 18px;
+    .bar-progress {
+      height: 15px;
       background: linear-gradient(90deg, var(--itqan-purple-light), var(--itqan-gold));
       transition: width 1s ease;
       width: 0%;
@@ -533,56 +547,84 @@
       background: var(--itqan-gold);
       color: #000;
       border: none;
-      padding: 12px 30px;
+      padding: 10px 28px;
       font-weight: 800;
       border-radius: 10px;
       cursor: pointer;
-      margin-top: 1.5rem;
-      font-size: 1.1rem;
+      margin-top: 1.2rem;
+      font-size: 0.95rem;
     }
 
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 120;
+    }
+
+    /* التجاوب مع الجوال */
     @media (max-width: 900px) {
+      header {
+        padding: 0.5rem 0.8rem;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .brand-group {
+        justify-content: center;
+      }
+      .lifeline-bar {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
       main {
-        flex-direction: column-reverse;
-        padding: 1rem;
+        flex-direction: column;
+        padding: 0.8rem;
+      }
+      .ladder-panel {
+        display: none;
+      }
+      .mobile-ladder-btn {
+        display: block;
       }
       .options-grid {
         grid-template-columns: 1fr;
       }
-      .sidebar {
-        display: none;
+      .question-screen {
+        padding: 1.2rem 1rem;
+        min-height: 95px;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="studio-lights">
-    <div class="light-beam light-beam-left"></div>
-    <div class="light-beam light-beam-right"></div>
+  <!-- الإضاءات -->
+  <div class="stage-lighting">
+    <div class="beam beam-left"></div>
+    <div class="beam beam-right"></div>
   </div>
 
   <canvas id="confetti-canvas"></canvas>
 
-  <!-- شاشة الدخول الرئيسية -->
-  <section id="welcome-screen">
-    <div class="glass-card">
-      <div class="main-logo" onclick="document.getElementById('logo-file-input').click()" title="انقر لاستبدال الشعار">
-        <img id="school-logo" src="شعار_اتقان_بدون_خلفية-removebg-preview.png" alt="مدارس إتقان التربية">
+  <!-- 1. الشاشة الافتتاحية -->
+  <section id="intro-screen">
+    <div class="intro-card">
+      <div class="logo-badge" onclick="document.getElementById('logo-upload-input').click()" title="انقر لتغيير الشعار">
+        <img id="intro-school-logo" src="شعار_اتقان_بدون_خلفية-removebg-preview.png" alt="شعار مدارس إتقان">
       </div>
-      <input type="file" id="logo-file-input" style="display:none" accept="image/*" onchange="uploadLogo(event)">
+      <input type="file" id="logo-upload-input" style="display:none" accept="image/*" onchange="handleLogoUpload(event)">
 
-      <h1 class="welcome-title">بنك إتقان المعرفي</h1>
-      <p class="welcome-subtitle">«معرفتك رصيدك .. وذكاؤك مفتاح الفوز»</p>
+      <h1 class="intro-title">بنك إتقان المعرفي</h1>
+      <p class="intro-motto">«معرفتك رصيدك .. وذكاؤك مفتاح الفوز»</p>
 
       <div class="form-group">
         <label>اسم المتسابق / الفريق:</label>
-        <input type="text" id="player-name" class="input-text" placeholder="اكتب اسم المتسابق..." value="بطل إتقان">
+        <input type="text" id="player-name-input" class="input-box" placeholder="اكتب اسم المتسابق..." value="بطل إتقان">
       </div>
 
       <div class="form-group">
-        <label>المرحلة المستهدفة:</label>
-        <select id="stage-select" class="select-stage">
+        <label>المرحلة الدراسية:</label>
+        <select id="stage-select-input" class="select-box">
           <option value="primary_lower">الصفوف الأولية (أول - ثاني - ثالث ابتدائي)</option>
           <option value="primary_upper" selected>الصفوف العليا (رابع - خامس - سادس ابتدائي)</option>
           <option value="intermediate">المرحلة المتوسطة</option>
@@ -590,73 +632,84 @@
         </select>
       </div>
 
-      <button class="btn-start" onclick="startGame()">دخول ساحة التحدي ⚡</button>
+      <button class="btn-launch" onclick="launchGame()">دخول ساحة التحدي ⚡</button>
     </div>
   </section>
 
-  <!-- شاشة المسابقة التفاعلية -->
+  <!-- 2. شاشة المسابقة التفاعلية -->
   <div id="game-screen">
     <header>
-      <div class="brand">
-        <div class="nav-logo">
-          <img id="nav-school-logo" src="شعار_اتقان_بدون_خلفية-removebg-preview.png" alt="إتقان">
+      <div class="brand-group">
+        <div class="header-logo">
+          <img id="header-logo-img" src="شعار_اتقان_بدون_خلفية-removebg-preview.png" alt="إتقان">
         </div>
-        <div class="player-info">
+        <div class="player-status">
           <h3 id="display-player-name">بطل إتقان</h3>
           <span id="display-stage-name">الصفوف العليا</span>
         </div>
       </div>
 
-      <div class="lifelines">
-        <button class="btn-help" id="btn-50" onclick="useFiftyFifty()">50:50</button>
-        <button class="btn-help" id="btn-poll" onclick="useAudiencePoll()">👥 تصويت الجمهور</button>
-        <button class="btn-help" id="btn-time" onclick="useExtraTime()">⏱️ +30 ثانية</button>
-        <button class="btn-help" style="border-color:var(--cyan)" onclick="toggleFullScreen()">⛶ شاشة كاملة</button>
-        <button class="btn-help" style="border-color:#ef4444;" onclick="quitToHome()">خروج</button>
+      <div class="lifeline-bar">
+        <button class="btn-tool" id="btn-50" onclick="useFiftyFifty()">50:50</button>
+        <button class="btn-tool" id="btn-poll" onclick="useAudiencePoll()">👥 الجمهور</button>
+        <button class="btn-tool" id="btn-time" onclick="useExtraTime()">⏱️ +30ث</button>
+        <button class="btn-tool" style="border-color:var(--cyan)" onclick="toggleFullScreen()">⛶ شاشة كاملة</button>
+        <button class="btn-tool" style="border-color:var(--wrong);" onclick="returnToIntro()">خروج</button>
       </div>
     </header>
 
     <main id="main-stage">
-      <div class="stage-area">
-        <div class="status-bar">
-          <div class="tag-category" id="category-badge">المجال: عام</div>
-          <div class="timer-circle" id="timer">45</div>
+      <div class="arena-content">
+        <div class="arena-header">
+          <div class="badge-category" id="category-badge">المجال: عام</div>
+          <div class="timer-ring" id="timer">45</div>
         </div>
 
-        <div class="question-box" id="question">جاري عرض السؤال...</div>
+        <div class="question-screen" id="question">جاري عرض السؤال...</div>
 
         <div class="options-grid">
-          <button class="btn-option" onclick="selectAnswer(0)"><span class="badge">أ</span> <span class="text"></span></button>
-          <button class="btn-option" onclick="selectAnswer(1)"><span class="badge">ب</span> <span class="text"></span></button>
-          <button class="btn-option" onclick="selectAnswer(2)"><span class="badge">ج</span> <span class="text"></span></button>
-          <button class="btn-option" onclick="selectAnswer(3)"><span class="badge">د</span> <span class="text"></span></button>
+          <button class="btn-option" onclick="selectAnswer(0)"><span class="choice-sym">أ</span> <span class="choice-text"></span></button>
+          <button class="btn-option" onclick="selectAnswer(1)"><span class="choice-sym">ب</span> <span class="choice-text"></span></button>
+          <button class="btn-option" onclick="selectAnswer(2)"><span class="choice-sym">ج</span> <span class="choice-text"></span></button>
+          <button class="btn-option" onclick="selectAnswer(3)"><span class="choice-sym">د</span> <span class="choice-text"></span></button>
         </div>
+
+        <button class="mobile-ladder-btn" onclick="openModal('modal-mobile-ladder')">📊 رصيد الأسئلة والجوائز</button>
       </div>
 
-      <aside class="sidebar" id="ladder"></aside>
+      <aside class="ladder-panel" id="ladder"></aside>
     </main>
   </div>
 
+  <!-- نافذة سلم الجوائز للجوال -->
+  <div class="modal-overlay" id="modal-mobile-ladder">
+    <div class="modal-box">
+      <h3 style="color:var(--itqan-gold); margin-bottom: 1rem;">سلم رصيد الجوائز</h3>
+      <div id="mobile-ladder-content" style="display: flex; flex-direction: column-reverse; gap: 6px;"></div>
+      <button class="btn-action" onclick="closeModal('modal-mobile-ladder')">إغلاق</button>
+    </div>
+  </div>
+
   <!-- نافذة تصويت الجمهور -->
-  <div class="modal" id="modal-poll">
-    <div class="modal-content">
-      <h3 style="color:var(--itqan-gold); margin-bottom: 1rem;">نتائج تصويت الجمهور</h3>
+  <div class="modal-overlay" id="modal-poll">
+    <div class="modal-box">
+      <h3 style="color:var(--itqan-gold); margin-bottom: 1rem;">نسبة تصويت الجمهور</h3>
       <div id="poll-results"></div>
       <button class="btn-action" onclick="closeModal('modal-poll')">متابعة الحل</button>
     </div>
   </div>
 
   <!-- نافذة النتيجة النهائية -->
-  <div class="modal" id="modal-result">
-    <div class="modal-content">
-      <h2 id="result-title" style="margin-bottom: 1rem; color: var(--itqan-gold);"></h2>
-      <p id="result-desc" style="font-size: 1.15rem; color: #cbd5e1;"></p>
-      <button class="btn-action" onclick="returnToHome()">العودة للرئيسية</button>
+  <div class="modal-overlay" id="modal-result">
+    <div class="modal-box">
+      <h2 id="result-title" style="margin-bottom: 0.6rem; color: var(--itqan-gold);"></h2>
+      <p id="result-desc" style="font-size: 1.05rem; color: #cbd5e1;"></p>
+      <button class="btn-action" onclick="returnToIntro()">العودة للرئيسية</button>
     </div>
   </div>
 
   <script>
-    // بنك الأسئلة الشامل المستخرج من الدليل
+    // بنك الأسئلة المعتمد المستخرج من الدليل الرسمي
     const questionBank = {
       primary_lower: [
         { category: "وطن", question: "ما هي عاصمة المملكة العربية السعودية؟", options: ["جدة", "الرياض", "الدمام", "مكة المكرمة"], correct: 1 },
@@ -771,23 +824,20 @@
     };
 
     const points = ["1,000", "5,000", "10,000", "20,000", "50,000", "100,000", "250,000", "500,000", "750,000", "1,000,000"];
-    const stageNames = {
+    const stageTitles = {
       primary_lower: "الصفوف الأولية",
       primary_upper: "الصفوف العليا",
       intermediate: "المرحلة المتوسطة",
       secondary: "المرحلة الثانوية"
     };
 
-    let selectedStage = "primary_upper";
-    let activeQuestions = [];
     let currentIdx = 0;
     let currentQuestion = null;
     let timerValue = 45;
     let timerInterval = null;
-    let usedQuestionTexts = new Set();
+    let usedQuestions = new Set();
     let audioCtx = null;
 
-    // تهيئة الصوتيات عند التفاعل
     function initAudio() {
       if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -797,27 +847,43 @@
       }
     }
 
-    // مكتبة أصوات مدمجة
     const SoundEffects = {
+      intro() {
+        initAudio();
+        const chord = [220, 277.18, 329.63, 440, 554.37];
+        chord.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 0.8);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.0);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(audioCtx.currentTime);
+          osc.stop(audioCtx.currentTime + 2.0);
+        });
+      },
       click() {
         initAudio();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(450, audioCtx.currentTime);
         gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.1);
+        osc.stop(audioCtx.currentTime + 0.08);
       },
       tick() {
         initAudio();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(900, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
@@ -830,28 +896,28 @@
         const gain = audioCtx.createGain();
         osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(110, audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(160, audioCtx.currentTime + 1.8);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 1.8);
+        osc.frequency.linearRampToValueAtTime(160, audioCtx.currentTime + 1.4);
+        gain.gain.setValueAtTime(0.09, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 1.4);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 1.8);
+        osc.stop(audioCtx.currentTime + 1.4);
       },
       correct() {
         initAudio();
-        const notes = [523.25, 659.25, 783.99, 1046.50]; // نغمة وترية مبهجة (C major)
+        const notes = [523.25, 659.25, 783.99, 1046.50];
         notes.forEach((freq, idx) => {
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.1);
-          gain.gain.setValueAtTime(0.12, audioCtx.currentTime + idx * 0.1);
-          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.1 + 0.5);
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.08);
+          gain.gain.setValueAtTime(0.12, audioCtx.currentTime + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.08 + 0.45);
           osc.connect(gain);
           gain.connect(audioCtx.destination);
-          osc.start(audioCtx.currentTime + idx * 0.1);
-          osc.stop(audioCtx.currentTime + idx * 0.1 + 0.5);
+          osc.start(audioCtx.currentTime + idx * 0.08);
+          osc.stop(audioCtx.currentTime + idx * 0.08 + 0.45);
         });
       },
       wrong() {
@@ -860,7 +926,7 @@
         const gain = audioCtx.createGain();
         osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(180, audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.6);
+        osc.frequency.linearRampToValueAtTime(70, audioCtx.currentTime + 0.6);
         gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
         osc.connect(gain);
@@ -873,8 +939,8 @@
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.35);
+        osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1300, audioCtx.currentTime + 0.35);
         gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
         osc.connect(gain);
@@ -884,81 +950,130 @@
       }
     };
 
-    function uploadLogo(event) {
+    function handleLogoUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = function(e) {
-        document.getElementById("school-logo").src = e.target.result;
-        document.getElementById("nav-school-logo").src = e.target.result;
+        document.getElementById("intro-school-logo").src = e.target.result;
+        document.getElementById("header-logo-img").src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
 
     function toggleFullScreen() {
       if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
+        document.documentElement.requestFullscreen().catch(() => {});
       } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        }
+        if (document.exitFullscreen) document.exitFullscreen();
       }
     }
 
-    function startGame() {
+    function launchGame() {
+      SoundEffects.intro();
+      const pName = document.getElementById("player-name-input").value.trim() || "بطل إتقان";
+      const sVal = document.getElementById("stage-select-input").value;
+
+      document.getElementById("display-player-name").textContent = pName;
+      document.getElementById("display-stage-name").textContent = stageTitles[sVal];
+
+      const intro = document.getElementById("intro-screen");
+      const game = document.getElementById("game-screen");
+
+      intro.style.opacity = "0";
+      intro.style.transform = "scale(0.95)";
+
+      setTimeout(() => {
+        intro.style.display = "none";
+        game.style.display = "flex";
+        restartRound();
+      }, 400);
+    }
+
+    function returnToIntro() {
+      clearInterval(timerInterval);
+      const intro = document.getElementById("intro-screen");
+      const game = document.getElementById("game-screen");
+
+      game.style.display = "none";
+      intro.style.display = "flex";
+      setTimeout(() => {
+        intro.style.opacity = "1";
+        intro.style.transform = "scale(1)";
+      }, 20);
+      closeModal("modal-result");
+    }
+
+    function restartRound() {
       initAudio();
-      SoundEffects.click();
-
-      const name = document.getElementById("player-name").value.trim() || "بطل إتقان";
-      selectedStage = document.getElementById("stage-select").value;
-
-      document.getElementById("display-player-name").textContent = name;
-      document.getElementById("display-stage-name").textContent = stageNames[selectedStage];
-
-      activeQuestions = [...questionBank[selectedStage]];
-      usedQuestionTexts.clear();
+      usedQuestions.clear();
       currentIdx = 0;
-
-      document.getElementById("welcome-screen").style.display = "none";
-      document.getElementById("game-screen").style.display = "flex";
-
-      document.querySelectorAll(".btn-help").forEach(b => b.disabled = false);
+      document.querySelectorAll(".btn-tool").forEach(b => b.disabled = false);
+      closeModal("modal-result");
+      buildLadders();
       loadNextQuestion();
     }
 
-    function initLadder() {
-      const ladderEl = document.getElementById("ladder");
-      ladderEl.innerHTML = "";
+    function buildLadders() {
+      const desktopLadder = document.getElementById("ladder");
+      const mobileLadder = document.getElementById("mobile-ladder-content");
+      desktopLadder.innerHTML = "";
+      mobileLadder.innerHTML = "";
+
       points.forEach((pts, i) => {
         const item = document.createElement("div");
         item.className = `ladder-step ${i === currentIdx ? 'active' : ''} ${i === 2 || i === 6 || i === 9 ? 'milestone' : ''}`;
-        item.innerHTML = `<span>السؤال ${i + 1}</span> <span>${pts}</span>`;
-        ladderEl.appendChild(item);
+        item.id = `ladder-step-${i}`;
+        item.innerHTML = `<span>سؤال ${i + 1}</span> <span>${pts}</span>`;
+
+        const clone = item.cloneNode(true);
+        clone.id = `mobile-step-${i}`;
+
+        desktopLadder.appendChild(item);
+        mobileLadder.appendChild(clone);
+      });
+    }
+
+    function updateLadderHighlights() {
+      points.forEach((_, i) => {
+        const dItem = document.getElementById(`ladder-step-${i}`);
+        const mItem = document.getElementById(`mobile-step-${i}`);
+        if (dItem) {
+          if (i === currentIdx) dItem.classList.add("active");
+          else dItem.classList.remove("active");
+        }
+        if (mItem) {
+          if (i === currentIdx) mItem.classList.add("active");
+          else mItem.classList.remove("active");
+        }
       });
     }
 
     function loadNextQuestion() {
-      let available = activeQuestions.filter(q => !usedQuestionTexts.has(q.question));
+      const stage = document.getElementById("stage-select-input").value;
+      const pool = questionBank[stage] || questionBank.primary_upper;
+
+      let available = pool.filter(q => !usedQuestions.has(q.question));
       if (available.length === 0) {
-        usedQuestionTexts.clear();
-        available = activeQuestions;
+        usedQuestions.clear();
+        available = pool;
       }
 
       currentQuestion = available[Math.floor(Math.random() * available.length)];
-      usedQuestionTexts.add(currentQuestion.question);
+      usedQuestions.add(currentQuestion.question);
 
       document.getElementById("category-badge").textContent = `المجال: ${currentQuestion.category}`;
       document.getElementById("question").textContent = currentQuestion.question;
 
       const buttons = document.querySelectorAll(".btn-option");
       buttons.forEach((btn, i) => {
-        btn.querySelector(".text").textContent = currentQuestion.options[i];
+        btn.querySelector(".choice-text").textContent = currentQuestion.options[i];
         btn.className = "btn-option";
         btn.disabled = false;
         btn.style.visibility = "visible";
       });
 
-      initLadder();
+      updateLadderHighlights();
       resetTimer();
     }
 
@@ -967,14 +1082,14 @@
       timerValue = 45;
       const timerEl = document.getElementById("timer");
       timerEl.textContent = timerValue;
-      timerEl.classList.remove("timer-warning");
+      timerEl.classList.remove("timer-critical");
 
       timerInterval = setInterval(() => {
         timerValue--;
         timerEl.textContent = timerValue;
 
         if (timerValue <= 10) {
-          timerEl.classList.add("timer-warning");
+          timerEl.classList.add("timer-critical");
           SoundEffects.tick();
         }
 
@@ -982,7 +1097,7 @@
           clearInterval(timerInterval);
           triggerShake();
           SoundEffects.wrong();
-          endGame(false, "انتهى الوقت المسموح للتفكير في الإجابة!");
+          endGame(false, "انتهى الوقت المحدد للمحاولة!");
         }
       }, 1000);
     }
@@ -994,31 +1109,31 @@
       buttons[choiceIdx].classList.add("selected");
       SoundEffects.tension();
 
-      // فاصل ترقب لمدة ثانية ونصف
       setTimeout(() => {
         if (choiceIdx === currentQuestion.correct) {
           buttons[choiceIdx].classList.remove("selected");
           buttons[choiceIdx].classList.add("correct");
           SoundEffects.correct();
-          launchConfetti();
+          launchConfetti(80);
 
           setTimeout(() => {
             currentIdx++;
             if (currentIdx >= points.length) {
-              endGame(true, "مبارك لك الفوز بالمركز الأول في بنك إتقان المعرفي!");
+              const playerName = document.getElementById("player-name-input").value || "المتسابق";
+              endGame(true, `ألف مبارك للبطل (${playerName})! وصلت إلى المليون بجدارة وإتقان 🏆`);
             } else {
               loadNextQuestion();
             }
-          }, 1800);
+          }, 1500);
         } else {
           buttons[choiceIdx].classList.remove("selected");
           buttons[choiceIdx].classList.add("wrong");
           buttons[currentQuestion.correct].classList.add("correct");
           triggerShake();
           SoundEffects.wrong();
-          setTimeout(() => endGame(false, "إجابة خاطئة. لقد اكتسبت علماً ورصيداً معرفياً مميزاً!"), 2000);
+          setTimeout(() => endGame(false, "إجابة غير صحيحة. رصيدك المعرفي يزداد بالتجربة والمحاولة!"), 1800);
         }
-      }, 1500);
+      }, 1400);
     }
 
     function triggerShake() {
@@ -1030,11 +1145,11 @@
     function useFiftyFifty() {
       SoundEffects.lifeline();
       document.getElementById("btn-50").disabled = true;
-      let wrongIndices = [0, 1, 2, 3].filter(i => i !== currentQuestion.correct);
-      wrongIndices.sort(() => Math.random() - 0.5);
+      let wrong = [0, 1, 2, 3].filter(i => i !== currentQuestion.correct);
+      wrong.sort(() => Math.random() - 0.5);
       const buttons = document.querySelectorAll(".btn-option");
-      buttons[wrongIndices[0]].style.visibility = "hidden";
-      buttons[wrongIndices[1]].style.visibility = "hidden";
+      buttons[wrong[0]].style.visibility = "hidden";
+      buttons[wrong[1]].style.visibility = "hidden";
     }
 
     function useExtraTime() {
@@ -1052,20 +1167,24 @@
 
       let percentages = [10, 10, 10, 10];
       percentages[currentQuestion.correct] += 50;
-      percentages = percentages.map(p => Math.floor(p + (Math.random() * 10)));
+      percentages = percentages.map(p => Math.floor(p + (Math.random() * 8)));
 
       currentQuestion.options.forEach((opt, idx) => {
         pollBox.innerHTML += `
           <div class="poll-bar">
             <span>${opt} (${percentages[idx]}%)</span>
-            <div class="bar-bg">
-              <div class="bar-fill" style="width: ${percentages[idx]}%;"></div>
+            <div class="bar-shell">
+              <div class="bar-progress" style="width: ${percentages[idx]}%;"></div>
             </div>
           </div>
         `;
       });
 
-      document.getElementById("modal-poll").style.display = "flex";
+      openModal("modal-poll");
+    }
+
+    function openModal(id) {
+      document.getElementById(id).style.display = "flex";
     }
 
     function closeModal(id) {
@@ -1074,27 +1193,17 @@
 
     function endGame(isWin, msg) {
       const modal = document.getElementById("modal-result");
-      document.getElementById("result-title").textContent = isWin ? "🏆 فوز وإتقان مستحق!" : "انتهت المسابقة";
+      document.getElementById("result-title").textContent = isWin ? "🏆 فوز مستحق وإتقان باهر!" : "انتهت المسابقة";
       document.getElementById("result-desc").textContent = msg;
       modal.style.display = "flex";
       if (isWin) launchConfetti(300);
     }
 
-    function returnToHome() {
-      closeModal("modal-result");
-      document.getElementById("game-screen").style.display = "none";
-      document.getElementById("welcome-screen").style.display = "flex";
-    }
-
-    function quitToHome() {
-      clearInterval(timerInterval);
-      returnToHome();
-    }
-
-    // احتفال القصاصات المتطايرة (Confetti Canvas)
+    /* تأثير القصاصات المتطايرة */
     const canvas = document.getElementById("confetti-canvas");
     const ctx = canvas.getContext("2d");
     let confetti = [];
+    let animatingConfetti = false;
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -1104,33 +1213,32 @@
     resizeCanvas();
 
     function launchConfetti(count = 70) {
-      const colors = ["#fbbf24", "#a855f7", "#38bdf8", "#10b981", "#ffffff"];
+      const colors = ["#f5b301", "#ba68c8", "#00e5ff", "#10b981", "#ffffff"];
       for (let i = 0; i < count; i++) {
         confetti.push({
           x: canvas.width / 2,
           y: canvas.height / 2,
-          r: Math.random() * 6 + 4,
-          dx: (Math.random() - 0.5) * 16,
-          dy: (Math.random() - 0.5) * 16 - 4,
+          r: Math.random() * 5 + 3,
+          dx: (Math.random() - 0.5) * 14,
+          dy: (Math.random() - 0.5) * 14 - 4,
           color: colors[Math.floor(Math.random() * colors.length)],
           tilt: Math.random() * 10,
           tiltAngle: 0,
-          tiltAngleInc: Math.random() * 0.07 + 0.05
+          tiltAngleInc: Math.random() * 0.08 + 0.04
         });
       }
       if (!animatingConfetti) updateConfetti();
     }
 
-    let animatingConfetti = false;
     function updateConfetti() {
       animatingConfetti = true;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       confetti.forEach((p, index) => {
         p.x += p.dx;
         p.y += p.dy;
-        p.dy += 0.2; // جاذبية
+        p.dy += 0.22;
         p.tiltAngle += p.tiltAngleInc;
-        p.tilt = Math.sin(p.tiltAngle) * 15;
+        p.tilt = Math.sin(p.tiltAngle) * 12;
 
         ctx.beginPath();
         ctx.lineWidth = p.r;
