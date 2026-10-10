@@ -2,29 +2,28 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>بنك إتقان المعرفي | مدارس إتقان التربية</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-start: #1e0538;
-      --bg-mid: #0d021a;
-      --bg-end: #040008;
-      --itqan-purple: #7b1fa2;
-      --itqan-purple-light: #ba68c8;
+      --itqan-purple-dark: #090112;
+      --itqan-purple-deep: #160426;
+      --itqan-purple: #6a1b9a;
+      --itqan-purple-bright: #a855f7;
       --itqan-gold: #f5b301;
-      --itqan-gold-light: #ffe082;
-      --itqan-gold-glow: rgba(245, 179, 1, 0.4);
-      --cyan: #00e5ff;
+      --itqan-gold-light: #fed766;
+      --itqan-gold-glow: rgba(245, 179, 1, 0.45);
+      --cyan: #00d2d3;
       --correct: #10b981;
       --wrong: #ef4444;
-      --selected: #f97316;
-      --card-bg: rgba(26, 8, 48, 0.7);
-      --border-glow: rgba(245, 179, 1, 0.25);
+      --selected: #ea580c;
+      --card-bg: rgba(26, 8, 46, 0.85);
+      --card-border: rgba(245, 179, 1, 0.35);
       --text: #ffffff;
-      --text-muted: #94a3b8;
+      --text-muted: #cbd5e1;
     }
 
     * {
@@ -37,38 +36,39 @@
     }
 
     body {
-      background: radial-gradient(circle at 50% 20%, var(--bg-start) 0%, var(--bg-mid) 60%, var(--bg-end) 100%);
+      background: radial-gradient(circle at 50% 15%, #300854 0%, var(--itqan-purple-dark) 70%, #030007 100%);
       color: var(--text);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
       position: relative;
     }
 
-    /* إضاءة المسرح */
-    .stage-lighting {
+    /* أضواء المسرح السينمائية */
+    .spotlights {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 0;
       overflow: hidden;
     }
-    .beam {
+    .light-beam {
       position: absolute;
       top: -20%;
-      width: 450px;
-      height: 150%;
-      background: radial-gradient(ellipse at center, rgba(142, 36, 170, 0.2) 0%, transparent 65%);
+      width: 350px;
+      height: 140%;
+      background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.18) 0%, transparent 65%);
       transform-origin: top center;
-      animation: sweep 14s ease-in-out infinite alternate;
+      animation: lightMotion 12s ease-in-out infinite alternate;
     }
-    .beam-left { left: 5%; animation-delay: -2s; }
-    .beam-right { right: 5%; animation-duration: 17s; }
+    .light-left { left: 5%; animation-delay: -3s; }
+    .light-right { right: 5%; animation-duration: 15s; }
 
-    @keyframes sweep {
-      0% { transform: rotate(-22deg); }
-      100% { transform: rotate(22deg); }
+    @keyframes lightMotion {
+      0% { transform: rotate(-25deg); }
+      100% { transform: rotate(25deg); }
     }
 
     /* -------------------------------------------------------------
@@ -78,26 +78,25 @@
       position: fixed;
       inset: 0;
       z-index: 100;
-      background: radial-gradient(circle at center, #240540 0%, #080012 85%);
+      background: radial-gradient(circle at center, #260642 0%, #07010f 85%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1.2rem;
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      padding: 1rem;
+      text-align: center;
+      transition: opacity 0.4s ease, transform 0.4s ease;
     }
 
     .intro-card {
       background: var(--card-bg);
-      border: 1.5px solid var(--border-glow);
-      border-radius: 24px;
-      padding: 2.2rem 2rem;
+      border: 1.5px solid var(--card-border);
+      border-radius: 20px;
+      padding: 1.8rem 1.4rem;
       width: 100%;
-      max-width: 480px;
-      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), 0 0 35px rgba(123, 31, 162, 0.3);
-      backdrop-filter: blur(16px);
-      text-align: center;
-      position: relative;
+      max-width: 440px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(106, 27, 154, 0.4);
+      backdrop-filter: blur(15px);
     }
 
     .logo-badge {
@@ -105,27 +104,22 @@
       align-items: center;
       justify-content: center;
       background: #ffffff;
-      padding: 10px 24px;
-      border-radius: 18px;
+      padding: 8px 18px;
+      border-radius: 16px;
       border: 2px solid var(--itqan-gold);
-      box-shadow: 0 0 25px var(--itqan-gold-glow);
-      margin-bottom: 1.2rem;
+      box-shadow: 0 0 20px var(--itqan-gold-glow);
+      margin-bottom: 1rem;
       cursor: pointer;
-      transition: transform 0.25s ease;
-    }
-
-    .logo-badge:hover {
-      transform: scale(1.03);
     }
 
     .logo-badge img {
-      max-height: 65px;
+      max-height: 55px;
       width: auto;
       object-fit: contain;
     }
 
     .intro-title {
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
       font-weight: 900;
       color: var(--itqan-gold);
       text-shadow: 0 0 15px var(--itqan-gold-glow);
@@ -133,10 +127,10 @@
     }
 
     .intro-motto {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: var(--cyan);
       font-weight: 700;
-      margin-bottom: 1.8rem;
+      margin-bottom: 1.5rem;
     }
 
     .form-group {
@@ -154,10 +148,10 @@
 
     .input-box, .select-box {
       width: 100%;
-      padding: 11px 14px;
+      padding: 10px 14px;
       border-radius: 10px;
-      border: 1px solid rgba(245, 179, 1, 0.3);
-      background: rgba(8, 2, 16, 0.9);
+      border: 1.2px solid rgba(245, 179, 1, 0.3);
+      background: rgba(10, 2, 20, 0.9);
       color: #fff;
       font-size: 0.95rem;
       outline: none;
@@ -170,7 +164,7 @@
     }
 
     .select-box option {
-      background: var(--bg-mid);
+      background: var(--itqan-purple-deep);
       color: #fff;
     }
 
@@ -180,27 +174,28 @@
       color: #0b0217;
       font-size: 1.15rem;
       font-weight: 900;
-      padding: 13px;
+      padding: 12px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
       box-shadow: 0 0 20px var(--itqan-gold-glow);
-      transition: all 0.25s ease;
-      margin-top: 0.6rem;
+      transition: all 0.2s;
+      margin-top: 0.4rem;
     }
 
-    .btn-launch:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(245, 179, 1, 0.7);
+    .btn-launch:active {
+      transform: scale(0.98);
     }
 
     /* -------------------------------------------------------------
-       2. شاشة المسرح والمنافسة
+       2. شاشة المسابقة المباشرة
        ------------------------------------------------------------- */
     #game-screen {
       display: none;
       flex-direction: column;
       flex: 1;
+      height: 100vh;
+      height: 100dvh;
       z-index: 10;
     }
 
@@ -208,22 +203,22 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.5rem 1.5rem;
-      background: rgba(8, 2, 16, 0.95);
+      padding: 0.5rem 1.2rem;
+      background: rgba(10, 2, 20, 0.95);
       border-bottom: 1.5px solid var(--itqan-gold);
       backdrop-filter: blur(10px);
-      gap: 10px;
+      flex-shrink: 0;
     }
 
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .header-logo {
       background: #ffffff;
-      padding: 3px 8px;
+      padding: 3px 6px;
       border-radius: 8px;
       border: 1px solid var(--itqan-gold);
       display: flex;
@@ -232,37 +227,37 @@
     }
 
     .header-logo img {
-      max-height: 34px;
+      max-height: 28px;
       width: auto;
       object-fit: contain;
     }
 
     .player-status h3 {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 800;
       color: var(--itqan-gold);
       line-height: 1.2;
     }
 
     .player-status span {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: var(--cyan);
       font-weight: 600;
     }
 
     .lifeline-bar {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
     }
 
     .btn-tool {
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.08);
       border: 1px solid var(--itqan-gold);
       color: var(--itqan-gold-light);
-      padding: 5px 11px;
+      padding: 5px 10px;
       border-radius: 16px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
@@ -283,16 +278,17 @@
       text-decoration: line-through;
     }
 
-    /* الساحة الوسطى */
+    /* الساحة والوسط */
     main {
       flex: 1;
       display: flex;
-      padding: 1.2rem;
-      gap: 1.5rem;
+      padding: 1rem 1.5rem;
+      gap: 1.2rem;
       max-width: 1300px;
       margin: 0 auto;
       width: 100%;
       align-items: center;
+      overflow-y: auto;
     }
 
     .arena-content {
@@ -311,35 +307,35 @@
     }
 
     .badge-category {
-      background: rgba(123, 31, 162, 0.4);
-      border: 1px solid var(--itqan-purple-light);
+      background: rgba(106, 27, 154, 0.5);
+      border: 1px solid var(--itqan-purple-bright);
       color: #f3e8ff;
-      padding: 4px 14px;
-      border-radius: 20px;
-      font-size: 0.85rem;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 0.8rem;
       font-weight: 700;
     }
 
     .timer-ring {
-      width: 52px;
-      height: 52px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       border: 2px solid var(--itqan-gold);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 900;
       background: #0f031b;
       color: var(--itqan-gold);
-      box-shadow: 0 0 14px var(--itqan-gold-glow);
+      box-shadow: 0 0 12px var(--itqan-gold-glow);
       transition: all 0.3s;
     }
 
     .timer-critical {
       border-color: var(--wrong) !important;
       color: var(--wrong) !important;
-      box-shadow: 0 0 20px rgba(239, 68, 68, 0.9) !important;
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.9) !important;
       animation: heartPulse 0.8s infinite;
     }
 
@@ -352,32 +348,32 @@
       background: linear-gradient(180deg, rgba(38, 11, 66, 0.85) 0%, rgba(17, 3, 31, 0.95) 100%);
       border: 1.5px solid var(--itqan-gold);
       border-radius: 16px;
-      padding: 1.6rem 1.4rem;
-      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+      padding: 1.2rem 1rem;
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
       font-weight: 700;
       text-align: center;
-      margin-bottom: 1.2rem;
-      min-height: 110px;
+      margin-bottom: 1rem;
+      min-height: 90px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(245, 179, 1, 0.1);
-      line-height: 1.6;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+      line-height: 1.5;
     }
 
     .options-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
     .btn-option {
       background: linear-gradient(90deg, rgba(37, 10, 64, 0.75) 0%, rgba(18, 3, 33, 0.88) 100%);
-      border: 1.5px solid rgba(245, 179, 1, 0.25);
+      border: 1.2px solid rgba(245, 179, 1, 0.25);
       border-radius: 12px;
       color: #fff;
-      padding: 0.9rem 1.2rem;
-      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+      padding: 0.8rem 1rem;
+      font-size: clamp(0.85rem, 2vw, 1.05rem);
       font-weight: 600;
       text-align: right;
       cursor: pointer;
@@ -388,22 +384,21 @@
 
     .btn-option .choice-sym {
       color: var(--itqan-gold);
-      margin-left: 10px;
+      margin-left: 8px;
       font-weight: 900;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
     }
 
     .btn-option:hover:not(:disabled) {
       border-color: var(--itqan-gold);
-      background: rgba(123, 31, 162, 0.45);
-      transform: translateY(-2px);
+      background: rgba(106, 27, 154, 0.45);
     }
 
     .btn-option.selected {
       background: var(--selected) !important;
       color: #fff !important;
       border-color: #ffedd5 !important;
-      box-shadow: 0 0 20px rgba(234, 88, 12, 0.8);
+      box-shadow: 0 0 16px rgba(234, 88, 12, 0.8);
       animation: pulseSelection 0.5s infinite alternate;
     }
 
@@ -416,7 +411,7 @@
       background: var(--correct) !important;
       color: #fff !important;
       border-color: #6ee7b7 !important;
-      box-shadow: 0 0 25px rgba(16, 185, 129, 0.9);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.9);
       animation: flashSuccess 0.4s ease-in-out 3;
     }
 
@@ -429,7 +424,7 @@
       background: var(--wrong) !important;
       color: #fff !important;
       border-color: #fca5a5 !important;
-      box-shadow: 0 0 25px rgba(239, 68, 68, 0.9);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.9);
     }
 
     .btn-option:disabled {
@@ -440,22 +435,21 @@
     .ladder-panel {
       flex: 1;
       background: var(--card-bg);
-      border: 1px solid var(--border-glow);
-      border-radius: 18px;
-      padding: 1rem;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 0.8rem;
       display: flex;
       flex-direction: column-reverse;
-      gap: 5px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      gap: 4px;
+      backdrop-filter: blur(10px);
     }
 
     .ladder-step {
       display: flex;
       justify-content: space-between;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.85rem;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
       font-weight: 700;
       color: var(--text-muted);
       border: 1px solid transparent;
@@ -463,11 +457,11 @@
     }
 
     .ladder-step.active {
-      background: linear-gradient(90deg, rgba(123, 31, 162, 0.85), rgba(245, 179, 1, 0.35));
+      background: linear-gradient(90deg, rgba(106, 27, 154, 0.85), rgba(245, 179, 1, 0.35));
       border: 1px solid var(--itqan-gold);
       color: #fff;
       transform: scale(1.02);
-      box-shadow: 0 0 12px var(--itqan-gold-glow);
+      box-shadow: 0 0 10px var(--itqan-gold-glow);
     }
 
     .ladder-step.milestone {
@@ -499,7 +493,7 @@
       40%, 60% { transform: translate3d(5px, 0, 0); }
     }
 
-    /* النوافذ المنبثقة */
+    /* النوافذ التفاعلية */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -514,31 +508,32 @@
     .modal-box {
       background: #19052b;
       border: 2px solid var(--itqan-gold);
-      border-radius: 20px;
-      padding: 1.8rem;
-      max-width: 440px;
+      border-radius: 18px;
+      padding: 1.5rem;
+      max-width: 400px;
       width: 100%;
       text-align: center;
       box-shadow: 0 0 35px var(--itqan-gold-glow);
-      max-height: 90vh;
+      max-height: 85vh;
       overflow-y: auto;
     }
 
     .poll-bar {
-      margin: 10px 0;
+      margin: 8px 0;
       text-align: right;
+      font-size: 0.85rem;
     }
 
     .bar-shell {
       background: rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
+      border-radius: 6px;
       overflow: hidden;
-      margin-top: 4px;
+      margin-top: 3px;
     }
 
     .bar-progress {
-      height: 15px;
-      background: linear-gradient(90deg, var(--itqan-purple-light), var(--itqan-gold));
+      height: 14px;
+      background: linear-gradient(90deg, var(--itqan-purple-bright), var(--itqan-gold));
       transition: width 1s ease;
       width: 0%;
     }
@@ -547,12 +542,12 @@
       background: var(--itqan-gold);
       color: #000;
       border: none;
-      padding: 10px 28px;
+      padding: 8px 24px;
       font-weight: 800;
       border-radius: 10px;
       cursor: pointer;
-      margin-top: 1.2rem;
-      font-size: 0.95rem;
+      margin-top: 1rem;
+      font-size: 0.9rem;
     }
 
     #confetti-canvas {
@@ -562,23 +557,24 @@
       z-index: 120;
     }
 
-    /* التجاوب مع الجوال */
-    @media (max-width: 900px) {
+    /* تكيف مخصص للهواتف الذكية */
+    @media (max-width: 768px) {
       header {
-        padding: 0.5rem 0.8rem;
-        flex-direction: column;
-        align-items: stretch;
+        padding: 0.4rem 0.8rem;
       }
-      .brand-group {
-        justify-content: center;
+      .player-status h3 {
+        font-size: 0.8rem;
       }
-      .lifeline-bar {
-        justify-content: center;
-        flex-wrap: wrap;
+      .player-status span {
+        font-size: 0.65rem;
+      }
+      .btn-tool {
+        padding: 4px 7px;
+        font-size: 0.7rem;
       }
       main {
+        padding: 0.6rem 0.8rem;
         flex-direction: column;
-        padding: 0.8rem;
       }
       .ladder-panel {
         display: none;
@@ -588,17 +584,22 @@
       }
       .options-grid {
         grid-template-columns: 1fr;
+        gap: 8px;
       }
       .question-screen {
-        padding: 1.2rem 1rem;
-        min-height: 95px;
+        padding: 0.9rem 0.8rem;
+        min-height: 80px;
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
+      }
+      .btn-option {
+        padding: 0.75rem 0.9rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- الإضاءات -->
   <div class="stage-lighting">
     <div class="beam beam-left"></div>
     <div class="beam beam-right"></div>
@@ -625,8 +626,8 @@
       <div class="form-group">
         <label>المرحلة الدراسية:</label>
         <select id="stage-select-input" class="select-box">
-          <option value="primary_lower">الصفوف الأولية (أول - ثاني - ثالث ابتدائي)</option>
-          <option value="primary_upper" selected>الصفوف العليا (رابع - خامس - سادس ابتدائي)</option>
+          <option value="primary_lower">الصفوف الأولية (1 - 3 ابتدائي)</option>
+          <option value="primary_upper" selected>الصفوف العليا (4 - 6 ابتدائي)</option>
           <option value="intermediate">المرحلة المتوسطة</option>
           <option value="secondary">المرحلة الثانوية</option>
         </select>
@@ -684,8 +685,8 @@
   <!-- نافذة سلم الجوائز للجوال -->
   <div class="modal-overlay" id="modal-mobile-ladder">
     <div class="modal-box">
-      <h3 style="color:var(--itqan-gold); margin-bottom: 1rem;">سلم رصيد الجوائز</h3>
-      <div id="mobile-ladder-content" style="display: flex; flex-direction: column-reverse; gap: 6px;"></div>
+      <h3 style="color:var(--itqan-gold); margin-bottom: 0.8rem; font-size: 1.1rem;">سلم رصيد الجوائز</h3>
+      <div id="mobile-ladder-content" style="display: flex; flex-direction: column-reverse; gap: 4px;"></div>
       <button class="btn-action" onclick="closeModal('modal-mobile-ladder')">إغلاق</button>
     </div>
   </div>
@@ -693,7 +694,7 @@
   <!-- نافذة تصويت الجمهور -->
   <div class="modal-overlay" id="modal-poll">
     <div class="modal-box">
-      <h3 style="color:var(--itqan-gold); margin-bottom: 1rem;">نسبة تصويت الجمهور</h3>
+      <h3 style="color:var(--itqan-gold); margin-bottom: 0.8rem; font-size: 1.1rem;">نسبة تصويت الجمهور</h3>
       <div id="poll-results"></div>
       <button class="btn-action" onclick="closeModal('modal-poll')">متابعة الحل</button>
     </div>
@@ -702,14 +703,14 @@
   <!-- نافذة النتيجة النهائية -->
   <div class="modal-overlay" id="modal-result">
     <div class="modal-box">
-      <h2 id="result-title" style="margin-bottom: 0.6rem; color: var(--itqan-gold);"></h2>
-      <p id="result-desc" style="font-size: 1.05rem; color: #cbd5e1;"></p>
+      <h2 id="result-title" style="margin-bottom: 0.6rem; color: var(--itqan-gold); font-size: 1.3rem;"></h2>
+      <p id="result-desc" style="font-size: 0.95rem; color: #cbd5e1;"></p>
       <button class="btn-action" onclick="returnToIntro()">العودة للرئيسية</button>
     </div>
   </div>
 
   <script>
-    // بنك الأسئلة المعتمد المستخرج من الدليل الرسمي
+    // بنك الأسئلة المعتمد المستخرج من دليل المسابقة
     const questionBank = {
       primary_lower: [
         { category: "وطن", question: "ما هي عاصمة المملكة العربية السعودية؟", options: ["جدة", "الرياض", "الدمام", "مكة المكرمة"], correct: 1 },
@@ -969,6 +970,7 @@
       }
     }
 
+    // الانتقال المباشر إلى الشاشة التفاعلية
     function launchGame() {
       SoundEffects.intro();
       const pName = document.getElementById("player-name-input").value.trim() || "بطل إتقان";
@@ -1000,7 +1002,7 @@
       setTimeout(() => {
         intro.style.opacity = "1";
         intro.style.transform = "scale(1)";
-      }, 20);
+      }, 30);
       closeModal("modal-result");
     }
 
@@ -1120,7 +1122,7 @@
             currentIdx++;
             if (currentIdx >= points.length) {
               const playerName = document.getElementById("player-name-input").value || "المتسابق";
-              endGame(true, `ألف مبارك للبطل (${playerName})! وصلت إلى المليون بجدارة وإتقان 🏆`);
+              endGame(true, `ألف مبارك للبطل (${playerName})! حققت المركز الأول في مسابقة إتقان المعرفية 🏆`);
             } else {
               loadNextQuestion();
             }
@@ -1131,7 +1133,7 @@
           buttons[currentQuestion.correct].classList.add("correct");
           triggerShake();
           SoundEffects.wrong();
-          setTimeout(() => endGame(false, "إجابة غير صحيحة. رصيدك المعرفي يزداد بالتجربة والمحاولة!"), 1800);
+          setTimeout(() => endGame(false, "إجابة غير صحيحة. رصيدك المعرفي يزداد بالتجربة والمحاولة المستمرة!"), 1800);
         }
       }, 1400);
     }
@@ -1199,7 +1201,7 @@
       if (isWin) launchConfetti(300);
     }
 
-    /* تأثير القصاصات المتطايرة */
+    /* تأثير القصاصات الاحتفالية */
     const canvas = document.getElementById("confetti-canvas");
     const ctx = canvas.getContext("2d");
     let confetti = [];
