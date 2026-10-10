@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بنك إتقان المعرفي - البث المباشر والتحدي التفاعلي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --itqan-purple: #5b1387;
+      --itqan-purple-deep: #1d0330;
+      --itqan-purple-light: #a855f7;
+      --itqan-gold: #fbbf24;
+      --itqan-gold-glow: rgba(251, 191, 36, 0.6);
+      --bg-dark: #07020d;
+      --cyan: #38bdf8;
+      --correct: #10b981;
+      --wrong: #ef4444;
+      --selected: #f97316;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* أضواء الاستوديو الخلفية */
+    .studio-lights {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .light-beam {
+      position: absolute;
+      top: -20%;
+      width: 400px;
+      height: 150%;
+      background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.22) 0%, transparent 65%);
+      transform-origin: top center;
+      animation: sweep 12s ease-in-out infinite alternate;
+    }
+
+    .light-beam-left { left: 10%; animation-delay: -2s; }
+    .light-beam-right { right: 10%; animation-duration: 15s; }
+
+    @keyframes sweep {
+      0% { transform: rotate(-25deg); }
+      100% { transform: rotate(25deg); }
+    }
+
+    /* شاشة البداية */
+    #welcome-screen {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 2;
+    }
+
+    .glass-card {
+      background: rgba(29, 3, 48, 0.7);
+      border: 2px solid var(--card-border, rgba(251, 191, 36, 0.35));
+      border-radius: 28px;
+      padding: 3rem 2.5rem;
+      max-width: 620px;
+      width: 100%;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 40px rgba(91, 19, 135, 0.4);
+      text-align: center;
+      animation: floatIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .main-logo {
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 1.5rem;
+      border-radius: 50%;
+      border: 3px solid var(--itqan-gold);
+      background: #ffffff;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 30px var(--itqan-gold-glow);
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .main-logo:hover {
+      transform: scale(1.06);
+    }
+
+    .main-logo img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .welcome-title {
+      font-size: 2.3rem;
+      font-weight: 900;
+      color: var(--itqan-gold);
+      text-shadow: 0 0 20px var(--itqan-gold-glow);
+      margin-bottom: 0.3rem;
+    }
+
+    .welcome-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      text-align: right;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: var(--itqan-gold);
+    }
+
+    .input-text, .select-stage {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1.5px solid rgba(251, 191, 36, 0.3);
+      background: rgba(10, 4, 20, 0.85);
+      color: #fff;
+      font-size: 1.1rem;
+      outline: none;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+
+    .input-text:focus, .select-stage:focus {
+      border-color: var(--itqan-gold);
+      box-shadow: 0 0 15px var(--itqan-gold-glow);
+    }
+
+    .select-stage option {
+      background: #1d0330;
+      color: #fff;
+    }
+
+    .btn-start {
+      width: 100%;
+      background: linear-gradient(135deg, var(--itqan-gold) 0%, #d97706 100%);
+      color: #05010a;
+      font-size: 1.35rem;
+      font-weight: 900;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 6px 25px rgba(245, 179, 1, 0.45);
+      transition: all 0.25s ease;
+      margin-top: 1rem;
+    }
+
+    .btn-start:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 30px rgba(245, 179, 1, 0.7);
+    }
+
+    /* واجهة المسابقة */
+    #game-screen {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      z-index: 2;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 2.5rem;
+      background: rgba(10, 4, 20, 0.85);
+      border-bottom: 2px solid var(--itqan-gold);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .nav-logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid var(--itqan-gold);
+      background: #fff;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-logo img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .player-info h3 {
+      font-size: 1.15rem;
+      color: var(--itqan-gold);
+    }
+
+    .player-info span {
+      font-size: 0.85rem;
+      color: var(--cyan);
+    }
+
+    .lifelines {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-help {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1.5px solid var(--itqan-gold);
+      color: var(--itqan-gold);
+      padding: 8px 16px;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .btn-help:hover:not(:disabled) {
+      background: var(--itqan-gold);
+      color: #000;
+      box-shadow: 0 0 15px var(--itqan-gold-glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-help:disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+      border-color: #64748b;
+      color: #64748b;
+      text-decoration: line-through;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      padding: 2rem;
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .stage-area {
+      flex: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .tag-category {
+      background: rgba(106, 27, 154, 0.45);
+      border: 1.5px solid var(--itqan-purple-light);
+      color: #f3e8ff;
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 700;
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+    }
+
+    .timer-circle {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      border: 3px solid var(--itqan-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 900;
+      background: #140526;
+      color: var(--itqan-gold);
+      box-shadow: 0 0 20px var(--itqan-gold-glow);
+      transition: all 0.3s;
+    }
+
+    .timer-warning {
+      border-color: var(--wrong) !important;
+      color: var(--wrong) !important;
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.8) !important;
+      animation: heartbeat 0.8s infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+
+    /* صناديق الأسئلة والخيارات بتصميم مضلع أنيق */
+    .question-box {
+      background: linear-gradient(180deg, rgba(35, 12, 60, 0.85) 0%, rgba(17, 4, 30, 0.95) 100%);
+      border: 2px solid var(--itqan-gold);
+      border-radius: 20px;
+      padding: 2.5rem;
+      font-size: 1.55rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 2rem;
+      min-height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(251, 191, 36, 0.15);
+      line-height: 1.6;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .btn-option {
+      background: linear-gradient(90deg, rgba(35, 12, 60, 0.75) 0%, rgba(20, 5, 36, 0.85) 100%);
+      border: 1.5px solid rgba(251, 191, 36, 0.3);
+      border-radius: 14px;
+      color: #fff;
+      padding: 1.2rem 1.6rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      text-align: right;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .btn-option .badge {
+      color: var(--itqan-gold);
+      margin-left: 14px;
+      font-weight: 900;
+      font-size: 1.3rem;
+    }
+
+    .btn-option:hover:not(:disabled) {
+      border-color: var(--itqan-gold);
+      background: rgba(106, 27, 154, 0.5);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    /* حالة تثبيت الإجابة - ترقب */
+    .btn-option.selected {
+      background: var(--selected) !important;
+      color: #fff !important;
+      border-color: #ffedd5 !important;
+      box-shadow: 0 0 25px rgba(249, 115, 22, 0.7);
+      animation: pulseSelection 0.5s infinite alternate;
+    }
+
+    @keyframes pulseSelection {
+      from { transform: scale(1); }
+      to { transform: scale(1.02); }
+    }
+
+    /* إجابة صحيحة */
+    .btn-option.correct {
+      background: var(--correct) !important;
+      color: #fff !important;
+      border-color: #6ee7b7 !important;
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.9);
+      animation: flashSuccess 0.4s ease-in-out 3;
+    }
+
+    @keyframes flashSuccess {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* إجابة خاطئة */
+    .btn-option.wrong {
+      background: var(--wrong) !important;
+      color: #fff !important;
+      border-color: #fca5a5 !important;
+      box-shadow: 0 0 30px rgba(239, 68, 68, 0.9);
+    }
+
+    .btn-option:disabled {
+      cursor: default;
+    }
+
+    /* سلم النقاط الجانبي */
+    .sidebar {
+      flex: 1;
+      background: rgba(29, 3, 48, 0.8);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: 20px;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 5px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .ladder-step {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .ladder-step.active {
+      background: linear-gradient(90deg, rgba(106, 27, 154, 0.8), rgba(251, 191, 36, 0.4));
+      border: 1px solid var(--itqan-gold);
+      color: #fff;
+      transform: scale(1.04);
+      box-shadow: 0 0 15px var(--itqan-gold-glow);
+    }
+
+    .ladder-step.milestone {
+      color: var(--itqan-gold);
+    }
+
+    /* اهتزاز الشاشة عند الخطأ */
+    .shake-screen {
+      animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(4px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
+
+    /* لوحة القصاصات والاحتفالات */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    /* النوافذ التفاعلية */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 1, 8, 0.88);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: #1d0330;
+      border: 2px solid var(--itqan-gold);
+      border-radius: 22px;
+      padding: 2.5rem;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 0 45px var(--itqan-gold-glow);
+    }
+
+    .poll-bar {
+      margin: 12px 0;
+      text-align: right;
+    }
+
+    .bar-bg {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .bar-fill {
+      height: 18px;
+      background: linear-gradient(90deg, var(--itqan-purple-light), var(--itqan-gold));
+      transition: width 1s ease;
+      width: 0%;
+    }
+
+    .btn-action {
+      background: var(--itqan-gold);
+      color: #000;
+      border: none;
+      padding: 12px 30px;
+      font-weight: 800;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column-reverse;
+        padding: 1rem;
+      }
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="studio-lights">
+    <div class="light-beam light-beam-left"></div>
+    <div class="light-beam light-beam-right"></div>
+  </div>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- شاشة الدخول الرئيسية -->
+  <section id="welcome-screen">
+    <div class="glass-card">
+      <div class="main-logo" onclick="document.getElementById('logo-file-input').click()" title="انقر لاستبدال الشعار">
+        <img id="school-logo" src="شعار_اتقان_بدون_خلفية-removebg-preview.png" alt="مدارس إتقان التربية">
+      </div>
+      <input type="file" id="logo-file-input" style="display:none" accept="image/*" onchange="uploadLogo(event)">
+
+      <h1 class="welcome-title">بنك إتقان المعرفي</h1>
+      <p class="welcome-subtitle">«معرفتك رصيدك .. وذكاؤك مفتاح الفوز»</p>
+
+      <div class="form-group">
+        <label>اسم المتسابق / الفريق:</label>
+        <input type="text" id="player-name" class="input-text" placeholder="اكتب اسم المتسابق..." value="بطل إتقان">
+      </div>
+
+      <div class="form-group">
+        <label>المرحلة المستهدفة:</label>
+        <select id="stage-select" class="select-stage">
+          <option value="primary_lower">الصفوف الأولية (أول - ثاني - ثالث ابتدائي)</option>
+          <option value="primary_upper" selected>الصفوف العليا (رابع - خامس - سادس ابتدائي)</option>
+          <option value="intermediate">المرحلة المتوسطة</option>
+          <option value="secondary">المرحلة الثانوية</option>
+        </select>
+      </div>
+
+      <button class="btn-start" onclick="startGame()">دخول ساحة التحدي ⚡</button>
+    </div>
+  </section>
+
+  <!-- شاشة المسابقة التفاعلية -->
+  <div id="game-screen">
+    <header>
+      <div class="brand">
+        <div class="nav-logo">
+          <img id="nav-school-logo" src="شعار_اتقان_بدون_خلفية-removebg-preview.png" alt="إتقان">
+        </div>
+        <div class="player-info">
+          <h3 id="display-player-name">بطل إتقان</h3>
+          <span id="display-stage-name">الصفوف العليا</span>
+        </div>
+      </div>
+
+      <div class="lifelines">
+        <button class="btn-help" id="btn-50" onclick="useFiftyFifty()">50:50</button>
+        <button class="btn-help" id="btn-poll" onclick="useAudiencePoll()">👥 تصويت الجمهور</button>
+        <button class="btn-help" id="btn-time" onclick="useExtraTime()">⏱️ +30 ثانية</button>
+        <button class="btn-help" style="border-color:var(--cyan)" onclick="toggleFullScreen()">⛶ شاشة كاملة</button>
+        <button class="btn-help" style="border-color:#ef4444;" onclick="quitToHome()">خروج</button>
+      </div>
+    </header>
+
+    <main id="main-stage">
+      <div class="stage-area">
+        <div class="status-bar">
+          <div class="tag-category" id="category-badge">المجال: عام</div>
+          <div class="timer-circle" id="timer">45</div>
+        </div>
+
+        <div class="question-box" id="question">جاري عرض السؤال...</div>
+
+        <div class="options-grid">
+          <button class="btn-option" onclick="selectAnswer(0)"><span class="badge">أ</span> <span class="text"></span></button>
+          <button class="btn-option" onclick="selectAnswer(1)"><span class="badge">ب</span> <span class="text"></span></button>
+          <button class="btn-option" onclick="selectAnswer(2)"><span class="badge">ج</span> <span class="text"></span></button>
+          <button class="btn-option" onclick="selectAnswer(3)"><span class="badge">د</span> <span class="text"></span></button>
+        </div>
+      </div>
+
+      <aside class="sidebar" id="ladder"></aside>
+    </main>
+  </div>
+
+  <!-- نافذة تصويت الجمهور -->
+  <div class="modal" id="modal-poll">
+    <div class="modal-content">
+      <h3 style="color:var(--itqan-gold); margin-bottom: 1rem;">نتائج تصويت الجمهور</h3>
+      <div id="poll-results"></div>
+      <button class="btn-action" onclick="closeModal('modal-poll')">متابعة الحل</button>
+    </div>
+  </div>
+
+  <!-- نافذة النتيجة النهائية -->
+  <div class="modal" id="modal-result">
+    <div class="modal-content">
+      <h2 id="result-title" style="margin-bottom: 1rem; color: var(--itqan-gold);"></h2>
+      <p id="result-desc" style="font-size: 1.15rem; color: #cbd5e1;"></p>
+      <button class="btn-action" onclick="returnToHome()">العودة للرئيسية</button>
+    </div>
+  </div>
+
+  <script>
+    // بنك الأسئلة الشامل المستخرج من الدليل
+    const questionBank = {
+      primary_lower: [
+        { category: "وطن", question: "ما هي عاصمة المملكة العربية السعودية؟", options: ["جدة", "الرياض", "الدمام", "مكة المكرمة"], correct: 1 },
+        { category: "وطن", question: "ما هو لون علم المملكة العربية السعودية؟", options: ["الأبيض", "الأخضر", "الأزرق", "الأحمر"], correct: 1 },
+        { category: "وطن", question: "ما اسم المناسبة الوطنية التي توافق 23 سبتمبر من كل عام؟", options: ["يوم التأسيس", "يوم العلم", "اليوم الوطني السعودي", "يوم المعلم"], correct: 2 },
+        { category: "وطن", question: "ما اسم المناسبة الوطنية التي توافق 22 فبراير من كل عام؟", options: ["اليوم الوطني", "يوم التأسيس", "يوم الشجرة", "يوم الطفل"], correct: 1 },
+        { category: "إسلاميات", question: "كم عدد أركان الإسلام؟", options: ["3 أركان", "4 أركان", "5 أركان", "6 أركان"], correct: 2 },
+        { category: "إسلاميات", question: "ما هي قبلة المسلمين في الصلاة؟", options: ["المسجد الأقصى", "المسجد النبوي", "الكعبة المشرفة", "مسجد قباء"], correct: 2 },
+        { category: "إسلاميات", question: "ما الشهر الذي يصومه المسلمون في كل عام؟", options: ["شعبان", "رمضان", "شوال", "ذو الحجة"], correct: 1 },
+        { category: "إسلاميات", question: "من هو أول الخلفاء الراشدين رضي الله عنه؟", options: ["عمر بن الخطاب", "عثمان بن عفان", "أبو بكر الصديق", "علي بن أبي طالب"], correct: 2 },
+        { category: "جغرافيا", question: "ما هي عاصمة جمهورية مصر العربية؟", options: ["الإسكندرية", "القاهرة", "الجيزة", "أسوان"], correct: 1 },
+        { category: "جغرافيا", question: "ما هي عاصمة فرنسا؟", options: ["لندن", "مدريد", "باريس", "روما"], correct: 2 },
+        { category: "جغرافيا", question: "ما هي أكبر قارات العالم من حيث المساحة؟", options: ["أفريقيا", "أوروبا", "آسيا", "أمريكا الشمالية"], correct: 2 },
+        { category: "جغرافيا", question: "ما هو أكبر محيط في العالم؟", options: ["المحيط الأطلسي", "المحيط الهادئ", "المحيط الهندي", "المحيط المتجمد"], correct: 1 },
+        { category: "تاريخ", question: "أين نشأت وبدأت الحضارة المصرية القديمة؟", options: ["على ضفاف نهر الفرات", "على ضفاف نهر دجلة", "على ضفاف نهر النيل", "في وادي الأردن"], correct: 2 },
+        { category: "تاريخ", question: "ما اسم المدينة التي هاجر إليها النبي محمد ﷺ؟", options: ["الطائف", "المدينة المنورة", "خيبر", "تبوك"], correct: 1 },
+        { category: "تاريخ", question: "من الخليفة الذي بنى مدينة بغداد لتكون عاصمة للعباسيين؟", options: ["هارون الرشيد", "أبو جعفر المنصور", "المأمون", "المتوكل"], correct: 1 },
+        { category: "علوم", question: "ما الكوكب المعروف بلقب (الكوكب الأحمر)؟", options: ["المشتري", "المريخ", "عطارد", "الزهرة"], correct: 1 },
+        { category: "علوم", question: "ما الغاز الأساسي الذي يتنفسه الإنسان للحياة؟", options: ["النيتروجين", "الأكسجين", "ثاني أكسيد الكربون", "الهيدروجين"], correct: 1 },
+        { category: "علوم", question: "ما هو مصدر الضوء والحرارة الرئيسي لكوكب الأرض؟", options: ["القمر", "الشمس", "النجوم", "الرياح"], correct: 1 },
+        { category: "رياضيات", question: "ما حاصل جمع 8 + 7؟", options: ["14", "15", "16", "17"], correct: 1 },
+        { category: "رياضيات", question: "ما ناتج ضرب 4 × 6؟", options: ["20", "28", "24", "26"], correct: 2 },
+        { category: "رياضيات", question: "كم ضلعاً للمربع؟", options: ["ثلاثة", "أربعة", "خمسة", "ستة"], correct: 1 },
+        { category: "لغة وأدب", question: "ما هو مرادف كلمة (سعيد)؟", options: ["حزين", "مسرور", "غاضب", "خائف"], correct: 1 },
+        { category: "لغة وأدب", question: "ما هو مضاد كلمة (سريع)؟", options: ["قوي", "بطيء", "نشيط", "كسول"], correct: 1 },
+        { category: "تقنية", question: "ما هي الآلة الذكية التي يمكن برمجتها لتنفيذ مهام محددة؟", options: ["الروبوت", "الشاشة", "الطابعة", "الماسح"], correct: 0 },
+        { category: "رياضة", question: "كم لاعباً يتواجد في فريق كرة السلة داخل الملعب؟", options: ["5 لاعبين", "6 لاعبين", "7 لاعبين", "11 لاعباً"], correct: 0 },
+        { category: "صحة", question: "أي من الأغذية التالية غني بعنصر الكالسيوم لبناء العظام؟", options: ["الحلوى", "الحليب ومنتجاته", "المشروبات الغازية", "البطاطس المقرمشة"], correct: 1 }
+      ],
+
+      primary_upper: [
+        { category: "وطن", question: "ما هو البحر الذي يقع غرب المملكة العربية السعودية؟", options: ["الخليج العربي", "بحر العرب", "البحر الأحمر", "البحر المتوسط"], correct: 2 },
+        { category: "وطن", question: "ما هي عاصمة المملكة العربية السعودية؟", options: ["الدمام", "مكة المكرمة", "الرياض", "المدينة المنورة"], correct: 2 },
+        { category: "إسلاميات", question: "كم عدد أركان الإيمان؟", options: ["خمسة", "ستة", "سبعة", "أربعة"], correct: 1 },
+        { category: "إسلاميات", question: "ما أول ما نزل من القرآن الكريم على النبي ﷺ؟", options: ["سورة الفاتحة", "اقرأ باسم ربك الذي خلق", "سورة القلم", "سورة النصر"], correct: 1 },
+        { category: "إسلاميات", question: "من هو ثاني الخلفاء الراشدين رضي الله عنه؟", options: ["عثمان بن عفان", "عمر بن الخطاب", "علي بن أبي طالب", "أبو عبيدة الجراح"], correct: 1 },
+        { category: "جغرافيا", question: "ما هي عاصمة اليابان؟", options: ["أوساكا", "طوكيو", "سول", "بكين"], correct: 1 },
+        { category: "جغرافيا", question: "ما هو البحر الذي يفصل بين المملكة العربية السعودية ومصر؟", options: ["البحر المتوسط", "البحر الميت", "البحر الأحمر", "بحر العرب"], correct: 2 },
+        { category: "جغرافيا", question: "ما هي أكبر صحراء حارة في العالم؟", options: ["صحراء الربع الخالي", "الصحراء الكبرى", "صحراء أتاكاما", "صحراء ناميب"], correct: 1 },
+        { category: "تاريخ", question: "ما الحضارة التي اشتهرت بابتكار الكتابة المسمارية؟", options: ["حضارة الفراعنة", "حضارات بلاد الرافدين", "حضارة المايا", "الحضارة الفينيقية"], correct: 1 },
+        { category: "تاريخ", question: "من هو مؤسس الدولة السعودية الأولى؟", options: ["الإمام تركي بن عبد الله", "الإمام محمد بن سعود", "الملك فيصل", "الإمام فيصل بن تركي"], correct: 1 },
+        { category: "تاريخ", question: "ما هي عاصمة الدولة السعودية الأولى التاريخية؟", options: ["الرياض", "جدة", "الدرعية", "ينبع"], correct: 2 },
+        { category: "علوم", question: "ما هو أكبر عضو في جسم الإنسان؟", options: ["الكبد", "الرئة", "الجلد", "الأمعاء"], correct: 2 },
+        { category: "علوم", question: "ما اسم العملية التي تصنع بها النباتات غذاءها؟", options: ["التخمر", "التمثيل العطري", "البناء الضوئي", "الترشيح"], correct: 2 },
+        { category: "علوم", question: "ما القوة الطبيعية التي تجذب الأجسام نحو مركز الأرض؟", options: ["المغناطيسية", "الجاذبية", "الاحتكاك", "قوة الدفع"], correct: 1 },
+        { category: "علوم", question: "ما الجهاز الحيوي المسؤول أساساً عن نقل الدم وتوزيعه؟", options: ["الجهاز التنفسي", "الجهاز العصبي", "الجهاز الدوري", "الجهاز الهضمي"], correct: 2 },
+        { category: "رياضيات", question: "كم يساوي 25% من العدد 80؟", options: ["16", "20", "24", "30"], correct: 1 },
+        { category: "رياضيات", question: "ما هو محيط مربع يبلغ طول ضلعه 5 سم؟", options: ["25 سم", "15 سم", "20 سم", "10 سم"], correct: 2 },
+        { category: "رياضيات", question: "ما العدد المفقود في النمط: (2، 4، 8، 16، ...)؟", options: ["24", "30", "32", "64"], correct: 2 },
+        { category: "لغة وأدب", question: "ما هو ضد كلمة (الشجاعة)؟", options: ["الخوف", "الجبن", "التردد", "التراجع"], correct: 1 },
+        { category: "لغة وأدب", question: "ما نوع كلمة (كتبَ) في جملة (كتبَ الطالبُ درسه)؟", options: ["فعل مضارع", "فعل ماضٍ", "اسم فاعل", "حرف"], correct: 1 },
+        { category: "تقنية", question: "ما المصطلح الذي يعني (كتابة تعليمات وتوجيهات للحاسوب)؟", options: ["التصميم", "البرمجة", "المعالجة", "التصفح"], correct: 1 },
+        { category: "رياضة", question: "كم لاعباً يتواجد في فريق الكرة الطائرة داخل الملعب؟", options: ["5 لاعبين", "6 لاعبين", "7 لاعبين", "11 لاعباً"], correct: 1 },
+        { category: "رياضة", question: "ما الدولة التي استضافت أول بطولة لكأس العالم عام 1930م؟", options: ["البرازيل", "الأرجنتين", "الأوروغواي", "إنجلترا"], correct: 2 },
+        { category: "ثقافة عامة", question: "من هو واضع قوانين الحركة والجاذبية الكلاسيكية في الفيزياء؟", options: ["ألبرت أينشتاين", "غاليلو", "إسحاق نيوتن", "نيكولا تسلا"], correct: 2 },
+        { category: "ثقافة عامة", question: "ما هو اسم أول إنسان مشى على سطح القمر؟", options: ["يوري جاجارين", "نيل أرمسترونغ", "باز ألدرين", "مايكل كولينز"], correct: 1 }
+      ],
+
+      intermediate: [
+        { category: "وطن", question: "ما الخليج الذي يحد المملكة العربية السعودية من جهة الشرق؟", options: ["بحر العرب", "الخليج العربي", "خليج عمان", "خليج العقبة"], correct: 1 },
+        { category: "وطن", question: "ما اسم أعلى قمة جبلية في المملكة العربية السعودية؟", options: ["جبل طويق", "جبل اللوز", "جبل السودة", "جبل أحد"], correct: 2 },
+        { category: "إسلاميات", question: "ما هو أول مسجد بُني في عهد الإسلام؟", options: ["المسجد النبوي", "المسجد الحرام", "مسجد قباء", "مسجد القبلتين"], correct: 2 },
+        { category: "إسلاميات", question: "من هو ثالث الخلفاء الراشدين رضي الله عنه؟", options: ["علي بن أبي طالب", "عمر بن الخطاب", "عثمان بن عفان", "سعد بن أبي وقاص"], correct: 2 },
+        { category: "إسلاميات", question: "ما هي أطول سورة في القرآن الكريم؟", options: ["سورة النساء", "سورة آل عمران", "سورة البقرة", "سورة الأعراف"], correct: 2 },
+        { category: "جغرافيا", question: "ما المضيق الاستراتيجي الذي يربط البحر الأحمر بخليج عدن؟", options: ["مضيق هرمز", "مضيق باب المندب", "مضيق البسفور", "مضيق طارق"], correct: 1 },
+        { category: "جغرافيا", question: "ما هي القمة الجبلية الأعلى على مستوى العالم؟", options: ["جبل كي 2", "قمة إيفرست", "جبل كليمنجارو", "جبل الألب"], correct: 1 },
+        { category: "جغرافيا", question: "ما القارة التي تضم أكبر عدد من الدول المستقلة؟", options: ["آسيا", "أوروبا", "أفريقيا", "أمريكا الجنوبية"], correct: 2 },
+        { category: "جغرافيا", question: "ما هي عاصمة أستراليا الاتحادية؟", options: ["سيدني", "ملبورن", "كانبيرا", "بيرث"], correct: 2 },
+        { category: "تاريخ", question: "في أي عام ميلادي انطلقت مسيرة تأسيس الدولة السعودية الأولى؟", options: ["1744 م", "1727 م", "1818 م", "1902 م"], correct: 1 },
+        { category: "تاريخ", question: "ما هي عاصمة الدولة السعودية الثانية؟", options: ["الدرعية", "الرياض", "حائل", "الأحساء"], correct: 1 },
+        { category: "علوم", question: "ما هي وحدة قياس القوة المعتمدة في النظام الدولي (SI)؟", options: ["الجول", "الباسكال", "النيوتن", "الأمبير"], correct: 2 },
+        { category: "علوم", question: "ما هي الوظيفة الأساسية لخلايا وكريات الدم الحمراء؟", options: ["مهاجمة الفيروسات", "تخثر الدم", "نقل الأكسجين", "نقل الهرمونات"], correct: 2 },
+        { category: "رياضيات", question: "إذا كان 3س = 21، فما هي قيمة المتغير س؟", options: ["3", "6", "7", "9"], correct: 2 },
+        { category: "رياضيات", question: "مستطيل طوله 8 سم وعرضه 5 سم، كم تبلغ مساحته؟", options: ["26 سم²", "40 سم²", "13 سم²", "35 سم²"], correct: 1 },
+        { category: "رياضيات", question: "ما هو المتوسط الحسابي للقيم: 4، 6، 8؟", options: ["5", "6", "7", "8"], correct: 1 },
+        { category: "لغة وأدب", question: "من هو الشاعر العربي الكبير الملقب بـ (أمير الشعراء)؟", options: ["خليل مطران", "حافظ إبراهيم", "أحمد شوقي", "معروف الرصافي"], correct: 2 },
+        { category: "لغة وأدب", question: "ما هو الجمع الصحيح لكلمة (قاضٍ) في اللغة العربية؟", options: ["قضايا", "قضيان", "قضاة", "قواضٍ"], correct: 2 },
+        { category: "تقنية", question: "ما الفرق الجوهري بين البيانات والمعلومات؟", options: ["لا يوجد فرق بينهما", "البيانات حقائق خام والمعلومات بيانات تمت معالجتها", "المعلومات أرقام والبيانات نصوص", "البيانات نتائج نهائية"], correct: 1 },
+        { category: "تقنية", question: "ما هو العلم المشتق من الذكاء الاصطناعي والذي تتعلم فيه الخوارزميات من الأنماط؟", options: ["التنقيب عن البيانات", "التعلم الآلي (Machine Learning)", "تطوير التطبيقات", "الشبكات الحاسوبية"], correct: 1 },
+        { category: "بيئة", question: "ما هو أبرز غاز دفيء ناتج عن النشاط البشري مسبب للاحتباس الحراري؟", options: ["الأوزون", "الميثان الطبيعي", "ثاني أكسيد الكربون", "النيتروجين"], correct: 2 },
+        { category: "رياضة", question: "كم دقيقة تبلغ مدة مباراة كرة القدم الرسمية دون احتساب الوقت الإضافي؟", options: ["80 دقيقة", "90 دقيقة", "100 دقيقة", "120 دقيقة"], correct: 1 },
+        { category: "ثقافة عامة", question: "ما هو الاسم العلمي للجهاز المتخصص في قياس ورصد الزلازل؟", options: ["البارومتر", "السيزموجراف", "الأنيمومتر", "الهيدرومتر"], correct: 1 },
+        { category: "ثقافة عامة", question: "من هو العالم المكتشف لعقار البنسلين؟", options: ["لويس باستور", "روبرت هوك", "ألكسندر فليمنغ", "جوناس سالك"], correct: 2 }
+      ],
+
+      secondary: [
+        { category: "وطن", question: "ما هو المفهوم الجوهري لرؤية السعودية 2030؟", options: ["خطة للإنتاج الزراعي فقط", "إطار تنموي شامل لتنويع الاقتصاد وتطوير المجتمع", "برنامج لتطوير النقل السريع", "استراتيجية مصرفية محلية"], correct: 1 },
+        { category: "وطن", question: "ما اسم الوجهة العالمية الاستثمارية الواقعة في شمال غرب المملكة؟", options: ["مشروع البحر الأحمر", "القدية", "نيوم", "أمالا"], correct: 2 },
+        { category: "وطن", question: "ما هي أكبر واحة نخيل طبيعية ومسجلة في اليونسكو بالمملكة؟", options: ["واحة الدرعية", "واحة تيماء", "واحة الأحساء", "واحة خيبر"], correct: 2 },
+        { category: "وطن", question: "ما هي الهيئة المسؤولة حصراً عن حفظ وتطوير وإدارة التراث في المملكة؟", options: ["الهيئة العامة للترفيه", "هيئة التراث", "دارة الملك عبدالعزيز", "الهيئة الملكية للرياض"], correct: 1 },
+        { category: "إسلاميات", question: "ما هو المفهوم الشرعي لمرتبة الإحسان كما بيّنها الحديث النبوي؟", options: ["كثرة الصيام والصدقة", "أن تعبد الله كأنك تراه فإن لم تكن تراه فإنه يراك", "إتقان الأعمال الدنيوية", "حسن الخلق مع الجيران"], correct: 1 },
+        { category: "إسلاميات", question: "في أي عام ميلادي وقعت الهجرة النبوية المباركة؟", options: ["610 م", "622 م", "630 م", "632 م"], correct: 1 },
+        { category: "إسلاميات", question: "ما هي السورة الكريمة الوحيدة التي لا تبدأ بالبسملة؟", options: ["سورة الأنفال", "سورة يونس", "سورة التوبة", "سورة الفرقان"], correct: 2 },
+        { category: "جغرافيا", question: "ما هو الخط الوهمي الذي يقسم الكرة الأرضية إلى نصفين شمالي وجنوبي؟", options: ["خط غرينتش", "مدار السرطان", "خط الاستواء", "مدار الجدي"], correct: 2 },
+        { category: "جغرافيا", question: "ما المضيق المائي الفاصل بين قارة آسيا وقارة أمريكا الشمالية؟", options: ["مضيق جبل طارق", "مضيق ملقا", "مضيق بيرينغ", "مضيق البوسفور"], correct: 2 },
+        { category: "جغرافيا", question: "ما هي أطول سلسلة جبال برية ممتدة فوق سطح اليابسة؟", options: ["جبال روكي", "جبال الهيمالايا", "جبال الأنديز", "جبال الأطلس"], correct: 2 },
+        { category: "تاريخ", question: "في أي تاريخ تم إعلان توحيد المملكة العربية السعودية رسمياً؟", options: ["22 فبراير 1727 م", "23 سبتمبر 1932 م", "15 يناير 1902 م", "5 شوال 1319 هـ"], correct: 1 },
+        { category: "تاريخ", question: "من هو الإمام الذي أسس الدولة السعودية الثانية؟", options: ["الإمام محمد بن سعود", "الإمام فيصل بن تركي", "الإمام تركي بن عبد الله", "الإمام سعود الكبير"], correct: 2 },
+        { category: "تاريخ", question: "ما الحضارة التي ازدهرت في أثينا وأسهمت في نشأة الديمقراطية والفلسفة؟", options: ["الحضارة الفارسية", "الحضارة الرومانية", "الحضارة اليونانية", "الحضارة البيزنطية"], correct: 2 },
+        { category: "علوم", question: "ما هو القانون الفيزيائي الذي يُصاغ رياضياً بالعلاقة: (القوة = الكتلة × التسارع)؟", options: ["قانون نيوتن الأول", "قانون نيوتن الثاني", "قانون الجاذبية الكونية", "قانون حفظ الطاقة"], correct: 1 },
+        { category: "علوم", question: "عن أي إنجاز علمي استحق ألبرت أينشتاين جائزة نوبل في الفيزياء عام 1921؟", options: ["معادلة تكافؤ المادة والطاقة", "النظرية النسبية العامة", "تفسير التأثير الكهروضوئي", "تفسير الموجات الكهرومغناطيسية"], correct: 2 },
+        { category: "علوم", question: "ما هو الحمض النووي (DNA) في الكائنات الحية؟", options: ["بروتين ناقل للطاقة", "شفرة وراثية تحمل معلومات بناء الكائن الحي ووظائفه", "غشاء يحمي جدار الخلية", "أنزيم محلل للدهون"], correct: 1 },
+        { category: "رياضيات", question: "في حساب التفاضل والتكامل، ما المشتقة الأولى للدالة: f(x) = x²؟", options: ["x", "2", "2x", "x³"], correct: 2 },
+        { category: "رياضيات", question: "ما قيمة 2 مرفوعة للقوة الخامسة (2⁵)؟", options: ["16", "25", "32", "64"], correct: 2 },
+        { category: "رياضيات", question: "إذا كانت النسبة 2:3 ومجموع الجزأين 25، فما قيمة الجزء الأصغر؟", options: ["5", "10", "15", "12"], correct: 1 },
+        { category: "لغة وأدب", question: "ما هو التعريف البلاغي لـ (الطباق)؟", options: ["تشابه اللفظين واختلاف المعنى", "الجمع بين الشيء وضده في الكلام", "توافق فواصل الجمل في الحرف الأخير", "المطابقة في الوزن والقافية"], correct: 1 },
+        { category: "لغة وأدب", question: "من هو الأديب الذي قام بتعريب وصياغة كتاب (كليلة ودمنة)؟", options: ["الجاحظ", "ابن المقفع", "بديع الزمان الهمذاني", "ابن قتيبة"], correct: 1 },
+        { category: "تقنية", question: "ما هو النموذج اللغوي الكبير (LLM) في مجال الذكاء الاصطناعي؟", options: ["خوارزمية لتصميم الواجهات", "نموذج ذكاء اصطناعي مدرب على كميات ضخمة من النصوص لفهم وتوليد اللغة", "معالج رسومي فائق السرعة", "بروتوكول لنقل البيانات"], correct: 1 },
+        { category: "بيئة", question: "ما هو التعريف المعتمد لمفهوم (التنمية المستدامة)؟", options: ["إيقاف التوسع الصناعي بالكامل", "تلبية احتياجات الحاضر دون الإضرار بقدرة الأجيال القادمة على تلبية احتياجاتها", "الاعتماد الحصري على الزراعة", "تقليل استخدام التكنولوجيا"], correct: 1 },
+        { category: "صحة", question: "لماذا لا تصلح المضادات الحيوية في علاج الأمراض الفيروسية كالرشح؟", options: ["لأنها تسبب الحساسية المفرطة", "لأنها مصممة لاستهداف البكتيريا ولا أثر لها على الفيروسات", "لأنها تخفض المناعة الطبيعية", "لأنها سريعة التحلل في المعدة"], correct: 1 }
+      ]
+    };
+
+    const points = ["1,000", "5,000", "10,000", "20,000", "50,000", "100,000", "250,000", "500,000", "750,000", "1,000,000"];
+    const stageNames = {
+      primary_lower: "الصفوف الأولية",
+      primary_upper: "الصفوف العليا",
+      intermediate: "المرحلة المتوسطة",
+      secondary: "المرحلة الثانوية"
+    };
+
+    let selectedStage = "primary_upper";
+    let activeQuestions = [];
+    let currentIdx = 0;
+    let currentQuestion = null;
+    let timerValue = 45;
+    let timerInterval = null;
+    let usedQuestionTexts = new Set();
+    let audioCtx = null;
+
+    // تهيئة الصوتيات عند التفاعل
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // مكتبة أصوات مدمجة
+    const SoundEffects = {
+      click() {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.1);
+      },
+      tick() {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+      },
+      tension() {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(110, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(160, audioCtx.currentTime + 1.8);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 1.8);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 1.8);
+      },
+      correct() {
+        initAudio();
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // نغمة وترية مبهجة (C major)
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.1);
+          gain.gain.setValueAtTime(0.12, audioCtx.currentTime + idx * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.1 + 0.5);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(audioCtx.currentTime + idx * 0.1);
+          osc.stop(audioCtx.currentTime + idx * 0.1 + 0.5);
+        });
+      },
+      wrong() {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.6);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.6);
+      },
+      lifeline() {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.35);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.35);
+      }
+    };
+
+    function uploadLogo(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById("school-logo").src = e.target.result;
+        document.getElementById("nav-school-logo").src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    function startGame() {
+      initAudio();
+      SoundEffects.click();
+
+      const name = document.getElementById("player-name").value.trim() || "بطل إتقان";
+      selectedStage = document.getElementById("stage-select").value;
+
+      document.getElementById("display-player-name").textContent = name;
+      document.getElementById("display-stage-name").textContent = stageNames[selectedStage];
+
+      activeQuestions = [...questionBank[selectedStage]];
+      usedQuestionTexts.clear();
+      currentIdx = 0;
+
+      document.getElementById("welcome-screen").style.display = "none";
+      document.getElementById("game-screen").style.display = "flex";
+
+      document.querySelectorAll(".btn-help").forEach(b => b.disabled = false);
+      loadNextQuestion();
+    }
+
+    function initLadder() {
+      const ladderEl = document.getElementById("ladder");
+      ladderEl.innerHTML = "";
+      points.forEach((pts, i) => {
+        const item = document.createElement("div");
+        item.className = `ladder-step ${i === currentIdx ? 'active' : ''} ${i === 2 || i === 6 || i === 9 ? 'milestone' : ''}`;
+        item.innerHTML = `<span>السؤال ${i + 1}</span> <span>${pts}</span>`;
+        ladderEl.appendChild(item);
+      });
+    }
+
+    function loadNextQuestion() {
+      let available = activeQuestions.filter(q => !usedQuestionTexts.has(q.question));
+      if (available.length === 0) {
+        usedQuestionTexts.clear();
+        available = activeQuestions;
+      }
+
+      currentQuestion = available[Math.floor(Math.random() * available.length)];
+      usedQuestionTexts.add(currentQuestion.question);
+
+      document.getElementById("category-badge").textContent = `المجال: ${currentQuestion.category}`;
+      document.getElementById("question").textContent = currentQuestion.question;
+
+      const buttons = document.querySelectorAll(".btn-option");
+      buttons.forEach((btn, i) => {
+        btn.querySelector(".text").textContent = currentQuestion.options[i];
+        btn.className = "btn-option";
+        btn.disabled = false;
+        btn.style.visibility = "visible";
+      });
+
+      initLadder();
+      resetTimer();
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerValue = 45;
+      const timerEl = document.getElementById("timer");
+      timerEl.textContent = timerValue;
+      timerEl.classList.remove("timer-warning");
+
+      timerInterval = setInterval(() => {
+        timerValue--;
+        timerEl.textContent = timerValue;
+
+        if (timerValue <= 10) {
+          timerEl.classList.add("timer-warning");
+          SoundEffects.tick();
+        }
+
+        if (timerValue <= 0) {
+          clearInterval(timerInterval);
+          triggerShake();
+          SoundEffects.wrong();
+          endGame(false, "انتهى الوقت المسموح للتفكير في الإجابة!");
+        }
+      }, 1000);
+    }
+
+    function selectAnswer(choiceIdx) {
+      clearInterval(timerInterval);
+      const buttons = document.querySelectorAll(".btn-option");
+      buttons.forEach(b => b.disabled = true);
+      buttons[choiceIdx].classList.add("selected");
+      SoundEffects.tension();
+
+      // فاصل ترقب لمدة ثانية ونصف
+      setTimeout(() => {
+        if (choiceIdx === currentQuestion.correct) {
+          buttons[choiceIdx].classList.remove("selected");
+          buttons[choiceIdx].classList.add("correct");
+          SoundEffects.correct();
+          launchConfetti();
+
+          setTimeout(() => {
+            currentIdx++;
+            if (currentIdx >= points.length) {
+              endGame(true, "مبارك لك الفوز بالمركز الأول في بنك إتقان المعرفي!");
+            } else {
+              loadNextQuestion();
+            }
+          }, 1800);
+        } else {
+          buttons[choiceIdx].classList.remove("selected");
+          buttons[choiceIdx].classList.add("wrong");
+          buttons[currentQuestion.correct].classList.add("correct");
+          triggerShake();
+          SoundEffects.wrong();
+          setTimeout(() => endGame(false, "إجابة خاطئة. لقد اكتسبت علماً ورصيداً معرفياً مميزاً!"), 2000);
+        }
+      }, 1500);
+    }
+
+    function triggerShake() {
+      const stage = document.getElementById("main-stage");
+      stage.classList.add("shake-screen");
+      setTimeout(() => stage.classList.remove("shake-screen"), 600);
+    }
+
+    function useFiftyFifty() {
+      SoundEffects.lifeline();
+      document.getElementById("btn-50").disabled = true;
+      let wrongIndices = [0, 1, 2, 3].filter(i => i !== currentQuestion.correct);
+      wrongIndices.sort(() => Math.random() - 0.5);
+      const buttons = document.querySelectorAll(".btn-option");
+      buttons[wrongIndices[0]].style.visibility = "hidden";
+      buttons[wrongIndices[1]].style.visibility = "hidden";
+    }
+
+    function useExtraTime() {
+      SoundEffects.lifeline();
+      document.getElementById("btn-time").disabled = true;
+      timerValue += 30;
+      document.getElementById("timer").textContent = timerValue;
+    }
+
+    function useAudiencePoll() {
+      SoundEffects.lifeline();
+      document.getElementById("btn-poll").disabled = true;
+      const pollBox = document.getElementById("poll-results");
+      pollBox.innerHTML = "";
+
+      let percentages = [10, 10, 10, 10];
+      percentages[currentQuestion.correct] += 50;
+      percentages = percentages.map(p => Math.floor(p + (Math.random() * 10)));
+
+      currentQuestion.options.forEach((opt, idx) => {
+        pollBox.innerHTML += `
+          <div class="poll-bar">
+            <span>${opt} (${percentages[idx]}%)</span>
+            <div class="bar-bg">
+              <div class="bar-fill" style="width: ${percentages[idx]}%;"></div>
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById("modal-poll").style.display = "flex";
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    function endGame(isWin, msg) {
+      const modal = document.getElementById("modal-result");
+      document.getElementById("result-title").textContent = isWin ? "🏆 فوز وإتقان مستحق!" : "انتهت المسابقة";
+      document.getElementById("result-desc").textContent = msg;
+      modal.style.display = "flex";
+      if (isWin) launchConfetti(300);
+    }
+
+    function returnToHome() {
+      closeModal("modal-result");
+      document.getElementById("game-screen").style.display = "none";
+      document.getElementById("welcome-screen").style.display = "flex";
+    }
+
+    function quitToHome() {
+      clearInterval(timerInterval);
+      returnToHome();
+    }
+
+    // احتفال القصاصات المتطايرة (Confetti Canvas)
+    const canvas = document.getElementById("confetti-canvas");
+    const ctx = canvas.getContext("2d");
+    let confetti = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    function launchConfetti(count = 70) {
+      const colors = ["#fbbf24", "#a855f7", "#38bdf8", "#10b981", "#ffffff"];
+      for (let i = 0; i < count; i++) {
+        confetti.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          r: Math.random() * 6 + 4,
+          dx: (Math.random() - 0.5) * 16,
+          dy: (Math.random() - 0.5) * 16 - 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.random() * 10,
+          tiltAngle: 0,
+          tiltAngleInc: Math.random() * 0.07 + 0.05
+        });
+      }
+      if (!animatingConfetti) updateConfetti();
+    }
+
+    let animatingConfetti = false;
+    function updateConfetti() {
+      animatingConfetti = true;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach((p, index) => {
+        p.x += p.dx;
+        p.y += p.dy;
+        p.dy += 0.2; // جاذبية
+        p.tiltAngle += p.tiltAngleInc;
+        p.tilt = Math.sin(p.tiltAngle) * 15;
+
+        ctx.beginPath();
+        ctx.lineWidth = p.r;
+        ctx.strokeStyle = p.color;
+        ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+        ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+        ctx.stroke();
+
+        if (p.y > canvas.height) confetti.splice(index, 1);
+      });
+
+      if (confetti.length > 0) {
+        requestAnimationFrame(updateConfetti);
+      } else {
+        animatingConfetti = false;
+      }
+    }
+  </script>
+</body>
+</html>
