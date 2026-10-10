@@ -9,18 +9,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --itqan-purple-dark: #090112;
-      --itqan-purple-deep: #160426;
-      --itqan-purple: #6a1b9a;
-      --itqan-purple-bright: #a855f7;
+      --itqan-purple-dark: #07010f;
+      --itqan-purple-deep: #160324;
+      --itqan-purple: #5c1688;
+      --itqan-purple-bright: #9d27cd;
       --itqan-gold: #f5b301;
       --itqan-gold-light: #fed766;
-      --itqan-gold-glow: rgba(245, 179, 1, 0.45);
+      --itqan-gold-glow: rgba(245, 179, 1, 0.5);
       --cyan: #00d2d3;
       --correct: #10b981;
       --wrong: #ef4444;
       --selected: #ea580c;
-      --card-bg: rgba(26, 8, 46, 0.85);
+      --card-bg: rgba(20, 5, 36, 0.85);
       --card-border: rgba(245, 179, 1, 0.35);
       --text: #ffffff;
       --text-muted: #cbd5e1;
@@ -36,7 +36,7 @@
     }
 
     body {
-      background: radial-gradient(circle at 50% 15%, #300854 0%, var(--itqan-purple-dark) 70%, #030007 100%);
+      background: radial-gradient(circle at 50% 15%, #2a0445 0%, var(--itqan-purple-dark) 70%, #030006 100%);
       color: var(--text);
       min-height: 100vh;
       min-height: 100dvh;
@@ -46,29 +46,48 @@
       position: relative;
     }
 
-    /* أضواء المسرح السينمائية */
-    .spotlights {
+    /* خلفية المسرح والأضواء */
+    .studio-stage {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 0;
       overflow: hidden;
     }
-    .light-beam {
-      position: absolute;
-      top: -20%;
-      width: 350px;
-      height: 140%;
-      background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.18) 0%, transparent 65%);
-      transform-origin: top center;
-      animation: lightMotion 12s ease-in-out infinite alternate;
-    }
-    .light-left { left: 5%; animation-delay: -3s; }
-    .light-right { right: 5%; animation-duration: 15s; }
 
-    @keyframes lightMotion {
+    .spotlight {
+      position: absolute;
+      top: -30%;
+      width: 420px;
+      height: 160%;
+      background: radial-gradient(ellipse at center, rgba(157, 39, 205, 0.22) 0%, transparent 65%);
+      transform-origin: top center;
+      animation: sweepLights 14s ease-in-out infinite alternate;
+    }
+    .spotlight-left { left: 8%; animation-delay: -3s; }
+    .spotlight-right { right: 8%; animation-duration: 16s; }
+
+    @keyframes sweepLights {
       0% { transform: rotate(-25deg); }
       100% { transform: rotate(25deg); }
+    }
+
+    /* شاشة الوميض العام للمسرح */
+    #flash-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 95;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    #flash-overlay.flash-correct {
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.35) 0%, transparent 80%);
+      opacity: 1;
+    }
+    #flash-overlay.flash-wrong {
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.45) 0%, transparent 80%);
+      opacity: 1;
     }
 
     /* -------------------------------------------------------------
@@ -78,25 +97,26 @@
       position: fixed;
       inset: 0;
       z-index: 100;
-      background: radial-gradient(circle at center, #260642 0%, #07010f 85%);
+      background: radial-gradient(circle at center, #240540 0%, #07000e 85%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1rem;
+      padding: 1.2rem;
       text-align: center;
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
     .intro-card {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
-      border-radius: 20px;
-      padding: 1.8rem 1.4rem;
+      border-radius: 22px;
+      padding: 2.2rem 1.8rem;
       width: 100%;
-      max-width: 440px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(106, 27, 154, 0.4);
-      backdrop-filter: blur(15px);
+      max-width: 460px;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), 0 0 35px rgba(92, 22, 136, 0.3);
+      backdrop-filter: blur(16px);
+      position: relative;
     }
 
     .logo-badge {
@@ -104,22 +124,27 @@
       align-items: center;
       justify-content: center;
       background: #ffffff;
-      padding: 8px 18px;
+      padding: 8px 20px;
       border-radius: 16px;
       border: 2px solid var(--itqan-gold);
-      box-shadow: 0 0 20px var(--itqan-gold-glow);
-      margin-bottom: 1rem;
+      box-shadow: 0 0 25px var(--itqan-gold-glow);
+      margin-bottom: 1.2rem;
       cursor: pointer;
+      transition: transform 0.25s ease;
+    }
+
+    .logo-badge:hover {
+      transform: scale(1.04);
     }
 
     .logo-badge img {
-      max-height: 55px;
+      max-height: 60px;
       width: auto;
       object-fit: contain;
     }
 
     .intro-title {
-      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      font-size: clamp(1.7rem, 4vw, 2.3rem);
       font-weight: 900;
       color: var(--itqan-gold);
       text-shadow: 0 0 15px var(--itqan-gold-glow);
@@ -127,14 +152,14 @@
     }
 
     .intro-motto {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--cyan);
       font-weight: 700;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.8rem;
     }
 
     .form-group {
-      margin-bottom: 1rem;
+      margin-bottom: 1.1rem;
       text-align: right;
     }
 
@@ -148,10 +173,10 @@
 
     .input-box, .select-box {
       width: 100%;
-      padding: 10px 14px;
+      padding: 11px 15px;
       border-radius: 10px;
       border: 1.2px solid rgba(245, 179, 1, 0.3);
-      background: rgba(10, 2, 20, 0.9);
+      background: rgba(8, 2, 16, 0.9);
       color: #fff;
       font-size: 0.95rem;
       outline: none;
@@ -160,7 +185,7 @@
 
     .input-box:focus, .select-box:focus {
       border-color: var(--itqan-gold);
-      box-shadow: 0 0 10px var(--itqan-gold-glow);
+      box-shadow: 0 0 12px var(--itqan-gold-glow);
     }
 
     .select-box option {
@@ -172,15 +197,15 @@
       width: 100%;
       background: linear-gradient(135deg, var(--itqan-gold) 0%, #d97706 100%);
       color: #0b0217;
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       font-weight: 900;
-      padding: 12px;
+      padding: 13px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      box-shadow: 0 0 20px var(--itqan-gold-glow);
-      transition: all 0.2s;
-      margin-top: 0.4rem;
+      box-shadow: 0 0 25px var(--itqan-gold-glow);
+      transition: all 0.25s ease;
+      margin-top: 0.6rem;
     }
 
     .btn-launch:active {
@@ -203,22 +228,23 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.5rem 1.2rem;
-      background: rgba(10, 2, 20, 0.95);
+      padding: 0.6rem 1.6rem;
+      background: rgba(8, 2, 16, 0.95);
       border-bottom: 1.5px solid var(--itqan-gold);
       backdrop-filter: blur(10px);
       flex-shrink: 0;
+      gap: 10px;
     }
 
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
     }
 
     .header-logo {
       background: #ffffff;
-      padding: 3px 6px;
+      padding: 3px 8px;
       border-radius: 8px;
       border: 1px solid var(--itqan-gold);
       display: flex;
@@ -227,37 +253,37 @@
     }
 
     .header-logo img {
-      max-height: 28px;
+      max-height: 36px;
       width: auto;
       object-fit: contain;
     }
 
     .player-status h3 {
-      font-size: 0.9rem;
+      font-size: 1rem;
       font-weight: 800;
       color: var(--itqan-gold);
       line-height: 1.2;
     }
 
     .player-status span {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       color: var(--cyan);
       font-weight: 600;
     }
 
     .lifeline-bar {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       align-items: center;
     }
 
     .btn-tool {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--itqan-gold);
       color: var(--itqan-gold-light);
-      padding: 5px 10px;
-      border-radius: 16px;
-      font-size: 0.75rem;
+      padding: 6px 12px;
+      border-radius: 18px;
+      font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
@@ -282,8 +308,8 @@
     main {
       flex: 1;
       display: flex;
-      padding: 1rem 1.5rem;
-      gap: 1.2rem;
+      padding: 1.2rem 1.8rem;
+      gap: 1.5rem;
       max-width: 1300px;
       margin: 0 auto;
       width: 100%;
@@ -307,73 +333,100 @@
     }
 
     .badge-category {
-      background: rgba(106, 27, 154, 0.5);
+      background: rgba(92, 22, 136, 0.5);
       border: 1px solid var(--itqan-purple-bright);
       color: #f3e8ff;
-      padding: 4px 12px;
-      border-radius: 16px;
-      font-size: 0.8rem;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.85rem;
       font-weight: 700;
+      box-shadow: 0 0 10px rgba(157, 39, 205, 0.3);
     }
 
-    .timer-ring {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: 2px solid var(--itqan-gold);
+    /* عداد الوقت الدائري التفاعلي */
+    .timer-wrap {
+      position: relative;
+      width: 60px;
+      height: 60px;
+    }
+
+    .timer-svg {
+      width: 60px;
+      height: 60px;
+      transform: rotate(-90deg);
+    }
+
+    .timer-circle-bg {
+      fill: #0c0216;
+      stroke: rgba(255, 255, 255, 0.1);
+      stroke-width: 4;
+    }
+
+    .timer-circle-bar {
+      fill: none;
+      stroke: var(--itqan-gold);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-dasharray: 163;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 1s linear, stroke 0.3s;
+    }
+
+    .timer-text {
+      position: absolute;
+      inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 900;
-      background: #0f031b;
       color: var(--itqan-gold);
-      box-shadow: 0 0 12px var(--itqan-gold-glow);
-      transition: all 0.3s;
     }
 
-    .timer-critical {
-      border-color: var(--wrong) !important;
+    .timer-critical .timer-circle-bar {
+      stroke: var(--wrong) !important;
+    }
+
+    .timer-critical .timer-text {
       color: var(--wrong) !important;
-      box-shadow: 0 0 18px rgba(239, 68, 68, 0.9) !important;
       animation: heartPulse 0.8s infinite;
     }
 
     @keyframes heartPulse {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.08); }
+      50% { transform: scale(1.12); }
     }
 
     .question-screen {
       background: linear-gradient(180deg, rgba(38, 11, 66, 0.85) 0%, rgba(17, 3, 31, 0.95) 100%);
       border: 1.5px solid var(--itqan-gold);
-      border-radius: 16px;
-      padding: 1.2rem 1rem;
-      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      border-radius: 18px;
+      padding: 1.5rem 1.4rem;
+      font-size: clamp(1.05rem, 2.2vw, 1.4rem);
       font-weight: 700;
       text-align: center;
-      margin-bottom: 1rem;
-      min-height: 90px;
+      margin-bottom: 1.2rem;
+      min-height: 105px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
-      line-height: 1.5;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(245, 179, 1, 0.1);
+      line-height: 1.6;
     }
 
     .options-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 12px;
     }
 
     .btn-option {
       background: linear-gradient(90deg, rgba(37, 10, 64, 0.75) 0%, rgba(18, 3, 33, 0.88) 100%);
-      border: 1.2px solid rgba(245, 179, 1, 0.25);
+      border: 1.5px solid rgba(245, 179, 1, 0.25);
       border-radius: 12px;
       color: #fff;
-      padding: 0.8rem 1rem;
-      font-size: clamp(0.85rem, 2vw, 1.05rem);
+      padding: 0.9rem 1.2rem;
+      font-size: clamp(0.9rem, 1.8vw, 1.1rem);
       font-weight: 600;
       text-align: right;
       cursor: pointer;
@@ -384,21 +437,22 @@
 
     .btn-option .choice-sym {
       color: var(--itqan-gold);
-      margin-left: 8px;
+      margin-left: 10px;
       font-weight: 900;
-      font-size: 1.05rem;
+      font-size: 1.15rem;
     }
 
     .btn-option:hover:not(:disabled) {
       border-color: var(--itqan-gold);
-      background: rgba(106, 27, 154, 0.45);
+      background: rgba(92, 22, 136, 0.45);
+      transform: translateY(-2px);
     }
 
     .btn-option.selected {
       background: var(--selected) !important;
       color: #fff !important;
       border-color: #ffedd5 !important;
-      box-shadow: 0 0 16px rgba(234, 88, 12, 0.8);
+      box-shadow: 0 0 20px rgba(234, 88, 12, 0.85);
       animation: pulseSelection 0.5s infinite alternate;
     }
 
@@ -411,7 +465,7 @@
       background: var(--correct) !important;
       color: #fff !important;
       border-color: #6ee7b7 !important;
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.9);
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.9);
       animation: flashSuccess 0.4s ease-in-out 3;
     }
 
@@ -424,7 +478,7 @@
       background: var(--wrong) !important;
       color: #fff !important;
       border-color: #fca5a5 !important;
-      box-shadow: 0 0 20px rgba(239, 68, 68, 0.9);
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.9);
     }
 
     .btn-option:disabled {
@@ -436,20 +490,21 @@
       flex: 1;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 0.8rem;
+      border-radius: 18px;
+      padding: 1rem;
       display: flex;
       flex-direction: column-reverse;
-      gap: 4px;
-      backdrop-filter: blur(10px);
+      gap: 5px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     }
 
     .ladder-step {
       display: flex;
       justify-content: space-between;
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--text-muted);
       border: 1px solid transparent;
@@ -457,11 +512,11 @@
     }
 
     .ladder-step.active {
-      background: linear-gradient(90deg, rgba(106, 27, 154, 0.85), rgba(245, 179, 1, 0.35));
+      background: linear-gradient(90deg, rgba(92, 22, 136, 0.85), rgba(245, 179, 1, 0.35));
       border: 1px solid var(--itqan-gold);
       color: #fff;
       transform: scale(1.02);
-      box-shadow: 0 0 10px var(--itqan-gold-glow);
+      box-shadow: 0 0 12px var(--itqan-gold-glow);
     }
 
     .ladder-step.milestone {
@@ -482,6 +537,7 @@
       font-size: 0.85rem;
     }
 
+    /* اهتزاز الشاشة */
     .shake-screen {
       animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
@@ -493,7 +549,7 @@
       40%, 60% { transform: translate3d(5px, 0, 0); }
     }
 
-    /* النوافذ التفاعلية */
+    /* النوافذ المنبثقة */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -508,9 +564,9 @@
     .modal-box {
       background: #19052b;
       border: 2px solid var(--itqan-gold);
-      border-radius: 18px;
-      padding: 1.5rem;
-      max-width: 400px;
+      border-radius: 20px;
+      padding: 1.8rem;
+      max-width: 420px;
       width: 100%;
       text-align: center;
       box-shadow: 0 0 35px var(--itqan-gold-glow);
@@ -519,20 +575,20 @@
     }
 
     .poll-bar {
-      margin: 8px 0;
+      margin: 10px 0;
       text-align: right;
       font-size: 0.85rem;
     }
 
     .bar-shell {
       background: rgba(255, 255, 255, 0.08);
-      border-radius: 6px;
+      border-radius: 8px;
       overflow: hidden;
-      margin-top: 3px;
+      margin-top: 4px;
     }
 
     .bar-progress {
-      height: 14px;
+      height: 15px;
       background: linear-gradient(90deg, var(--itqan-purple-bright), var(--itqan-gold));
       transition: width 1s ease;
       width: 0%;
@@ -542,12 +598,12 @@
       background: var(--itqan-gold);
       color: #000;
       border: none;
-      padding: 8px 24px;
+      padding: 10px 28px;
       font-weight: 800;
       border-radius: 10px;
       cursor: pointer;
-      margin-top: 1rem;
-      font-size: 0.9rem;
+      margin-top: 1.2rem;
+      font-size: 0.95rem;
     }
 
     #confetti-canvas {
@@ -557,20 +613,20 @@
       z-index: 120;
     }
 
-    /* تكيف مخصص للهواتف الذكية */
+    /* التجاوب مع شاشات الجوال */
     @media (max-width: 768px) {
       header {
         padding: 0.4rem 0.8rem;
       }
       .player-status h3 {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
       }
       .player-status span {
         font-size: 0.65rem;
       }
       .btn-tool {
-        padding: 4px 7px;
-        font-size: 0.7rem;
+        padding: 5px 8px;
+        font-size: 0.72rem;
       }
       main {
         padding: 0.6rem 0.8rem;
@@ -587,9 +643,9 @@
         gap: 8px;
       }
       .question-screen {
-        padding: 0.9rem 0.8rem;
-        min-height: 80px;
-        font-size: 1rem;
+        padding: 1rem 0.8rem;
+        min-height: 85px;
+        font-size: 1.05rem;
         margin-bottom: 0.8rem;
       }
       .btn-option {
@@ -600,11 +656,13 @@
 </head>
 <body>
 
-  <div class="stage-lighting">
-    <div class="beam beam-left"></div>
-    <div class="beam beam-right"></div>
+  <!-- إضاءات المسرح -->
+  <div class="studio-stage">
+    <div class="spotlight spotlight-left"></div>
+    <div class="spotlight spotlight-right"></div>
   </div>
 
+  <div id="flash-overlay"></div>
   <canvas id="confetti-canvas"></canvas>
 
   <!-- 1. الشاشة الافتتاحية -->
@@ -654,6 +712,7 @@
         <button class="btn-tool" id="btn-50" onclick="useFiftyFifty()">50:50</button>
         <button class="btn-tool" id="btn-poll" onclick="useAudiencePoll()">👥 الجمهور</button>
         <button class="btn-tool" id="btn-time" onclick="useExtraTime()">⏱️ +30ث</button>
+        <button class="btn-tool" id="btn-sound" onclick="toggleMute()">🔊 الصوت</button>
         <button class="btn-tool" style="border-color:var(--cyan)" onclick="toggleFullScreen()">⛶ شاشة كاملة</button>
         <button class="btn-tool" style="border-color:var(--wrong);" onclick="returnToIntro()">خروج</button>
       </div>
@@ -663,7 +722,13 @@
       <div class="arena-content">
         <div class="arena-header">
           <div class="badge-category" id="category-badge">المجال: عام</div>
-          <div class="timer-ring" id="timer">45</div>
+          <div class="timer-wrap" id="timer-box">
+            <svg class="timer-svg" viewBox="0 0 60 60">
+              <circle class="timer-circle-bg" cx="30" cy="30" r="26"></circle>
+              <circle id="timer-progress" class="timer-circle-bar" cx="30" cy="30" r="26"></circle>
+            </svg>
+            <div class="timer-text" id="timer">45</div>
+          </div>
         </div>
 
         <div class="question-screen" id="question">جاري عرض السؤال...</div>
@@ -710,7 +775,7 @@
   </div>
 
   <script>
-    // بنك الأسئلة المعتمد المستخرج من دليل المسابقة
+    // بنك الأسئلة المعتمد من الدليل
     const questionBank = {
       primary_lower: [
         { category: "وطن", question: "ما هي عاصمة المملكة العربية السعودية؟", options: ["جدة", "الرياض", "الدمام", "مكة المكرمة"], correct: 1 },
@@ -838,6 +903,7 @@
     let timerInterval = null;
     let usedQuestions = new Set();
     let audioCtx = null;
+    let isMuted = false;
 
     function initAudio() {
       if (!audioCtx) {
@@ -848,106 +914,60 @@
       }
     }
 
-    const SoundEffects = {
-      intro() {
+    function toggleMute() {
+      isMuted = !isMuted;
+      document.getElementById("btn-sound").textContent = isMuted ? "🔇 صامت" : "🔊 الصوت";
+    }
+
+    // محرك الصوتيات الاحترافي السينمائي
+    const SoundEngine = {
+      play(freqs, type = 'sine', duration = 0.5, gainLevel = 0.1, slideFreq = null) {
+        if (isMuted) return;
         initAudio();
-        const chord = [220, 277.18, 329.63, 440, 554.37];
-        chord.forEach((freq, idx) => {
+        freqs.forEach(freq => {
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
-          osc.type = 'triangle';
+          osc.type = type;
           osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-          gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
-          gain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 0.8);
-          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.0);
+          if (slideFreq) {
+            osc.frequency.exponentialRampToValueAtTime(slideFreq, audioCtx.currentTime + duration);
+          }
+          gain.gain.setValueAtTime(gainLevel, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
           osc.connect(gain);
           gain.connect(audioCtx.destination);
-          osc.start(audioCtx.currentTime);
-          osc.stop(audioCtx.currentTime + 2.0);
+          osc.start();
+          osc.stop(audioCtx.currentTime + duration);
         });
       },
       click() {
-        initAudio();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.frequency.setValueAtTime(450, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.08);
+        this.play([450], 'triangle', 0.08, 0.08);
       },
       tick() {
-        initAudio();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(900, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.05);
+        this.play([1200], 'sine', 0.04, 0.07);
+      },
+      intro() {
+        // نغمة كوردات سينمائية مهيبة
+        this.play([146.83, 220, 293.66], 'sawtooth', 1.6, 0.06);
+        setTimeout(() => this.play([220, 277.18, 329.63, 440], 'triangle', 2.0, 0.1), 350);
       },
       tension() {
-        initAudio();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(110, audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(160, audioCtx.currentTime + 1.4);
-        gain.gain.setValueAtTime(0.09, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 1.4);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 1.4);
+        // صوت نبضات الترقب
+        this.play([65, 130], 'sawtooth', 1.4, 0.09, 80);
       },
       correct() {
-        initAudio();
-        const notes = [523.25, 659.25, 783.99, 1046.50];
-        notes.forEach((freq, idx) => {
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.08);
-          gain.gain.setValueAtTime(0.12, audioCtx.currentTime + idx * 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.08 + 0.45);
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.start(audioCtx.currentTime + idx * 0.08);
-          osc.stop(audioCtx.currentTime + idx * 0.08 + 0.45);
+        // نغمة فوز مبهجة
+        [523.25, 659.25, 783.99, 1046.50].forEach((note, i) => {
+          setTimeout(() => this.play([note], 'triangle', 0.5, 0.12), i * 90);
         });
       },
       wrong() {
-        initAudio();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(180, audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(70, audioCtx.currentTime + 0.6);
-        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.6);
+        // صوت نزول درامي
+        this.play([160, 110], 'sawtooth', 0.7, 0.18, 50);
       },
       lifeline() {
-        initAudio();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(320, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(1300, audioCtx.currentTime + 0.35);
-        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.35);
+        // صوت شعاع ليزر / مساعدة
+        this.play([350], 'sine', 0.35, 0.15, 1400);
       }
     };
 
@@ -970,9 +990,8 @@
       }
     }
 
-    // الانتقال المباشر إلى الشاشة التفاعلية
     function launchGame() {
-      SoundEffects.intro();
+      SoundEngine.intro();
       const pName = document.getElementById("player-name-input").value.trim() || "بطل إتقان";
       const sVal = document.getElementById("stage-select-input").value;
 
@@ -1002,7 +1021,7 @@
       setTimeout(() => {
         intro.style.opacity = "1";
         intro.style.transform = "scale(1)";
-      }, 30);
+      }, 20);
       closeModal("modal-result");
     }
 
@@ -1083,23 +1102,31 @@
       clearInterval(timerInterval);
       timerValue = 45;
       const timerEl = document.getElementById("timer");
+      const timerBox = document.getElementById("timer-box");
+      const progressCircle = document.getElementById("timer-progress");
+
       timerEl.textContent = timerValue;
-      timerEl.classList.remove("timer-critical");
+      timerBox.classList.remove("timer-critical");
+      progressCircle.style.strokeDashoffset = "0";
+
+      const totalDash = 163;
 
       timerInterval = setInterval(() => {
         timerValue--;
         timerEl.textContent = timerValue;
 
+        const offset = totalDash - (timerValue / 45) * totalDash;
+        progressCircle.style.strokeDashoffset = offset;
+
         if (timerValue <= 10) {
-          timerEl.classList.add("timer-critical");
-          SoundEffects.tick();
+          timerBox.classList.add("timer-critical");
+          SoundEngine.tick();
         }
 
         if (timerValue <= 0) {
           clearInterval(timerInterval);
-          triggerShake();
-          SoundEffects.wrong();
-          endGame(false, "انتهى الوقت المحدد للمحاولة!");
+          triggerWrongVisuals();
+          endGame(false, "انتهى الوقت المحدد للإجابة!");
         }
       }, 1000);
     }
@@ -1109,20 +1136,20 @@
       const buttons = document.querySelectorAll(".btn-option");
       buttons.forEach(b => b.disabled = true);
       buttons[choiceIdx].classList.add("selected");
-      SoundEffects.tension();
+      SoundEngine.tension();
 
+      // ثواني ترقب سينمائية
       setTimeout(() => {
         if (choiceIdx === currentQuestion.correct) {
           buttons[choiceIdx].classList.remove("selected");
           buttons[choiceIdx].classList.add("correct");
-          SoundEffects.correct();
-          launchConfetti(80);
+          triggerCorrectVisuals();
 
           setTimeout(() => {
             currentIdx++;
             if (currentIdx >= points.length) {
               const playerName = document.getElementById("player-name-input").value || "المتسابق";
-              endGame(true, `ألف مبارك للبطل (${playerName})! حققت المركز الأول في مسابقة إتقان المعرفية 🏆`);
+              endGame(true, `ألف مبارك للبطل (${playerName})! نلت المليون في مسابقة إتقان المعرفية 🏆`);
             } else {
               loadNextQuestion();
             }
@@ -1131,21 +1158,34 @@
           buttons[choiceIdx].classList.remove("selected");
           buttons[choiceIdx].classList.add("wrong");
           buttons[currentQuestion.correct].classList.add("correct");
-          triggerShake();
-          SoundEffects.wrong();
-          setTimeout(() => endGame(false, "إجابة غير صحيحة. رصيدك المعرفي يزداد بالتجربة والمحاولة المستمرة!"), 1800);
+          triggerWrongVisuals();
+          setTimeout(() => endGame(false, "إجابة غير صحيحة. رصيدك المعرفي يزداد مع كل محاولة!"), 1800);
         }
       }, 1400);
     }
 
-    function triggerShake() {
+    function triggerCorrectVisuals() {
+      SoundEngine.correct();
+      launchConfetti(85);
+      const flash = document.getElementById("flash-overlay");
+      flash.className = "flash-correct";
+      setTimeout(() => { flash.className = ""; }, 400);
+    }
+
+    function triggerWrongVisuals() {
+      SoundEngine.wrong();
       const stage = document.getElementById("main-stage");
+      const flash = document.getElementById("flash-overlay");
       stage.classList.add("shake-screen");
-      setTimeout(() => stage.classList.remove("shake-screen"), 600);
+      flash.className = "flash-wrong";
+      setTimeout(() => {
+        stage.classList.remove("shake-screen");
+        flash.className = "";
+      }, 600);
     }
 
     function useFiftyFifty() {
-      SoundEffects.lifeline();
+      SoundEngine.lifeline();
       document.getElementById("btn-50").disabled = true;
       let wrong = [0, 1, 2, 3].filter(i => i !== currentQuestion.correct);
       wrong.sort(() => Math.random() - 0.5);
@@ -1155,14 +1195,14 @@
     }
 
     function useExtraTime() {
-      SoundEffects.lifeline();
+      SoundEngine.lifeline();
       document.getElementById("btn-time").disabled = true;
       timerValue += 30;
       document.getElementById("timer").textContent = timerValue;
     }
 
     function useAudiencePoll() {
-      SoundEffects.lifeline();
+      SoundEngine.lifeline();
       document.getElementById("btn-poll").disabled = true;
       const pollBox = document.getElementById("poll-results");
       pollBox.innerHTML = "";
@@ -1198,10 +1238,10 @@
       document.getElementById("result-title").textContent = isWin ? "🏆 فوز مستحق وإتقان باهر!" : "انتهت المسابقة";
       document.getElementById("result-desc").textContent = msg;
       modal.style.display = "flex";
-      if (isWin) launchConfetti(300);
+      if (isWin) launchConfetti(350);
     }
 
-    /* تأثير القصاصات الاحتفالية */
+    /* محرك القصاصات والاحتفال السينمائي */
     const canvas = document.getElementById("confetti-canvas");
     const ctx = canvas.getContext("2d");
     let confetti = [];
